@@ -1,92 +1,48 @@
-# React Vitest Template
+# RoadTrip Planner App
 
-A starter template for building React apps with Vite. Includes Vitest for unit testing and
-a hefty .gitignore file.
+## Project Overview
 
-# Requirements
+The **RoadTrip Planner App** is designed to help users create and organize travel itineraries with ease. Our goal is to provide a hassle-free travel experience by leveraging advanced technologies, such as LLM (Language Learning Models) and trip APIs, to generate the perfect itinerary based on the user's starting point and destination. 
 
-Node 20 or greater.
+Key features include:
+- **User Authentication**: Secure login and user profiles to save and manage trips.
+- **Interactive Trip Planning Board**: A drag-and-drop interface to create and visualize your travel itinerary.
+- **API Integrations**: Seamless integration with travel APIs for accommodation, points of interest, routes, and activities.
+- **AI-Powered Suggestions**: Use LLM technology to provide personalized suggestions, optimize routes, and find hidden gems along the way.
 
-## Usage
+## Features
 
-```
-mkdir your-app-name
-cd your-app-name
-npx degit criesbeck/react-vitest
-npm install
-```
-If the third step hangs after printing ``> cloned criesbeck/react-vitest#HEAD``, 
-just control-C to exit then run ``npm install``.
+- **User Authentication**: 
+  - Sign up, log in, and manage user profiles.
+  - Securely store trip data.
+  
+- **Interactive Trip Planner**:
+  - Create trips with a start and end location.
+  - Add waypoints, activities, and accommodations.
+  - Visualize the trip on a map with draggable pins.
 
-## Test
+- **API Integrations**:
+  - Integration with multiple trip-related APIs (e.g., Google Maps, TripAdvisor, Booking.com, etc.).
+  - Fetch real-time data for hotels, restaurants, activities, and more.
 
-Verify that the initial app works. Run
+- **LLM-Powered Itinerary Suggestions**:
+  - Personalized travel recommendations based on preferences.
+  - Optimize routes and recommend attractions along the way.
+  - Suggestions for local cuisines, sightseeing spots, and off-the-beaten-path destinations.
 
-```
-npm start
-```
+## Tech Stack
 
-and open the URL displayed.
+- **Frontend**: React, HTML, CSS, JavaScript
+- **Backend**: Node.js, Express
+- **Database**: MongoDB
+- **Authentication**: Firebase Auth / Auth0
+- **Trip APIs**: Google Maps API, TripAdvisor API, Spotify API (for travel music suggestions)
+- **AI Integration**: GPT API for AI-driven suggestions
 
-Verify that the unit tests work with
+## Getting Started
 
-```
-npm test
-```
+To get started with the project, follow the steps below:
 
-Two tests should run and pass. 
-
-## Scripts
-
-**package.json** defines the following scripts:
-
-| Script           | Description                                         |
-| -----------------| --------------------------------------------------- |
-| npm start        | Runs the app in the development mode.               |
-| npm run dev      | Runs the app in the development mode.               |
-| npm run build    | Builds the app for production to the `dist` folder. |
-| npm run serve    | Serves the production build from the `dist` folder. |
-| npm test         | Starts a Jest-like test loop                        |
-| npm run coverage | Runs the tests, displays code coverage results      |
-
-
-## Git
-
-If everything is working, set up [your local and remote repositories](https://docs.github.com/en/get-started/importing-your-projects-to-github/importing-source-code-to-github/adding-locally-hosted-code-to-github#adding-a-local-repository-to-github-using-git).
-
-## Folder Structure
-
-```
-your-app-name
-├── node_modules
-├── public
-│   ├── favicon.svg
-│   └── robots.txt
-└── src
-    ├── App.css
-    ├── App.jsx
-    ├── index.css
-    ├── index.jsx
-    └── logo.svg
-├── .gitignore
-├── index.html
-├── package.json
-├── README.md
-├── vite.config.js
-```
-
-## Credits
-
-React-Vitest built and maintained by [Chris Riesbeck](https://github.com/criesbeck).
-
-Inspired by [SafdarJamal/vite-template-react](https://github.com/SafdarJamal/vite-template-react).
-Expanded to include Vitest and some sample tests.
-
-Thanks to Rich Harris for [degit](https://www.npmjs.com/package/degit).
-
-Gitignore file created with [the Toptal tool](https://www.toptal.com/developers/gitignore/api/react,firebase,visualstudiocode,macos,windows).
-
-
-## License
-
-This project is licensed under the terms of the [MIT license](./LICENSE).
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/your-username/roadtrip-planner.git
