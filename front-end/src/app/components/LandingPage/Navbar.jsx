@@ -9,8 +9,8 @@ export default function Navbar() {
             <span className="text-2xl font-bold text-red-600">TrailBlaze</span>
           </div>
           <div className="hidden md:flex space-x-8 items-center">
-            <a href="#features" className="text-gray-700 hover:text-gray-900">Features</a>
-            <a href="#about" className="text-gray-700 hover:text-gray-900">About Us</a>
+            <a href="#features" className="text-gray-700 hover:text-gray-900 text-decoration-none">Features</a>
+            <a href="#about" className="text-gray-700 hover:text-gray-900 text-decoration-none">About Us</a>
             <button className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Plan Now</button>
           </div>
         </div>
