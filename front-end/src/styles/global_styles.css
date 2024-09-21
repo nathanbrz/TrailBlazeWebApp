@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn-blaze {
+    background-color: #800000;
+}
+
+.text-blaze {
+    color: #800000;
+}
+
+.text-spice {
+    color: #982B1C;
+    font-weight: 650;
+}

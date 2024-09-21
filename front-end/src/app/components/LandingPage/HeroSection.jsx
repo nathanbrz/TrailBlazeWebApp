@@ -1,6 +1,14 @@
-import React from 'react'
+"use client";
+import React from "react";
+import { useRouter } from "next/navigation";
 
 export default function HeroSection() {
+  const router = useRouter();
+
+  const handlePlanNowClick = () => {
+    router.push('/login'); // Navigates to /login
+  };
+
   return (
     <section className="bg-white py-20">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
@@ -13,7 +21,7 @@ export default function HeroSection() {
           Clarity gives you the blocks & components you need to create a truly
           professional website, landing page, or admin panel for your SaaS.
         </p>
-        <button className="bg-red-600 text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors">
+        <button className="btn-blaze text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors" onClick={handlePlanNowClick}>
           Plan Now
         </button>
       </div>

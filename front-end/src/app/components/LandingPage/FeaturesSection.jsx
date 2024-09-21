@@ -23,7 +23,7 @@ const FeaturesSection = () => {
   return (
     <section className="py-5 bg-light">
       <div className="container text-center">
-        <h2 className="mb-4">Features for your effortless planning</h2>
+        <h1 className="mb-4 text-4xl">Features for your effortless planning</h1>
         <p className="text-muted mb-5">The blocks & components you need</p>
 
         <div className="row">
