@@ -26,7 +26,7 @@ const FeaturesSection = () => {
         <h1 className="mb-4 text-4xl">Features for your effortless planning</h1>
         <p className="text-muted mb-5">The blocks & components you need</p>
 
-        <div className="row">
+        <div className="row justify-content-center">
           {features.map((feature) => (
             <div key={feature.id} className="col-lg-4 col-md-6 mb-4">
               <div className="card h-100 shadow-sm">
