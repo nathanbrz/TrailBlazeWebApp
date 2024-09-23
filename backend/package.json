@@ -14,6 +14,7 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
-    "mongoose": "^8.6.3"
+    "mongoose": "^8.6.3",
+    "openai": "^4.63.0"
   }
 }
