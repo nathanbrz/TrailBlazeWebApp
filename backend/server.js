@@ -45,18 +45,18 @@ async function connect() {
 connect()
 
 // Here is some example code showing how to create and query MongoDB models.
-try {
-    // const testuser = new User({
-    //     userID: new mongoose.Types.ObjectId(),
-    //     username: "cole_C",
-    //     email: "fake.email@gmail.com"
-    // })
-    // testuser.save()
-} catch (err) {
-    console.error(err)
-} finally {
-    User.find({username: "cole_C"})
-        .then((res) => {
-            console.log(res)
-        })
-}
+// try {
+//     // const testuser = new User({
+//     //     userID: new mongoose.Types.ObjectId(),
+//     //     username: "cole_C",
+//     //     email: "fake.email@gmail.com"
+//     // })
+//     // testuser.save()
+// } catch (err) {
+//     console.error(err)
+// } finally {
+//     User.find({username: "cole_C"})
+//         .then((res) => {
+//             console.log(res)
+//         })
+// }

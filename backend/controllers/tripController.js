@@ -4,10 +4,9 @@ const { generateItinerary } = require('../services/openaiService');
 // Create a new trip
 const createTrip = async (req, res) => {
     try {
-        const { tripID, userID, created_at, start_location, end_location, total_duration, trip_interest } = req.body;
-
+        const {promptID, userID, created_at, start_location, end_location, total_duration, trip_interest } = req.body;
         const newTrip = new Trip({
-            tripID,
+            promptID,
             userID,
             created_at,
             start_location,
