@@ -1,6 +1,6 @@
 const express = require('express');
 const { createTrip, getAllTrips, requestItinerary } = require('../controllers/tripController');
-const { generateItinerary } = require('../services/openaiService');
+const { savePrompt, getPrompt} = require('../controllers/promptController');
 
 const router = express.Router();
 
@@ -13,4 +13,12 @@ router.get('/trips', getAllTrips);
 // Route to generate itinerary
 router.post('/request-itinerary', requestItinerary);
 
-module.exports = router;
+// Not sure if these should go in a separate file
+
+	// Route to save a prompt
+	router.post('/save-prompt', savePrompt);
+
+	// Route to retrieve a prompt
+	router.get('/get-prompt', getPrompt)
+
+	module.exports = router;
