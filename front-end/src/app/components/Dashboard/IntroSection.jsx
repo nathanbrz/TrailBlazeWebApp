@@ -8,7 +8,7 @@ import Modal from "../../components/Modal";
 import TripForm from "./TripForm";
 
 export default function IntroSection() {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
