@@ -22,7 +22,12 @@ export default function SearchBar() {
             <SearchForm />
           </div>
           <div className="flex-shrink-0 flex items-center">
-            <Image src="/images/user-icon.png" width="50" height="50" />
+            <Image
+              src="/images/user-icon.png"
+              width="50"
+              height="50"
+              alt="profile image"
+            />
           </div>
         </div>
       </div>

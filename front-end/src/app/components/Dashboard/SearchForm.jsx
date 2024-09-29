@@ -20,7 +20,7 @@ const SearchForm = ({ onSearch }) => {
   return (
     <div className="input-group my-3">
       <button className="btn btn-light" type="button" onClick={handleSearch}>
-        <i class="bi bi-search"></i>
+        <i className="bi bi-search"></i>
       </button>
       <input
         type="text"
