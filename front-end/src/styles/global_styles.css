@@ -3,14 +3,21 @@
 @tailwind utilities;
 
 .btn-blaze {
-    background-color: #800000;
+  background-color: #800000;
 }
 
 .text-blaze {
-    color: #800000;
+  color: #800000;
 }
 
 .text-spice {
-    color: #982B1C;
-    font-weight: 650;
+  color: #982b1c;
+  font-weight: 650;
+}
+
+.modal .modal-content {
+  border-radius: 50px;
+  padding: 5px 15px;
+  /* Add shadow for a soft overlaying effect */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
