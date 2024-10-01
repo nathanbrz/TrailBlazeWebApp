@@ -28,7 +28,7 @@ export default function IntroSection() {
             <div className="md:text-left">
               <span className="text-3xl text-gray-900 mb-4">Hey Mariana -</span>
               <p className="text-lg text-gray-400 mb-6 inline px-2">
-                here’s what’s happening with your store today
+                here’s what’s happening in your trips
               </p>
             </div>
           </Col>
@@ -40,7 +40,7 @@ export default function IntroSection() {
                 className="btn-blaze lg:w-1/4 text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors"
                 onClick={handleOpenModal}
               >
-                start a new trip!
+                Start a new trip!
               </button>
             </div>
           </Col>
