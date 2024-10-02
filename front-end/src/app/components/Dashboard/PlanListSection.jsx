@@ -55,7 +55,6 @@ export default function PlanListSection() {
           id={trip.id}
           title={trip.title}
           description={trip.description}
-          imageUrl={trip.imageUrl}
         />
       ))}
     </section>

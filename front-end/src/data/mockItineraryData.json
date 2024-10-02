@@ -1,0 +1,66 @@
+{
+  "trip": {
+    "promptID": "64f5a17e8f5a2f0017b15d22",
+    "userID": "64f5a17e8f5a2f0017b15d21",
+    "total_duration": 72,
+    "start_location": "New York",
+    "end_location": "Los Angeles",
+    "trip_interest": "Sightseeing",
+    "itinerary": [
+      {
+        "day": 1,
+        "location": "Philadelphia",
+        "stay": 1,
+        "hotel": "Liberty Hotel",
+        "activities": [
+          {
+            "name": "Liberty Bell",
+            "description": "Visit the famous Liberty Bell."
+          },
+          {
+            "name": "Independence Hall",
+            "description": "Explore the site of the signing of the Declaration of Independence."
+          }
+        ],
+        "travel_time": 2,
+        "notes": "Leave early to avoid traffic."
+      },
+      {
+        "day": 2,
+        "location": "Pittsburgh",
+        "stay": 1,
+        "hotel": "Steel City Inn",
+        "activities": [
+          {
+            "name": "Andy Warhol Museum",
+            "description": "A museum dedicated to the works of Andy Warhol."
+          },
+          {
+            "name": "Phipps Conservatory",
+            "description": "A botanical garden in Schenley Park."
+          }
+        ],
+        "travel_time": 4,
+        "notes": "Check out the local food scene."
+      },
+      {
+        "day": 3,
+        "location": "Chicago",
+        "stay": 1,
+        "hotel": "Magnificent Mile Hotel",
+        "activities": [
+          {
+            "name": "Millennium Park",
+            "description": "Visit the famous park and see the Cloud Gate sculpture."
+          },
+          {
+            "name": "Art Institute of Chicago",
+            "description": "One of the oldest and largest art museums in the United States."
+          }
+        ],
+        "travel_time": 6,
+        "notes": "Enjoy deep-dish pizza."
+      }
+    ]
+  }
+}
