@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import '../../styles/global_styles.css';
-import { doSignUpUserWithEmailAndPassword } from '../firebase/auth'; // Import your sign-up function
+import { doCreateUserWithEmailAndPassword, doSignUpUserWithEmailAndPassword } from '../firebase/auth'; 
 import { useRouter } from 'next/navigation';
 
 const Signup = () => {
@@ -16,9 +16,9 @@ const Signup = () => {
     
     // Handling authentication through firebase
     try {
-      const userCredential = await doSignUpUserWithEmailAndPassword(email, password); // Call your signup function
+      const userCredential = await doCreateUserWithEmailAndPassword(email, password);
       console.log("User signed up!");
-      router.push('/dashboard'); // Redirect to dashboard after successful signup
+      router.push('/dashboard');
     } catch (error) {
       setErrorMessage(error.message);
       console.log("Sign up failed");
