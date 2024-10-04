@@ -11,11 +11,22 @@ const User = require('./dbmodels/user')
 const Trip = require('./dbmodels/trip')
 const tripRoutes = require('./routes/tripRoutes')
 
+// Authentication
+const firebaseRoutes = require('./routes/firebaseRoutes')
+const cookieParser = require("cookie-parser")
+const csfr = require("csurf")
+const bodyParser = require("body-parser")
+const csfrMiddleware =  csrf( {cookie: true}) // Ensures sensitive requests include a csrf cookie
+
+
 // Create express app
 const app = express()
 
 // Middleware
 app.use(express.json())
+app.use(bodyParser.json())
+app.use(cookieParser())
+
 
 app.use((req, res, next) => {
     console.log(req.path, req.method)
@@ -28,6 +39,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api', tripRoutes)
+app.use('/api/firebase', firebaseRoutes)
 
 // Connect to the Database, then listen for requests
 async function connect() {

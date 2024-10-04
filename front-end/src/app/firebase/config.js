@@ -18,6 +18,6 @@ const firebaseConfig = {
   If it is not already created, we create it
 */
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const auth = getAuth(app) 
+const auth = getAuth(app);
 
 export {app, auth}
