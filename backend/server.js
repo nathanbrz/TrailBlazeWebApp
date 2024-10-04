@@ -11,6 +11,7 @@ const User = require('./dbmodels/user')
 const Trip = require('./dbmodels/trip')
 const tripRoutes = require('./routes/tripRoutes')
 const userRoutes = require('./routes/userRoutes')
+const promptRoutes = require('./routes/promptRoutes')
 
 // Create express app
 const app = express()
@@ -30,6 +31,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/trips', tripRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/prompts', promptRoutes)
 
 // Connect to the Database, then listen for requests
 async function connect() {
