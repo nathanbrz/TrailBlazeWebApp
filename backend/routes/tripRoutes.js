@@ -5,10 +5,10 @@ const { savePrompt, getPrompt} = require('../controllers/promptController');
 const router = express.Router();
 
 // Route to create a trip
-router.post('/trips', createTrip);
+router.post('/', createTrip);
 
-// Route to get all trips
-router.get('/trips', getAllTrips);
+// Route to get all trips (for testing)
+router.get('/', getAllTrips);
 
 // Route to generate itinerary
 router.post('/request-itinerary', requestItinerary);
