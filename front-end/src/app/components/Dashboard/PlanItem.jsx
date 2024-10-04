@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import PlanDeleteModal from "./PlanDeleteModal";
 
-const PlanItem = () => {
+const PlanItem = ({ id, title, description }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const handleOpenDeleteModal = () => setIsDeleteModalOpen(true);
   const handleCloseDeleteModal = () => setIsDeleteModalOpen(false);
@@ -14,31 +14,27 @@ const PlanItem = () => {
       <PlanDeleteModal
         show={isDeleteModalOpen}
         hide={handleCloseDeleteModal}
-        planID=""
+        planID={id}
       />
       <Card className="mb-3 rounded-5 mx-12">
         <Row className="g-0">
           {/* Image on the left side */}
-          <Col md={2} className="d-flex justify-content-center">
+          {/* <Col md={2} className="d-flex justify-content-center">
             <Image
               width="200"
               height="200"
-              src="/images/broken-image.png"
+              src={imageUrl}
               className="img-fluid h-100 rounded"
-              alt="Card image"
+              alt={title}
             />
-          </Col>
+          </Col> */}
 
           {/* Title and description */}
-          <Col md={8}>
+          <Col md={10}>
             <Card.Body>
-              <Card.Title>Plan #</Card.Title>
+              <Card.Title>{title}</Card.Title>
               <Card.Text className="text-secondary">
-                This is a short description inside the card to explain its
-                contents.
-                <br />
-                This is a short description inside the card to explain its
-                contents.
+                {description}
               </Card.Text>
             </Card.Body>
           </Col>
