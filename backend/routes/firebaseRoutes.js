@@ -1,5 +1,5 @@
 const express = require("express")
-const firebaseAdmin =  require("./firebaseAdmin/config")
+const firebaseAdmin =  require("../firebaseAdmin/config")
 let router = express.Router()
 
 // Endpoint to verify Firebase token

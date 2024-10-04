@@ -2,6 +2,7 @@
 require ('dotenv').config()
 
 const express = require('express')
+const cors = require('cors'); // Import the CORS package
 
 const mongoose = require('mongoose')
 const uri = process.env.MONGODB_URI
@@ -13,20 +14,9 @@ const tripRoutes = require('./routes/tripRoutes')
 
 // Authentication
 const firebaseRoutes = require('./routes/firebaseRoutes')
-const cookieParser = require("cookie-parser")
-const csfr = require("csurf")
-const bodyParser = require("body-parser")
-const csfrMiddleware =  csrf( {cookie: true}) // Ensures sensitive requests include a csrf cookie
-
 
 // Create express app
 const app = express()
-
-// Middleware
-app.use(express.json())
-app.use(bodyParser.json())
-app.use(cookieParser())
-
 
 app.use((req, res, next) => {
     console.log(req.path, req.method)
@@ -40,6 +30,16 @@ app.get('/', (req, res) => {
 
 app.use('/api', tripRoutes)
 app.use('/api/firebase', firebaseRoutes)
+
+// Middleware
+
+const corsOptions = {
+    origin: 'http://localhost:3001', // Allow only this origin
+    methods: ['GET', 'POST'], // Specify allowed methods
+    credentials: true, // Allow credentials (if needed)
+};
+
+app.use(cors(corsOptions)); // Use the cors options
 
 // Connect to the Database, then listen for requests
 async function connect() {

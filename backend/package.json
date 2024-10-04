@@ -6,16 +6,21 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "concurrently \"nodemon server.js\" \"cd ../frontend && npm start\"",
+    "frontend": "cd ../frontend && npm start"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "firebase-admin": "^12.6.0",
     "mongoose": "^8.6.3",
     "openai": "^4.63.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
   }
 }

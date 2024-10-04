@@ -18,12 +18,35 @@ const Signup = () => {
     try {
       const userCredential = await doCreateUserWithEmailAndPassword(email, password);
       console.log("User signed up!");
+
+      // Getting the users token
+      const token = await userCredential.user.getIdToken();
+
+      // Send the token to backend for verification
+      const response = await fetch('/api/firebase/session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }), // Send the token to the backend
+      });
+
+      // ERROR
+      if (!response.ok) {
+        throw new Error("Failed to verify token")
+      }
+
+      // Verified user
+      const data = await response.json();
+      console.log('Session established:', data);
+
+
+      // Go to dashboard page
       router.push('/dashboard');
     } catch (error) {
       setErrorMessage(error.message);
       console.log("Sign up failed");
     }
-
     console.log('Signup submitted:', { email, password });
   };
 
@@ -31,7 +54,7 @@ const Signup = () => {
     <div className="d-flex align-items-center justify-content-center" style={{ height: '100vh' }}>
       <div className="card p-12 shadow-lg" style={{ width: '100%', maxWidth: '400px' }}>
         <h2 className="text-center mb-4">Sign Up</h2>
-        {errorMessage && <p className="text-danger">{errorMessage}</p>} {/* Display error message */}
+        {errorMessage && <p className="text-danger">{errorMessage}</p>} {/* Display  message */}
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">Email address</label>

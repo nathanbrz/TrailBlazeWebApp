@@ -6,6 +6,7 @@ import { doSignInUserWithEmailAndPassword  } from '../firebase/auth';
 import { useRouter } from 'next/navigation';
 
 
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,12 +22,32 @@ const Login = () => {
     try {
       const userCredential = await doSignInUserWithEmailAndPassword(email, password);
       console.log("User logged in!");
+
+      // Get the user's token after successful login
+      const token = await userCredential.user.getIdToken();
+
+      // Send the token to the backend for verification
+      const response = await fetch('http://localhost:4000/api/firebase/session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }), // Send the token to the backend
+      });
+ 
+       // Check for errors in the response
+       if (!response.ok) {
+         throw new Error("Failed to verify token");
+       }
+ 
+       // Get the response data
+       const data = await response.json();
+       console.log('Session established:', data);
       router.push('../dashboard');
     } catch (error) {
       setErrorMessage(error.message);
       console.log("Sign in failed");
     }
-
     console.log('Login submitted:', { email, password });
   };
 
