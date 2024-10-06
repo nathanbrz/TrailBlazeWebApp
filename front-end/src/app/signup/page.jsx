@@ -4,8 +4,15 @@ import React, { useState } from 'react';
 import '../../styles/global_styles.css';
 import { doCreateUserWithEmailAndPassword, doSignUpUserWithEmailAndPassword } from '../firebase/auth'; 
 import { useRouter } from 'next/navigation';
+import useAuth from '../hooks/useAuth'; 
+
+
 
 const Signup = () => {
+
+  // Checks if user is already logged in
+  useAuth();
+
   const [name, setName] = useState('')
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

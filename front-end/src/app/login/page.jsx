@@ -4,16 +4,20 @@ import React, { useState } from 'react';
 import '../../styles/global_styles.css';
 import { doSignInUserWithEmailAndPassword  } from '../firebase/auth';
 import { useRouter } from 'next/navigation';
+import useAuth from '../hooks/useAuth'; 
+
 
 
 
 const Login = () => {
+
+  // Checks if user is already logged in
+  useAuth();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,6 +35,7 @@ const Login = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer {token}`,
         },
         body: JSON.stringify({ token }), // Send the token to the backend
       });
