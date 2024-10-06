@@ -6,6 +6,7 @@ import { doCreateUserWithEmailAndPassword, doSignUpUserWithEmailAndPassword } fr
 import { useRouter } from 'next/navigation';
 
 const Signup = () => {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -23,7 +24,7 @@ const Signup = () => {
       const token = await userCredential.user.getIdToken();
 
       // Send the token to backend for verification
-      const response = await fetch('/api/firebase/session', {
+      const response = await fetch('http://localhost:4000/api/firebase/session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -40,6 +41,9 @@ const Signup = () => {
       const data = await response.json();
       console.log('Session established:', data);
 
+      // Saving the token and userID in local storage
+      localStorage.setItem('token', token)
+      localStorage.setItem('uuid', data.uid);
 
       // Go to dashboard page
       router.push('/dashboard');
@@ -56,6 +60,18 @@ const Signup = () => {
         <h2 className="text-center mb-4">Sign Up</h2>
         {errorMessage && <p className="text-danger">{errorMessage}</p>} {/* Display  message */}
         <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+          <label htmlFor="name" className="form-label">Name</label>
+            <input
+              type="name"
+              className="form-control"
+              id="name"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">Email address</label>
             <input

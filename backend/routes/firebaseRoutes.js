@@ -10,6 +10,7 @@ router.post('/session', async (req, res) => {
         // Verifying token
         const decodedToken = await firebaseAdmin.auth().verifyIdToken(token);
         const uid = decodedToken.uid;
+        console.log("Received token:", token);
 
         // Sucessfully verified Token
         res.status(200).json({

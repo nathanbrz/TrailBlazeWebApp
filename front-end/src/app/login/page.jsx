@@ -43,6 +43,11 @@ const Login = () => {
        // Get the response data
        const data = await response.json();
        console.log('Session established:', data);
+
+      // Saving the token and userID in local storage
+      localStorage.setItem('token', token)
+      localStorage.setItem('uuid', data.uid);
+
       router.push('../dashboard');
     } catch (error) {
       setErrorMessage(error.message);
