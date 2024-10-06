@@ -11,6 +11,11 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
+  /**
+   * Handles form submission for user login.
+   * Attempts to sign in the user with Firebase using the entered email and password.
+   * If successful, redirects to the dashboard. If failed, displays an error message.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -73,6 +78,7 @@ const Login = () => {
               required
             />
           </div>
+          {/* Display error message if sign-in fails */}
           {errorMessage && (
             <div className="alert alert-danger" role="alert">
               {errorMessage}
