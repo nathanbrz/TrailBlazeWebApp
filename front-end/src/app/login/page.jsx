@@ -35,7 +35,7 @@ const Login = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer {token}`,
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ token }), // Send the token to the backend
       });
@@ -50,7 +50,7 @@ const Login = () => {
        console.log('Session established:', data);
 
       // Saving the token and userID in local storage
-      localStorage.setItem('token', token)
+      localStorage.setItem('token', String(token));
       localStorage.setItem('uuid', data.uid);
 
       router.push('../dashboard');

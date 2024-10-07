@@ -9,10 +9,7 @@ import useAuth from '../hooks/useAuth';
 
 
 const Signup = () => {
-
-  // Checks if user is already logged in
-  useAuth();
-
+  
   const [name, setName] = useState('')
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

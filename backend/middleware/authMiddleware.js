@@ -11,6 +11,7 @@ const authenticateUser = async (req, res, next) => {
     try {
         const decodedToken = await admin.auth().verifyIdToken(token);
         req.user = decodedToken; // Attach user info to the request
+        next();
     } catch (error) {
         console.error("Authentication error:", error);
         return res.status(401).json({ message: 'Unauthorized access, invalid token' });
