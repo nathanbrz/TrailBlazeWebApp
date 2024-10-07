@@ -5,14 +5,18 @@ const authenticateUser = async (req, res, next) => {
     const token = authHeader && authHeader.split(' ')[1]; // Get the token part
 
     if (!token) {
+        // No token given
         return res.status(401).json({ message: 'Unauthorized access, token required' });
     }
-
-    try {
+    try {  
+        // Token is valid
         const decodedToken = await admin.auth().verifyIdToken(token);
-        req.user = decodedToken; // Attach user info to the request
+        req.user = decodedToken; 
+        
+        // Triggers next route
         next();
     } catch (error) {
+        // Token is invalid
         console.error("Authentication error:", error);
         return res.status(401).json({ message: 'Unauthorized access, invalid token' });
     }
