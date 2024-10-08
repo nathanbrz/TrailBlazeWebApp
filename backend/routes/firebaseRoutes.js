@@ -1,5 +1,5 @@
 const express = require("express");
-const authMiddleware = require("../middleware/authMiddleware"); // Adjust the path as necessary
+const authMiddleware = require("../middleware/firebaseMiddleware"); // Adjust the path as necessary
 let router = express.Router();
 
 // Endpoint to verify Firebase token

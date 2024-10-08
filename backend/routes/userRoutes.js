@@ -3,7 +3,11 @@ const router = express.Router();
 const { createUser, getUser } = require('../controllers/userController');
 
 // Middleware that authenticates Firebase token
-const { authenticateUser } = require('../middleware/firebaseAuth');
+const authenticateUser = require("../middleware/firebaseMiddleware");
+
+console.log('createUser:', createUser);
+console.log('getUser:', getUser);
+console.log('authenticateUser:', authenticateUser);
 
 // Create user
 router.post('/', authenticateUser, createUser);
