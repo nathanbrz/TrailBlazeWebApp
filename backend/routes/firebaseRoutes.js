@@ -4,6 +4,7 @@ let router = express.Router();
 
 // Endpoint to verify Firebase token
 router.post('/session', authMiddleware, (req, res) => {
+    
     // The token is already verified in the middleware, and the user's info is available in req.user
     const uid = req.user.uid; // Get the uid from the decoded token
 

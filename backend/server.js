@@ -18,17 +18,17 @@ const firebaseRoutes = require('./routes/firebaseRoutes')
 // Create express app
 const app = express()
 
-// Middleware
+// Middleware Setup
 const corsOptions = {
-    origin: 'http://localhost:3001', // Allow only this origin
-    methods: ['GET', 'POST'], // Specify allowed methods
+    origin: 'http://localhost:3001',
+    methods: ['GET', 'POST'], 
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true, // Allow credentials (if needed)
+    credentials: true,
 };
 
-app.use(cors(corsOptions)); // Use the cors options
+// Server and Middleware setup
+app.use(cors(corsOptions));
 app.use(express.json());
-
 
 app.use((req, res, next) => {
     console.log(req.path, req.method)
