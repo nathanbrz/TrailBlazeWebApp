@@ -10,6 +10,8 @@ const port = process.env.PORT || 4000 //port = 4000 unless specified in .env
 const User = require('./dbmodels/user')
 const Trip = require('./dbmodels/trip')
 const tripRoutes = require('./routes/tripRoutes')
+const userRoutes = require('./routes/userRoutes')
+const promptRoutes = require('./routes/promptRoutes')
 
 // Create express app
 const app = express()
@@ -27,7 +29,9 @@ app.get('/', (req, res) => {
     res.json({ message: 'Welcome to the server' })
 })
 
-app.use('/api', tripRoutes)
+app.use('/api/trips', tripRoutes)
+app.use('/api/users', userRoutes)
+app.use('/api/prompts', promptRoutes)
 
 // Connect to the Database, then listen for requests
 async function connect() {
