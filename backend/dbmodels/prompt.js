@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const promptSchema = new Schema({
 	promptID: {
-		type: mongoose.ObjectID,
+		type: Schema.Types.ObjectID,
 		required: true
 	},
 	start_location: String,

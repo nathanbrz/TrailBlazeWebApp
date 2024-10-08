@@ -1,3 +1,8 @@
-/
-node_modules
-.env
+# Ignore node_modules directory
+/node_modules
+
+# Ignore environment variable files
+/.env
+
+# Ignore Firebase credentials file located in the config directory
+/firebaseAdmin/firebaseCredentials.json
