@@ -4,8 +4,16 @@ import React, { useState } from 'react';
 import '../../styles/global_styles.css';
 import { doCreateUserWithEmailAndPassword, doSignUpUserWithEmailAndPassword } from '../firebase/auth'; 
 import { useRouter } from 'next/navigation';
+import useAuth from '../hooks/useAuth'; 
+
+
 
 const Signup = () => {
+
+  // Checks if user is already logged in
+  useAuth();
+
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -18,12 +26,39 @@ const Signup = () => {
     try {
       const userCredential = await doCreateUserWithEmailAndPassword(email, password);
       console.log("User signed up!");
+
+      // Getting the users token
+      const token = await userCredential.user.getIdToken();
+
+      // Send the token to backend for verification
+      const response = await fetch(`http://localhost:4000/api/firebase/session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ token }), // Send the token to the backend
+      });
+
+      // ERROR
+      if (!response.ok) {
+        throw new Error("Failed to verify token")
+      }
+
+      // Verified user
+      const data = await response.json();
+      console.log('Session established:', data);
+
+      // Saving the token and userID in local storage
+      localStorage.setItem('token', token)
+      localStorage.setItem('uuid', data.uid);
+
+      // Go to dashboard page
       router.push('/dashboard');
     } catch (error) {
       setErrorMessage(error.message);
       console.log("Sign up failed");
     }
-
     console.log('Signup submitted:', { email, password });
   };
 
@@ -31,8 +66,20 @@ const Signup = () => {
     <div className="d-flex align-items-center justify-content-center" style={{ height: '100vh' }}>
       <div className="card p-12 shadow-lg" style={{ width: '100%', maxWidth: '400px' }}>
         <h2 className="text-center mb-4">Sign Up</h2>
-        {errorMessage && <p className="text-danger">{errorMessage}</p>} {/* Display error message */}
+        {errorMessage && <p className="text-danger">{errorMessage}</p>} {/* Display  message */}
         <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+          <label htmlFor="name" className="form-label">Name</label>
+            <input
+              type="name"
+              className="form-control"
+              id="name"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">Email address</label>
             <input

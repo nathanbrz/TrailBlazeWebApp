@@ -2,6 +2,7 @@
 require ('dotenv').config()
 
 const express = require('express')
+const cors = require('cors');
 
 const mongoose = require('mongoose')
 const uri = process.env.MONGODB_URI
@@ -13,11 +14,23 @@ const tripRoutes = require('./routes/tripRoutes')
 const userRoutes = require('./routes/userRoutes')
 const promptRoutes = require('./routes/promptRoutes')
 
+// Authentication
+const firebaseRoutes = require('./routes/firebaseRoutes')
+
 // Create express app
 const app = express()
 
-// Middleware
-app.use(express.json())
+// Middleware Setup
+const corsOptions = {
+    origin: `http://localhost:${process.env.FRONT_END_PORT}`,
+    methods: ['GET', 'POST'], 
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+};
+
+// Server and Middleware setup
+app.use(cors(corsOptions));
+app.use(express.json());
 
 app.use((req, res, next) => {
     console.log(req.path, req.method)
@@ -29,9 +42,12 @@ app.get('/', (req, res) => {
     res.json({ message: 'Welcome to the server' })
 })
 
+
 app.use('/api/trips', tripRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/prompts', promptRoutes)
+app.use('/api/firebase', firebaseRoutes)
+
 
 // Connect to the Database, then listen for requests
 async function connect() {
