@@ -2,17 +2,18 @@ const User = require('../dbmodels/user');
 
 // POST: Create a new user
 const createUser = async (req, res) => {
-    const { firebaseUID, email, first_name, last_name } = req.body;
+    const { first_name, last_name } = req.body;
+    const { uid, email } = req.user;
 
     try {
         // Check if the user already exists
-        const existingUser = await User.findOne({ firebaseUID });
+        const existingUser = await User.findOne({ firebaseUID: uid });
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }
 
         // Create a new user
-        const newUser = new User({ firebaseUID, email, first_name, last_name });
+        const newUser = new User({ firebaseUID: uid, email, first_name, last_name });
         await newUser.save();
         res.status(201).json({ message: 'User created successfully' });
     } catch (error) {
@@ -23,10 +24,10 @@ const createUser = async (req, res) => {
 
 // GET: Get user by firebaseUID
 const getUser = async (req, res) => {
-    const { firebaseUID } = req.params;
+    const { uid } = req.user;
 
     try {
-        const user = await User.findOne({ firebaseUID });
+        const user = await User.findOne({ firebaseUID: uid });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
