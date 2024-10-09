@@ -3,8 +3,11 @@ const { createTrip, getAllTrips, requestItinerary } = require('../controllers/tr
 
 const router = express.Router();
 
+// Middleware that authenticates Firebase token
+const authenticateUser = require("../middleware/firebaseMiddleware");
+
 // Route to create a trip
-router.post('/', createTrip);
+router.post('/', authenticateUser, createTrip);
 
 // Route to get all trips (for testing)
 router.get('/', getAllTrips);

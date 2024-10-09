@@ -9,9 +9,8 @@ const tripSchema = new Schema({
 		required: true
 	},
 	userID: {
-		type: mongoose.ObjectId,
-		ref: 'User',
-		required: true
+        type: String,  // Store the Firebase UID as a string
+        required: true
 	},
 	total_duration: Number,
 	start_location: String,
