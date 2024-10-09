@@ -22,7 +22,7 @@ const app = express()
 
 // Middleware Setup
 const corsOptions = {
-    origin: 'http://localhost:3001',
+    origin: `http://localhost:${process.env.FRONT_END_PORT}`,
     methods: ['GET', 'POST'], 
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,

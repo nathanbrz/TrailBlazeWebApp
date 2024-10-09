@@ -31,10 +31,11 @@ const Signup = () => {
       const token = await userCredential.user.getIdToken();
 
       // Send the token to backend for verification
-      const response = await fetch('http://localhost:4000/api/firebase/session', {
+      const response = await fetch(`http://localhost:4000/api/firebase/session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ token }), // Send the token to the backend
       });

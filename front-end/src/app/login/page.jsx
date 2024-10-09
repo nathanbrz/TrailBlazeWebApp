@@ -29,7 +29,7 @@ const Login = () => {
       const token = await userCredential.user.getIdToken();
 
       // Send the token to the backend for verification
-      const response = await fetch('http://localhost:4000/api/firebase/session', {
+      const response = await fetch(`http://localhost:${process.env.NEXT_PUBLIC_BACK_END_PORT}/api/firebase/session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ const Login = () => {
       router.push('../dashboard');
     } catch (error) {
       setErrorMessage(error.message);
-      console.log("Sign in failed");
+      console.log("Login in failed");
     }
     console.log('Login submitted:', { email, password });
   };
