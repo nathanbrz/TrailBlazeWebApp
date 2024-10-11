@@ -17,16 +17,14 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Handling authentication through firebase
     try {
-      const userCredential = await doSignInUserWithEmailAndPassword(
-        email,
-        password
-      );
+      // Firebase authentication
+      const userCredential = await doSignInUserWithEmailAndPassword(email, password);
       console.log("User logged in!");
 
-      // Get the user's token after successful login
+      // Get the user's token and uid after successful login
       const token = await userCredential.user.getIdToken();
+      const userId = userCredential.user.uid; // Get the userId (uid)
 
       // Send the token to the backend for verification
       const response = await fetch(
@@ -37,32 +35,32 @@ const Login = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ token }), // Send the token to the backend
+          body: JSON.stringify({ token }),
         }
       );
 
-      // Check for errors in the response
       if (!response.ok) {
         throw new Error("Failed to verify token");
       }
 
-      // Get the response data
+      // If verification is successful, save token and userId to local storage
       const data = await response.json();
       console.log("Session established:", data);
 
-      // Saving the token and userID in local storage
       localStorage.setItem("token", String(token));
-      localStorage.setItem("uuid", data.uid);
+      localStorage.setItem("uuid", userId);
 
-      router.push("/dashboard");
+      // Dynamically navigate to the user-specific dashboard using the userId
+      router.push(`/dashboard/${userId}`);
     } catch (error) {
       setErrorMessage(error.message);
-      console.log("Login in failed");
+      console.log("Login failed:", error);
     }
+
     console.log("Login submitted:", { email, password });
   };
 
-  const handdleSignUp = () => {
+  const handleSignUp = () => {
     router.push("/signup");
   };
 
@@ -105,6 +103,11 @@ const Login = () => {
               required
             />
           </div>
+          {errorMessage && (
+            <div className="alert alert-danger" role="alert">
+              {errorMessage}
+            </div>
+          )}
           <button
             type="submit"
             className="btn-blaze text-white px-6 py-3 w-100 rounded-md hover:bg-red-700 transition-colors"
@@ -115,7 +118,7 @@ const Login = () => {
         <button
           type="submit"
           className="bg-zinc-200 my-2 text-black px-6 py-3 w-100 rounded-md hover:bg-zinc-400 transition-colors"
-          onClick={handdleSignUp}
+          onClick={handleSignUp}
         >
           Sign up
         </button>
