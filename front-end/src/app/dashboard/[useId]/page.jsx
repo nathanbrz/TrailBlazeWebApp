@@ -49,7 +49,7 @@ export default function Hero() {
         <IntroSection />
       </div>
       <div>
-        <PlanListSection />
+        <PlanListSection router={router}/>
       </div>
       <div>
         <Footer />

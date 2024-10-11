@@ -13,7 +13,7 @@ const useAuth = () => {
       if (token) {
         try {
           console.log("Verifying token...");
-          const response = await fetch('http://localhost:4000/api/firebase/session', {
+          const response = await fetch(`http://localhost:${process.env.NEXT_PUBLIC_BACK_END_PORT}/api/firebase/session`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
