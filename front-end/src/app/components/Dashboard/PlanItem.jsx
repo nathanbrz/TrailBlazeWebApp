@@ -4,13 +4,18 @@ import React, { useState } from "react";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import PlanDeleteModal from "./PlanDeleteModal";
 
-const PlanItem = ({ id, title, description }) => {
+const PlanItem = ({ id, title, type, duration, router }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const handleOpenDeleteModal = () => setIsDeleteModalOpen(true);
   const handleCloseDeleteModal = () => setIsDeleteModalOpen(false);
 
+  const handleClick = () => {
+    // Redirect to the itinerary page for this trip
+    router.push(`/itinerary/${id}`);
+  };
+
   return (
-    <>
+    <div onClick={handleClick}>
       <PlanDeleteModal
         show={isDeleteModalOpen}
         hide={handleCloseDeleteModal}
@@ -34,7 +39,8 @@ const PlanItem = ({ id, title, description }) => {
             <Card.Body>
               <Card.Title>{title}</Card.Title>
               <Card.Text className="text-secondary">
-                {description}
+                <span>Type: {type}</span> <br />
+                <span>Duration (days): {duration}</span>
               </Card.Text>
             </Card.Body>
           </Col>
@@ -59,7 +65,7 @@ const PlanItem = ({ id, title, description }) => {
           </Col>
         </Row>
       </Card>
-    </>
+    </div>
   );
 };
 
