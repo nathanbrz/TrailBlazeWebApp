@@ -1,10 +1,27 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import SearchForm from "./SearchForm";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { doSignOut } from "../../firebase/auth"; // Import sign out function
 
 export default function SearchBar() {
+  const [dropdownOpen, setDropdownOpen] = useState(false); // State for dropdown visibility
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await doSignOut(); // Call Firebase sign out
+      // Clear the user token from localStorage and redirect to login
+      localStorage.removeItem("token");
+      localStorage.removeItem("uuid");
+      router.push("/login"); // Redirect to login page
+    } catch (error) {
+      console.error("Failed to log out:", error.message);
+    }
+  };
+
   return (
     <nav className="bg-white shadow-md">
       <div className="px-4 sm:px-6 lg:px-8">
@@ -21,13 +38,28 @@ export default function SearchBar() {
           <div className="flex-shrink-0 flex items-center col-lg-8 col-6">
             <SearchForm />
           </div>
-          <div className="flex-shrink-0 flex items-center">
+          <div className="relative">
+            {/* Profile Image */}
             <Image
               src="/images/user-icon.png"
               width="50"
               height="50"
               alt="profile image"
+              onClick={() => setDropdownOpen(!dropdownOpen)} // Toggle dropdown on click
+              style={{ cursor: "pointer" }}
             />
+
+            {/* Dropdown Menu */}
+            {dropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2">
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
+                >
+                  Log Out
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
