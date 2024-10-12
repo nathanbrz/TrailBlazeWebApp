@@ -32,14 +32,14 @@ const Signup = () => {
       const token = await userCredential.user.getIdToken();
       const userId = userCredential.user.uid; // Get the userId (uid)
 
-      // Send the token and user info to the backend for verification and storing first and last name
+      // Send the token to the backend for verification
       const response = await fetch(`${URL}:${PORT}/api/firebase/session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ token, first_name, last_name }), // Send the token and user info to the backend
+        body: JSON.stringify({ token }),
       });
 
       if (!response.ok) {
@@ -56,7 +56,7 @@ const Signup = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({firstname, lastname})
+        body: JSON.stringify({first_name, last_name})
       })
 
       // Saving the token and userID in local storage
@@ -70,7 +70,7 @@ const Signup = () => {
       console.log(error);
     }
 
-    console.log('Signup submitted:', { email, password, firstName, lastName });
+    console.log('Signup submitted:', { email, password, first_name, last_name });
   };
 
   return (
