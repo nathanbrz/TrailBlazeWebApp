@@ -10,8 +10,12 @@ MONGODB_URI=mongodb+srv://<db_username>:<db_password>@cluster0.0w2jc.mongodb.net
 
 3. Replace the bracketed parts of the above line with the username and password that were privately shared with you. Save the file.
 
-4. The .gitignore file in /backend should already list the .env file, but just in case, make sure it contains that file. NEVER COMMIT THE .env FILE TO GITHUB!!!!!
+4. Create an OpenAI account and follow their instrucions to get an API key for ChatGPT. Create another variable in your .env file: OPENAI_API_KEY=<your_key>
 
-5. Make sure the .gitignore file in /backend also lists your node_modules folder. You should never commit this folder to github
+5. Create a file in the "firebaseAdmin" folder called "firebaseCredentials.json" and paste within it the JSON file found in the discord chat
 
-6. To run the backend server on your machine, cd into the /backend folder and run the command 'npm start'. If everything works, you should see the message "Connected to MongoDB!" appear in the console.
+5. The .gitignore file in /backend should already list the .env file, the firebaseCredentials.json, and the node_modules folder, but just in case make sure it contains those files. Never commit those files to github
+
+7. To run the backend server on your machine, cd into the /backend folder and run the command 'npm start'. If everything works, you should see the message "Connected to MongoDB!" appear in the console.
+
+8. To run the backend and frontend simultaneously, run the command 'npm run dev' from the backend folder. Make sure you look at the frontend README and follow the steps there as well

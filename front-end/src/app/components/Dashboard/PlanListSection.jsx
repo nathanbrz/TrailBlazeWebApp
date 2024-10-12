@@ -8,6 +8,9 @@ export default function PlanListSection({router}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const URL = process.env.NEXT_PUBLIC_BACK_END_URL || 'http://localhost';
+  const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || '4000'
+
   useEffect(() => {
     const fetchTrips = async () => {
       try {
@@ -20,7 +23,7 @@ export default function PlanListSection({router}) {
 
         // Fetch user-specific trips with the token in the Authorization header
         const response = await fetch(
-          `http://localhost:${process.env.NEXT_PUBLIC_BACK_END_PORT}/api/trips`, 
+          `${URL}:${PORT}/api/trips`, 
           {
             method: 'GET',
             headers: {

@@ -14,6 +14,10 @@ const tripRoutes = require('./routes/tripRoutes')
 const userRoutes = require('./routes/userRoutes')
 const promptRoutes = require('./routes/promptRoutes')
 
+const FRONTENDURL = process.env.FRONT_END_URL || 'http://localhost';
+const FRONTENDPORT = process.env.FRONT_END_PORT || '3001'
+
+
 // Authentication
 const firebaseRoutes = require('./routes/firebaseRoutes')
 
@@ -22,7 +26,7 @@ const app = express()
 
 // Middleware Setup
 const corsOptions = {
-    origin: `http://localhost:${process.env.FRONT_END_PORT}`,
+    origin: `${FRONTENDURL}:${FRONTENDPORT}`,
     methods: ['GET', 'POST'], 
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,

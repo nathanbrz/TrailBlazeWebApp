@@ -12,6 +12,10 @@ export default function Hero() {
   const router = useRouter();
   const [user, setUser] = useState(null);
 
+  const URL = process.env.NEXT_PUBLIC_BACK_END_URL || 'http://localhost';
+  const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || '4000'
+
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -25,7 +29,7 @@ export default function Hero() {
         }
 
         const response = await fetch(
-          `http://localhost:4000/api/users/${firebaseUID}`,
+          `${URL}:${PORT}/api/users/${firebaseUID}`,
           {
             method: "GET",
             headers: {

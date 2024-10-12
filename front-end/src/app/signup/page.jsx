@@ -17,6 +17,8 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
+  const URL = process.env.NEXT_PUBLIC_BACK_END_URL || 'http://localhost';
+  const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || '4000'
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,14 +32,14 @@ const Signup = () => {
       const token = await userCredential.user.getIdToken();
       const userId = userCredential.user.uid; // Get the userId (uid)
 
-      // Send the token and user info to the backend for verification and storing first and last name
-      const response = await fetch(`http://localhost:4000/api/firebase/session`, {
+      // Send the token to the backend for verification
+      const response = await fetch(`${URL}:${PORT}/api/firebase/session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ token, first_name, last_name }), // Send the token and user info to the backend
+        body: JSON.stringify({ token }),
       });
 
       if (!response.ok) {
@@ -47,6 +49,16 @@ const Signup = () => {
       const data = await response.json();
       console.log('Session established:', data);
 
+      // Save this user in the database
+      const res = await fetch(`${URL}:${PORT}/api/users`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({first_name, last_name})
+      })
+
       // Saving the token and userID in local storage
       localStorage.setItem('token', token);
       localStorage.setItem('uuid', userId);
@@ -55,10 +67,10 @@ const Signup = () => {
       router.push(`/dashboard/${userId}`);
     } catch (error) {
       setErrorMessage(error.message);
-      console.log("Sign up failed");
+      console.log(error);
     }
 
-    console.log('Signup submitted:', { email, password, firstName, lastName });
+    console.log('Signup submitted:', { email, password, first_name, last_name });
   };
 
   return (

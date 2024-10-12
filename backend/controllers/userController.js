@@ -2,7 +2,9 @@ const User = require('../dbmodels/user');
 
 // POST: Create a new user
 const createUser = async (req, res) => {
-    const { first_name, last_name } = req.body;
+    console.log(req.body)
+    const first_name = req.body.first_name;
+    const last_name = req.body.last_name;
     const { uid, email } = req.user;
 
     try {
