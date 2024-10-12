@@ -32,7 +32,7 @@ const createTrip = async (req, res) => {
         // Create a new trip and assign the parsed stops to the itinerary
         const newTrip = new Trip({
             promptID,
-            userID, 
+            userID,
             start_location,
             end_location,
             total_duration,
@@ -51,7 +51,8 @@ const createTrip = async (req, res) => {
 // Get all trips
 const getAllTrips = async (req, res) => {
     try {
-        const trips = await Trip.find();
+        const userID = req.user.uid;
+        const trips = await Trip.find({ userID: userID });
         res.status(200).json(trips);
     } catch (error) {
         res.status(500).json({ error: error.message });

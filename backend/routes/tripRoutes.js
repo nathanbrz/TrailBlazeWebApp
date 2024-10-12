@@ -9,8 +9,8 @@ const authenticateUser = require("../middleware/firebaseMiddleware");
 // Route to create a trip
 router.post('/', authenticateUser, createTrip);
 
-// Route to get all trips (for testing)
-router.get('/', getAllTrips);
+// Route to get all trips
+router.get('/', authenticateUser, getAllTrips);
 
 // Route to generate itinerary
 router.post('/request-itinerary', requestItinerary);
