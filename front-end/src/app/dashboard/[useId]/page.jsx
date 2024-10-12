@@ -1,12 +1,12 @@
-'use client';
+"use client";
 import "../../../styles/global_styles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import SearchBar from "../../components/Dashboard/SearchBar";
 import IntroSection from "../../components/Dashboard/IntroSection";
 import PlanListSection from "../../components/Dashboard/PlanListSection";
 import Footer from "../../components/Footer";
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Hero() {
   const router = useRouter();
@@ -17,46 +17,56 @@ export default function Hero() {
 
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      router.push('/login');
-      return;
-    }
-
-    const validateToken = async () => {
+    const fetchUserData = async () => {
       try {
-        const response = await fetch(`${URL}:${PORT}/api/firebase/session`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
+        const token = localStorage.getItem("token");
+        const firebaseUID = localStorage.getItem("uuid"); // Retrieve firebaseUID
+
+        if (!firebaseUID) {
+          router.push("/login");
+
+          throw new Error("No firebaseUID found");
+        }
+
+        const response = await fetch(
+          `${URL}:${PORT}/api/users/${firebaseUID}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!response.ok) {
-          throw new Error('Token validation failed');
+          throw new Error("Failed to fetch user data");
         }
 
         const userData = await response.json();
-        setUser(userData); // Set the user data once the token is validated
+        setUser(userData.user);
       } catch (error) {
-        console.error('Error validating token:', error);
-        router.push('/login');
+        console.error("Error fetching user data:", error);
       }
     };
-    validateToken();
-  }, [router]);
+
+    fetchUserData();
+  }, []);
+  console.log(user);
   return (
     <div>
-      <SearchBar />
-      <div>
-        <IntroSection />
-      </div>
-      <div>
-        <PlanListSection router={router}/>
-      </div>
-      <div>
-        <Footer />
+      <div className="page-container">
+        <div className="content">
+          <SearchBar />
+          <div>
+            <IntroSection user={user} />
+          </div>
+          <div>
+            <PlanListSection router={router} />
+          </div>
+        </div>
+        <div>
+          <Footer />
+        </div>
       </div>
     </div>
   );

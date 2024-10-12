@@ -15,7 +15,7 @@ const PlanItem = ({ id, title, type, duration, router }) => {
   };
 
   return (
-    <div onClick={handleClick}>
+    <div>
       <PlanDeleteModal
         show={isDeleteModalOpen}
         hide={handleCloseDeleteModal}
@@ -35,7 +35,7 @@ const PlanItem = ({ id, title, type, duration, router }) => {
           </Col> */}
 
           {/* Title and description */}
-          <Col md={10}>
+          <Col md={10} onClick={handleClick}>
             <Card.Body>
               <Card.Title>{title}</Card.Title>
               <Card.Text className="text-secondary">

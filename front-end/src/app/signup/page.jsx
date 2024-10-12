@@ -2,19 +2,17 @@
 
 import React, { useState } from 'react';
 import '../../styles/global_styles.css';
-import { doCreateUserWithEmailAndPassword, doSignUpUserWithEmailAndPassword } from '../firebase/auth'; 
+import { doCreateUserWithEmailAndPassword } from '../firebase/auth'; 
 import { useRouter } from 'next/navigation';
 import useAuth from '../hooks/useAuth'; 
-
-
 
 const Signup = () => {
 
   // Checks if user is already logged in
   useAuth();
 
-  const [firstname, setfirstName] = useState('')
-  const [lastname, setlastName] = useState('')
+  const [first_name, setFirstName] = useState('');
+  const [last_name, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -24,31 +22,30 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Handling authentication through firebase
     try {
       const userCredential = await doCreateUserWithEmailAndPassword(email, password);
       console.log("User signed up!");
 
-      // Getting the users token
+      // Getting the user's token
       const token = await userCredential.user.getIdToken();
+      const userId = userCredential.user.uid; // Get the userId (uid)
 
-      // Send the token to backend for verification
+      // Send the token and user info to the backend for verification and storing first and last name
       const response = await fetch(`${URL}:${PORT}/api/firebase/session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ token }), // Send the token to the backend
+        body: JSON.stringify({ token, first_name, last_name }), // Send the token and user info to the backend
       });
 
-      // ERROR
       if (!response.ok) {
-        throw new Error("Failed to verify token")
+        throw new Error("Failed to verify token");
       }
 
-      // Verified user
       const data = await response.json();
       console.log('Session established:', data);
 
@@ -63,16 +60,17 @@ const Signup = () => {
       })
 
       // Saving the token and userID in local storage
-      localStorage.setItem('token', token)
-      localStorage.setItem('uuid', data.uid);
+      localStorage.setItem('token', token);
+      localStorage.setItem('uuid', userId);
 
-      // Go to dashboard page
-      router.push(`/dashboard/${data.uid}`);
+      // Dynamically navigate to the user-specific dashboard using the userId
+      router.push(`/dashboard/${userId}`);
     } catch (error) {
       setErrorMessage(error.message);
       console.log(error);
     }
-    console.log('Signup submitted:', { email, password });
+
+    console.log('Signup submitted:', { email, password, firstName, lastName });
   };
 
   return (
@@ -82,26 +80,26 @@ const Signup = () => {
         {errorMessage && <p className="text-danger">{errorMessage}</p>} {/* Display  message */}
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-          <label htmlFor="name" className="form-label">First name</label>
+            <label htmlFor="firstName" className="form-label">First Name</label>
             <input
-              type="name"
+              type="text"
               className="form-control"
-              id="name"
-              placeholder="Enter your name"
-              value={firstname}
-              onChange={(e) => setfirstName(e.target.value)}
+              id="firstName"
+              placeholder="Enter your first name"
+              value={first_name}
+              onChange={(e) => setFirstName(e.target.value)}
               required
             />
           </div>
           <div className="mb-3">
-          <label htmlFor="name" className="form-label">Last name</label>
+            <label htmlFor="lastName" className="form-label">Last Name</label>
             <input
-              type="name"
+              type="text"
               className="form-control"
-              id="name"
-              placeholder="Enter your name"
-              value={lastname}
-              onChange={(e) => setlastName(e.target.value)}
+              id="lastName"
+              placeholder="Enter your last name"
+              value={last_name}
+              onChange={(e) => setLastName(e.target.value)}
               required
             />
           </div>

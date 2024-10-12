@@ -7,7 +7,7 @@ import { useState } from "react";
 import Modal from "../../components/Modal";
 import TripForm from "./TripForm";
 
-export default function IntroSection() {
+export default function IntroSection({ user }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
