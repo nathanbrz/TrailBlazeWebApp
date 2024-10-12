@@ -4,6 +4,9 @@ import { useRouter } from 'next/navigation';
 
 const useAuth = () => {
   const router = useRouter();
+  const URL = process.env.NEXT_PUBLIC_BACK_END_URL || 'http://localhost';
+  const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || '4000'
+
 
   useEffect(() => {
     // Get the user's token from localStorage
@@ -13,7 +16,7 @@ const useAuth = () => {
       if (token) {
         try {
           console.log("Verifying token...");
-          const response = await fetch(`http://localhost:${process.env.NEXT_PUBLIC_BACK_END_PORT}/api/firebase/session`, {
+          const response = await fetch(`${URL}:${PORT}/api/firebase/session`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

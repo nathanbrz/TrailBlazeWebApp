@@ -8,11 +8,14 @@ export default function PlanListSection({router}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const URL = process.env.NEXT_PUBLIC_BACK_END_URL || 'http://localhost';
+  const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || '4000'
+
   useEffect(() => {
     const fetchTrips = async () => {
       try {
         const response = await fetch(
-          `http://localhost:${process.env.NEXT_PUBLIC_BACK_END_PORT}/api/trips`
+          `${URL}:${PORT}/api/trips`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch trips");

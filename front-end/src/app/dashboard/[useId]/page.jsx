@@ -12,6 +12,10 @@ export default function Hero() {
   const router = useRouter();
   const [user, setUser] = useState(null);
 
+  const URL = process.env.NEXT_PUBLIC_BACK_END_URL || 'http://localhost';
+  const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || '4000'
+
+
   useEffect(() => {
     const token = localStorage.getItem('token');
 
@@ -22,7 +26,7 @@ export default function Hero() {
 
     const validateToken = async () => {
       try {
-        const response = await fetch(`http://localhost:${process.env.NEXT_PUBLIC_BACK_END_PORT}/api/firebase/session`, {
+        const response = await fetch(`${URL}:${PORT}/api/firebase/session`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,

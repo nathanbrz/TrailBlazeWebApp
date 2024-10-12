@@ -14,6 +14,9 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
+  const URL = process.env.NEXT_PUBLIC_BACK_END_URL || 'http://localhost';
+  const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || '4000'
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -28,7 +31,7 @@ const Login = () => {
 
       // Send the token to the backend for verification
       const response = await fetch(
-        `http://localhost:${process.env.NEXT_PUBLIC_BACK_END_PORT}/api/firebase/session`,
+        `${URL}:${PORT}/api/firebase/session`,
         {
           method: "POST",
           headers: {

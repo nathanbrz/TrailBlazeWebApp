@@ -13,11 +13,14 @@ const Signup = () => {
   // Checks if user is already logged in
   useAuth();
 
-  const [name, setName] = useState('')
+  const [firstname, setfirstName] = useState('')
+  const [lastname, setlastName] = useState('')
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
+  const URL = process.env.NEXT_PUBLIC_BACK_END_URL || 'http://localhost';
+  const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || '4000'
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +34,7 @@ const Signup = () => {
       const token = await userCredential.user.getIdToken();
 
       // Send the token to backend for verification
-      const response = await fetch(`http://localhost:4000/api/firebase/session`, {
+      const response = await fetch(`${URL}:${PORT}/api/firebase/session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,15 +52,25 @@ const Signup = () => {
       const data = await response.json();
       console.log('Session established:', data);
 
+      // Save this user in the database
+      const res = await fetch(`${URL}:${PORT}/api/users`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({firstname, lastname})
+      })
+
       // Saving the token and userID in local storage
       localStorage.setItem('token', token)
       localStorage.setItem('uuid', data.uid);
 
       // Go to dashboard page
-      router.push('/dashboard');
+      router.push(`/dashboard/${data.uid}`);
     } catch (error) {
       setErrorMessage(error.message);
-      console.log("Sign up failed");
+      console.log(error);
     }
     console.log('Signup submitted:', { email, password });
   };
@@ -69,14 +82,26 @@ const Signup = () => {
         {errorMessage && <p className="text-danger">{errorMessage}</p>} {/* Display  message */}
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-          <label htmlFor="name" className="form-label">Name</label>
+          <label htmlFor="name" className="form-label">First name</label>
             <input
               type="name"
               className="form-control"
               id="name"
               placeholder="Enter your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={firstname}
+              onChange={(e) => setfirstName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-3">
+          <label htmlFor="name" className="form-label">Last name</label>
+            <input
+              type="name"
+              className="form-control"
+              id="name"
+              placeholder="Enter your name"
+              value={lastname}
+              onChange={(e) => setlastName(e.target.value)}
               required
             />
           </div>
