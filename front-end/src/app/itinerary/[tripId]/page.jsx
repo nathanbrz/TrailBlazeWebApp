@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import "../../../styles/global_styles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
@@ -9,9 +9,13 @@ import Footer from "../../components/Footer";
 export default function page() {
   return (
     <div>
-      <SearchBar />
-      <TimelineView />
-      <Footer />
+      <div className="page-container">
+        <div className="content">
+          <SearchBar />
+          <TimelineView />
+        </div>
+        <Footer />
+      </div>
     </div>
   );
 }

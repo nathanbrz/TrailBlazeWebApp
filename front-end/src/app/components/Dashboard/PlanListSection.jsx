@@ -11,8 +11,23 @@ export default function PlanListSection({router}) {
   useEffect(() => {
     const fetchTrips = async () => {
       try {
+        // Retrieve the token from localStorage
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+          throw new Error("User not authenticated");
+        }
+
+        // Fetch user-specific trips with the token in the Authorization header
         const response = await fetch(
-          `http://localhost:${process.env.NEXT_PUBLIC_BACK_END_PORT}/api/trips`
+          `http://localhost:${process.env.NEXT_PUBLIC_BACK_END_PORT}/api/trips`, 
+          {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
         );
         if (!response.ok) {
           throw new Error("Failed to fetch trips");
