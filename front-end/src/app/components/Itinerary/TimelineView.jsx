@@ -19,7 +19,7 @@ export default function TimelineView({ itinerary = [] }) {
             <div key={index} className="relative mb-10">
               {/* Render the card (PlanItem) */}
               <PlanItem
-                id={index}
+                id={stop._id}
                 title={stop.location}
                 description={`Stay at ${
                   stop.hotel
@@ -27,6 +27,9 @@ export default function TimelineView({ itinerary = [] }) {
                   .map((a) => a.name)
                   .join(", ")}.`}
                 imageUrl={`/path-to-images/${stop.location.toLowerCase()}.jpg`}
+                duration={stop.stay}
+                travel_time={stop.travel_time}
+                notes={stop.notes}
               />
 
               {/* Render the circle for the travel time on a separate line */}

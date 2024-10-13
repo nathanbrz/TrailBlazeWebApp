@@ -4,7 +4,17 @@ import React, { useState } from "react";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import PlanDeleteModal from "./PlanDeleteModal";
 
-const PlanItem = ({ id, title, type, duration, itinerary, router }) => {
+const PlanItem = ({
+  id,
+  type,
+  title,
+  description,
+  duration,
+  travel_time,
+  notes,
+  itinerary,
+  router,
+}) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const handleOpenDeleteModal = () => setIsDeleteModalOpen(true);
   const handleCloseDeleteModal = () => setIsDeleteModalOpen(false);
@@ -42,8 +52,13 @@ const PlanItem = ({ id, title, type, duration, itinerary, router }) => {
             <Card.Body>
               <Card.Title>{title}</Card.Title>
               <Card.Text className="text-secondary">
-                <span>Type: {type}</span> <br />
-                <span>Duration (days): {duration}</span>
+                <span className="d-block">{description}</span> <br />
+                {type && <span className="d-block">Type: {type}</span>}
+                <span className="d-block">Duration (days): {duration}</span>
+                {travel_time && (
+                  <span className="d-block">Travel Time: {travel_time}</span>
+                )}
+                {notes && <span className="d-block">{notes}</span>}
               </Card.Text>
             </Card.Body>
           </Col>
