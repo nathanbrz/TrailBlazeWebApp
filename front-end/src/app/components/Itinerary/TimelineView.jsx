@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
 import PlanItem from "../Dashboard/PlanItem";
-import mockItineraryData from "../../../data/mockItineraryData";
+// import mockItineraryData from "../../../data/mockItineraryData";
 import { Container, Row, Col } from "react-bootstrap";
 
-export default function TimelineView() {
-  const trip = mockItineraryData.trip; // Fetching trip data from mockData.json
-  const itinerary = trip.itinerary;
+export default function TimelineView({ itinerary = [] }) {
+  // const trip = mockItineraryData.trip; // Fetching trip data from mockData.json
+  // const itinerary = trip.itinerary;
 
   return (
     <Container className="relative mt-10">
