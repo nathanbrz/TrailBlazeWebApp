@@ -12,6 +12,7 @@ import { useApi } from "../../hooks/useApi";
 export default function Hero() {
   const router = useRouter();
   const [user, setUser] = useState(null);
+
   const [alert, setAlert] = useState({
     show: false,
     message: "",
@@ -21,7 +22,13 @@ export default function Hero() {
   const firebaseUID = localStorage.getItem("uuid");
 
   // Fetch user data using useApi hook
-  const { data, loading, error } = useApi(`api/users/${firebaseUID}`, "GET");
+  const { data, error } = useApi(`api/users/${firebaseUID}`, "GET");
+
+  const [loading, setLoading] = useState(true);  // Added loading state
+
+  const URL = process.env.NEXT_PUBLIC_BACK_END_URL || 'http://localhost';
+  const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || '4000';
+
 
   useEffect(() => {
     if (!firebaseUID) {
@@ -34,6 +41,7 @@ export default function Hero() {
     }
   }, [firebaseUID, router]);
 
+
   // Check for error from useApi and set the alert accordingly
   useEffect(() => {
     if (error) {
@@ -41,7 +49,13 @@ export default function Hero() {
     } else if (data && data.user) {
       setUser(data.user);
     }
+    setLoading(false);
   }, [data, error]);
+
+  // While loading, display a loading spinner or placeholder
+  if (loading) {
+    return <div>Loading...</div>;  // You can replace this with a more elegant spinner or loading component
+  }
 
   return (
     <div>
