@@ -4,14 +4,17 @@ import React, { useState } from "react";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import PlanDeleteModal from "./PlanDeleteModal";
 
-const PlanItem = ({ id, title, type, duration, router }) => {
+const PlanItem = ({ id, title, type, duration, itinerary, router }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const handleOpenDeleteModal = () => setIsDeleteModalOpen(true);
   const handleCloseDeleteModal = () => setIsDeleteModalOpen(false);
 
   const handleClick = () => {
     // Redirect to the itinerary page for this trip
-    router.push(`/itinerary/${id}`);
+    // router.push(`/itinerary/${id}`);
+    const encodedData = encodeURIComponent(JSON.stringify(itinerary));
+    // Navigate to the 'about' page with query parameters
+    router.push(`/itinerary/?itinerary=${encodedData}`);
   };
 
   return (
@@ -50,7 +53,7 @@ const PlanItem = ({ id, title, type, duration, router }) => {
             md={2}
             className="d-flex justify-content-end align-items-start py-2 pr-6"
           >
-            <div>
+            <div className="pr-3">
               <Button variant="outline-none" size="sm" className="me-2">
                 <i className="bi bi-pencil"></i>
               </Button>
