@@ -1,5 +1,6 @@
 // useApi.js
 import { useState, useEffect } from "react";
+
 export const useApi = (endpoint, method = "GET", options = {}) => {
   const URL = process.env.NEXT_PUBLIC_BACK_END_URL || "http://localhost";
   const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || "4000";
@@ -47,7 +48,7 @@ export const useApi = (endpoint, method = "GET", options = {}) => {
     if (method === "GET") {
       fetchData();
     }
-  }, [endpoint, method, options]);
+  }, [endpoint, method]);
 
   return { data, loading, error, responseStatus, fetchData };
 };
