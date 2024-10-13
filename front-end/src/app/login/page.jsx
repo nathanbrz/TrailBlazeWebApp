@@ -4,6 +4,8 @@ import "../../styles/global_styles.css";
 import { doSignInUserWithEmailAndPassword } from "../firebase/auth";
 import { useRouter } from "next/navigation";
 import useAuth from "../hooks/useAuth";
+import { useApi } from "../hooks/useApi";
+import MessageAlert from "../components/MessageAlert";
 
 const Login = () => {
   // Checks if user is already logged in
@@ -11,52 +13,55 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [alert, setAlert] = useState({ show: false, message: "", variant: "" });
   const router = useRouter();
 
-  const URL = process.env.NEXT_PUBLIC_BACK_END_URL || 'http://localhost';
-  const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || '4000'
+  // useApi hook for POST request to verify the user's token
+  const {
+    loading,
+    error,
+    responseStatus,
+    fetchData: verifyToken,
+  } = useApi("api/firebase/session", "POST");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       // Firebase authentication
-      const userCredential = await doSignInUserWithEmailAndPassword(email, password);
+      const userCredential = await doSignInUserWithEmailAndPassword(
+        email,
+        password
+      );
       console.log("User logged in!");
 
       // Get the user's token and uid after successful login
       const token = await userCredential.user.getIdToken();
       const userId = userCredential.user.uid; // Get the userId (uid)
 
-      // Send the token to the backend for verification
-      const response = await fetch(
-        `${URL}:${PORT}/api/firebase/session`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ token }),
-        }
-      );
+      // Trigger the API request to verify the token
+      await verifyToken({ body: { token } });
 
-      if (!response.ok) {
-        throw new Error("Failed to verify token");
+      // Check for errors after attempting to verify token
+      if (error) {
+        throw new Error(
+          `Token verification failed: ${error} (Status: ${responseStatus})`
+        );
       }
 
       // If verification is successful, save token and userId to local storage
-      const data = await response.json();
-      console.log("Session established:", data);
-
+      console.log("Session established:", { token, userId });
       localStorage.setItem("token", String(token));
       localStorage.setItem("uuid", userId);
 
       // Dynamically navigate to the user-specific dashboard using the userId
       router.push(`/dashboard/${userId}`);
     } catch (error) {
-      setErrorMessage(error.message);
+      setAlert({
+        show: true,
+        message: error.message,
+        variant: "danger",
+      });
       console.log("Login failed:", error);
     }
 
@@ -77,6 +82,16 @@ const Login = () => {
         style={{ width: "100%", maxWidth: "400px" }}
       >
         <h2 className="text-center mb-4">Login</h2>
+
+        {alert.show && (
+          <MessageAlert
+            variant={alert.variant}
+            message={alert.message}
+            show={alert.show}
+            setShow={(value) => setAlert({ ...alert, show: value })}
+          />
+        )}
+
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
@@ -106,20 +121,16 @@ const Login = () => {
               required
             />
           </div>
-          {errorMessage && (
-            <div className="alert alert-danger" role="alert">
-              {errorMessage}
-            </div>
-          )}
           <button
             type="submit"
             className="btn-blaze text-white px-6 py-3 w-100 rounded-md hover:bg-red-700 transition-colors"
+            disabled={loading}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
         <button
-          type="submit"
+          type="button"
           className="bg-zinc-200 my-2 text-black px-6 py-3 w-100 rounded-md hover:bg-zinc-400 transition-colors"
           onClick={handleSignUp}
         >
