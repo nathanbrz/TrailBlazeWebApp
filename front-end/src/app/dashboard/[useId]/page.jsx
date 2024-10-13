@@ -11,10 +11,10 @@ import { useRouter } from "next/navigation";
 export default function Hero() {
   const router = useRouter();
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);  // Added loading state
 
   const URL = process.env.NEXT_PUBLIC_BACK_END_URL || 'http://localhost';
-  const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || '4000'
-
+  const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || '4000';
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -24,7 +24,6 @@ export default function Hero() {
 
         if (!firebaseUID) {
           router.push("/login");
-
           throw new Error("No firebaseUID found");
         }
 
@@ -46,12 +45,19 @@ export default function Hero() {
         setUser(userData.user);
       } catch (error) {
         console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);  // Set loading to false once user data is fetched
       }
     };
 
     fetchUserData();
   }, []);
-  console.log(user);
+
+  // While loading, display a loading spinner or placeholder
+  if (loading) {
+    return <div>Loading...</div>;  // You can replace this with a more elegant spinner or loading component
+  }
+
   return (
     <div>
       <div className="page-container">
