@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Form } from "react-bootstrap";
+import MessageAlert from "../MessageAlert";
+import { useApi } from "../../hooks/useApi";
 
 function TripForm() {
   const [formData, setFormData] = useState({
@@ -9,6 +11,20 @@ function TripForm() {
     tripPreference: "",
   });
 
+  const [alert, setAlert] = useState({
+    show: false,
+    message: "",
+    variant: "",
+  });
+
+  const {
+    data,
+    loading,
+    error,
+    responseStatus,
+    fetchData: submitTrip,
+  } = useApi("api/trips", "POST", { body: formData });
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -16,13 +32,36 @@ function TripForm() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form data:", formData);
-    // Form submit logic here
+
+    // Trigger the API request manually
+    await submitTrip();
+
+    // Check the status code and handle errors/success
+    if (responseStatus === 200 || responseStatus === 201) {
+      setAlert({
+        show: true,
+        message: "Trip planned successfully!",
+        variant: "success",
+      });
+    } else if (responseStatus >= 400) {
+      setAlert({
+        show: true,
+        message: error || "Error planning trip. Please try again.",
+        variant: "danger",
+      });
+    }
   };
 
-  return (
+  return alert.show ? (
+    <MessageAlert
+      variant={alert.variant}
+      message={alert.message}
+      show={alert.show}
+      setShow={(value) => setAlert({ ...alert, show: value })}
+    />
+  ) : (
     <Form onSubmit={handleSubmit} className="mx-4">
       {/* Starting Position */}
       <Form.Group className="mb-3" controlId="startingPosition">
@@ -60,7 +99,12 @@ function TripForm() {
       {/* What are you looking for in this trip? */}
       <Form.Group className="mb-3" controlId="tripPreference">
         <Form.Label>What are you looking for in this trip?</Form.Label>
-        <Form.Select aria-label="Default select example">
+        <Form.Select
+          name="tripPreference"
+          value={formData.tripPreference}
+          onChange={handleChange}
+          aria-label="Default select example"
+        >
           <option value="">N/A</option>
           <option value="Adventure">Adventure</option>
           <option value="Relaxation">Relaxation</option>
@@ -71,8 +115,9 @@ function TripForm() {
       <button
         className="btn-blaze w-100 text-white px-3 py-3 rounded-md hover:bg-red-700 transition-colors"
         type="submit"
+        disabled={loading}
       >
-        Plan
+        {loading ? "Planning..." : "Plan"}
       </button>
     </Form>
   );
