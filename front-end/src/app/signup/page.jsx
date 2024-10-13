@@ -1,86 +1,114 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import '../../styles/global_styles.css';
-import { doCreateUserWithEmailAndPassword } from '../firebase/auth'; 
-import { useRouter } from 'next/navigation';
-import useAuth from '../hooks/useAuth'; 
+import React, { useState } from "react";
+import "../../styles/global_styles.css";
+import { doCreateUserWithEmailAndPassword } from "../firebase/auth";
+import { useRouter } from "next/navigation";
+import useAuth from "../hooks/useAuth";
+import { useApi } from "../hooks/useApi"; // Import the useApi hook
+import MessageAlert from "../components/MessageAlert"; // Import the MessageAlert component
 
 const Signup = () => {
-
   // Checks if user is already logged in
   useAuth();
 
-  const [first_name, setFirstName] = useState('');
-  const [last_name, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [alert, setAlert] = useState({ show: false, message: "", variant: "" });
   const router = useRouter();
-  const URL = process.env.NEXT_PUBLIC_BACK_END_URL || 'http://localhost';
-  const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || '4000'
+
+  // useApi hooks for POST requests
+  const {
+    fetchData: verifyToken,
+    error: verifyTokenError,
+    responseStatus: verifyTokenStatus,
+  } = useApi("api/firebase/session", "POST");
+  const { fetchData: createUser, error: createUserError } = useApi(
+    "api/users",
+    "POST"
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Handling authentication through firebase
     try {
-      const userCredential = await doCreateUserWithEmailAndPassword(email, password);
+      // Handling authentication through Firebase
+      const userCredential = await doCreateUserWithEmailAndPassword(
+        email,
+        password
+      );
       console.log("User signed up!");
 
-      // Getting the user's token
+      // Getting the user's token and uid after successful signup
       const token = await userCredential.user.getIdToken();
       const userId = userCredential.user.uid; // Get the userId (uid)
 
       // Send the token to the backend for verification
-      const response = await fetch(`${URL}:${PORT}/api/firebase/session`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ token }),
-      });
+      await verifyToken({ body: { token } });
 
-      if (!response.ok) {
-        throw new Error("Failed to verify token");
+      // Check for token verification errors
+      if (verifyTokenError) {
+        throw new Error(
+          `Token verification failed: ${verifyTokenError} (Status: ${verifyTokenStatus})`
+        );
       }
 
-      const data = await response.json();
-      console.log('Session established:', data);
-
-      // Save this user in the database
-      const res = await fetch(`${URL}:${PORT}/api/users`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({first_name, last_name})
-      })
+      // Save the user in the database
+      await createUser({
+        body: { first_name, last_name },
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       // Saving the token and userID in local storage
-      localStorage.setItem('token', token);
-      localStorage.setItem('uuid', userId);
+      localStorage.setItem("token", token);
+      localStorage.setItem("uuid", userId);
 
       // Dynamically navigate to the user-specific dashboard using the userId
       router.push(`/dashboard/${userId}`);
     } catch (error) {
-      setErrorMessage(error.message);
+      setAlert({
+        show: true,
+        message: error.message,
+        variant: "danger",
+      });
       console.log(error);
     }
 
-    console.log('Signup submitted:', { email, password, first_name, last_name });
+    console.log("Signup submitted:", {
+      email,
+      password,
+      first_name,
+      last_name,
+    });
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-center" style={{ height: '100vh' }}>
-      <div className="card p-12 shadow-lg" style={{ width: '100%', maxWidth: '400px' }}>
+    <div
+      className="d-flex align-items-center justify-content-center"
+      style={{ height: "100vh" }}
+    >
+      <div
+        className="card p-12 shadow-lg"
+        style={{ width: "100%", maxWidth: "400px" }}
+      >
         <h2 className="text-center mb-4">Sign Up</h2>
-        {errorMessage && <p className="text-danger">{errorMessage}</p>} {/* Display  message */}
+
+        {alert.show && (
+          <MessageAlert
+            variant={alert.variant}
+            message={alert.message}
+            show={alert.show}
+            setShow={(value) => setAlert({ ...alert, show: value })}
+          />
+        )}
+
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="firstName" className="form-label">First Name</label>
+            <label htmlFor="firstName" className="form-label">
+              First Name
+            </label>
             <input
               type="text"
               className="form-control"
@@ -92,7 +120,9 @@ const Signup = () => {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="lastName" className="form-label">Last Name</label>
+            <label htmlFor="lastName" className="form-label">
+              Last Name
+            </label>
             <input
               type="text"
               className="form-control"
@@ -104,7 +134,9 @@ const Signup = () => {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="email" className="form-label">Email address</label>
+            <label htmlFor="email" className="form-label">
+              Email address
+            </label>
             <input
               type="email"
               className="form-control"
@@ -116,7 +148,9 @@ const Signup = () => {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="password" className="form-label">Password</label>
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
             <input
               type="password"
               className="form-control"
@@ -127,7 +161,12 @@ const Signup = () => {
               required
             />
           </div>
-          <button type="submit" className="btn-blaze text-white px-6 py-3 w-100 rounded-md hover:bg-red-700 transition-colors">Sign Up</button>
+          <button
+            type="submit"
+            className="btn-blaze text-white px-6 py-3 w-100 rounded-md hover:bg-red-700 transition-colors"
+          >
+            Sign Up
+          </button>
         </form>
       </div>
     </div>
