@@ -45,6 +45,7 @@ export default function PlanListSection({ router }) {
             title={`${trip.start_location} to ${trip.end_location}`}
             type={trip.trip_interest}
             duration={trip.total_duration}
+            itinerary={trip.itinerary}
             router={router}
           />
         ))}
