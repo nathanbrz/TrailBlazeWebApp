@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
 import PlanItem from "../Dashboard/PlanItem";
-import mockItineraryData from "../../../data/mockItineraryData";
+// import mockItineraryData from "../../../data/mockItineraryData";
 import { Container, Row, Col } from "react-bootstrap";
 
-export default function TimelineView() {
-  const trip = mockItineraryData.trip; // Fetching trip data from mockData.json
-  const itinerary = trip.itinerary;
+export default function TimelineView({ itinerary = [] }) {
+  // const trip = mockItineraryData.trip; // Fetching trip data from mockData.json
+  // const itinerary = trip.itinerary;
 
   return (
     <Container className="relative mt-10">
@@ -19,7 +19,7 @@ export default function TimelineView() {
             <div key={index} className="relative mb-10">
               {/* Render the card (PlanItem) */}
               <PlanItem
-                id={index}
+                id={stop._id}
                 title={stop.location}
                 description={`Stay at ${
                   stop.hotel
@@ -27,6 +27,9 @@ export default function TimelineView() {
                   .map((a) => a.name)
                   .join(", ")}.`}
                 imageUrl={`/path-to-images/${stop.location.toLowerCase()}.jpg`}
+                duration={stop.stay}
+                travel_time={stop.travel_time}
+                notes={stop.notes}
               />
 
               {/* Render the circle for the travel time on a separate line */}
