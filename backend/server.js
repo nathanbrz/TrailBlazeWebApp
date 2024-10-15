@@ -15,7 +15,7 @@ const userRoutes = require('./routes/userRoutes')
 const promptRoutes = require('./routes/promptRoutes')
 
 const FRONTENDURL = process.env.FRONT_END_URL || 'http://localhost';
-const FRONTENDPORT = process.env.FRONT_END_PORT || '3001'
+const FRONTENDPORT = process.env.FRONT_END_PORT || '3000'
 
 
 // Authentication
@@ -67,6 +67,9 @@ async function connect() {
     }
 }
 connect()
+
+// Export the app for testing purposes
+module.exports = app;
 
 // Here is some example code showing how to create and query MongoDB models.
 // try {

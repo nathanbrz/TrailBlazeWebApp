@@ -7,6 +7,11 @@ const createTrip = async (req, res) => {
     try {
         const { promptID, start_location, end_location, total_duration, trip_interest } = req.body;
 
+        // Check if required fields are missing
+        if (!promptID || !start_location || !end_location || !total_duration || !trip_interest) {
+            return res.status(400).json({ error: "Missing required fields" });
+        }
+
         // Use the userID from the Firebase token
         const userID = req.user.uid;
 
