@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import MessageAlert from "../MessageAlert";
@@ -23,7 +24,17 @@ function TripForm() {
     error,
     responseStatus,
     fetchData: submitTrip,
-  } = useApi("api/trips", "POST", { body: formData });
+  } = useApi("api/trips", "POST", {
+    body: {
+      start_location: formData.startingPosition,
+      end_location: formData.endingPosition,
+      total_duration: formData.tripDuration,
+      trip_interest: formData.tripPreference,
+    },
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`, // Ensure token is sent for authenticated requests
+    },
+  });
 
   const handleChange = (e) => {
     setFormData({

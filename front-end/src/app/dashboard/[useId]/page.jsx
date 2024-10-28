@@ -12,34 +12,37 @@ import { useApi } from "../../hooks/useApi";
 export default function Hero() {
   const router = useRouter();
   const [user, setUser] = useState(null);
-
+  const [firebaseUID, setFirebaseUID] = useState(null);
   const [alert, setAlert] = useState({
     show: false,
     message: "",
     variant: "",
   });
 
-  const firebaseUID = localStorage.getItem("uuid");
+  // Fetch user data only if firebaseUID is set
+  const { data, error } = useApi(firebaseUID ? `api/users/${firebaseUID}` : null, "GET");
 
-  // Fetch user data using useApi hook
-  const { data, error } = useApi(`api/users/${firebaseUID}`, "GET");
-
-  const [loading, setLoading] = useState(true);  // Added loading state
+  const [loading, setLoading] = useState(true);
 
   const URL = process.env.NEXT_PUBLIC_BACK_END_URL || 'http://localhost';
   const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || '4000';
 
-
   useEffect(() => {
-    if (!firebaseUID) {
-      router.push("/login");
-      setAlert({
-        show: true,
-        message: "No firebaseUID found",
-        variant: "danger",
-      });
+    // Only access localStorage on the client side
+    if (typeof window !== "undefined") {
+      const uid = localStorage.getItem("token");
+      if (uid) {
+        setFirebaseUID(uid);
+      } else {
+        router.push("/login");
+        setAlert({
+          show: true,
+          message: "No firebaseUID found",
+          variant: "danger",
+        });
+      }
     }
-  }, [firebaseUID, router]);
+  }, [router]);
 
 
   // Check for error from useApi and set the alert accordingly
