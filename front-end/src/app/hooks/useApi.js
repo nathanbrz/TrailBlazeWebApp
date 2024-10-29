@@ -9,30 +9,30 @@ export const useApi = (endpoint, method = "GET", options = {}) => {
   const [error, setError] = useState(null);
   const [responseStatus, setResponseStatus] = useState(null);
 
-  const fetchData = async () => {
+  const fetchData = async (fetchOptions = {}) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
         throw new Error("User not authenticated");
       }
-
+  
       setLoading(true);
       const response = await fetch(`${URL}:${PORT}/${endpoint}`, {
         method,
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
-          ...options.headers, // Additional headers if needed
+          ...fetchOptions.headers, // Use headers from fetchOptions if provided
         },
-        body: method !== "GET" ? JSON.stringify(options.body) : null,
+        body: method !== "GET" ? JSON.stringify(fetchOptions.body) : null, // Use body from fetchOptions if provided
       });
-
+  
       setResponseStatus(response.status);
-
+  
       if (!response.ok) {
         throw new Error(`Failed to fetch: ${response.statusText}`);
       }
-
+  
       const result = await response.json();
       setData(result);
       setError(null);
