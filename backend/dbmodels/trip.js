@@ -3,11 +3,6 @@ const Schema = mongoose.Schema
 const Stop = require('./stop')
 
 const tripSchema = new Schema({
-	promptID: {
-		type: mongoose.ObjectId,
-		ref: 'Prompt',
-		required: true
-	},
 	userID: {
         type: String,  // Store the Firebase UID as a string
         required: true

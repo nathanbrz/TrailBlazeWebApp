@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import MessageAlert from "../MessageAlert";
@@ -23,7 +24,14 @@ function TripForm() {
     error,
     responseStatus,
     fetchData: submitTrip,
-  } = useApi("api/trips", "POST", { body: formData });
+  } = useApi("api/trips", "POST", {
+    body: {
+      start_location: formData.startingPosition,
+      end_location: formData.endingPosition,
+      total_duration: Number(formData.tripDuration),
+      trip_interest: formData.tripPreference,
+    },
+  });
 
   const handleChange = (e) => {
     setFormData({
@@ -34,12 +42,19 @@ function TripForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     // Trigger the API request manually
     await submitTrip();
-
+    
     // Check the status code and handle errors/success
     if (responseStatus === 200 || responseStatus === 201) {
+      // Reset form data after successful submission
+      setFormData({
+        startingPosition: "",
+        endingPosition: "",
+        tripDuration: "",
+        tripPreference: "",
+      });
       setAlert({
         show: true,
         message: "Trip planned successfully!",

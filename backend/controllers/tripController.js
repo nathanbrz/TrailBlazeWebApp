@@ -2,10 +2,11 @@ const Trip = require('../dbmodels/trip')
 const Stop = require('../dbmodels/stop');
 const { generateItinerary } = require('../services/openaiService');
 
+
 // Create trip
 const createTrip = async (req, res) => {
     try {
-        const { promptID, start_location, end_location, total_duration, trip_interest } = req.body;
+        const {start_location, end_location, total_duration, trip_interest } = req.body;
 
         // Use the userID from the Firebase token
         const userID = req.user.uid;
@@ -31,7 +32,6 @@ const createTrip = async (req, res) => {
 
         // Create a new trip and assign the parsed stops to the itinerary
         const newTrip = new Trip({
-            promptID,
             userID,
             start_location,
             end_location,
@@ -44,6 +44,7 @@ const createTrip = async (req, res) => {
 
         res.status(201).json(newTrip);
     } catch (error) {
+        console.error('Error creating trip:', error);
         res.status(400).json({ error: error.message });
     }
 };
