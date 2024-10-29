@@ -30,7 +30,7 @@ export default function Hero() {
   useEffect(() => {
     // Only access localStorage on the client side
     if (typeof window !== "undefined") {
-      const uid = localStorage.getItem("token");
+      const uid = localStorage.getItem("uuid");
       if (uid) {
         setFirebaseUID(uid);
       } else {

@@ -28,11 +28,8 @@ function TripForm() {
     body: {
       start_location: formData.startingPosition,
       end_location: formData.endingPosition,
-      total_duration: formData.tripDuration,
+      total_duration: Number(formData.tripDuration),
       trip_interest: formData.tripPreference,
-    },
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`, // Ensure token is sent for authenticated requests
     },
   });
 
@@ -45,12 +42,19 @@ function TripForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     // Trigger the API request manually
     await submitTrip();
-
+    
     // Check the status code and handle errors/success
     if (responseStatus === 200 || responseStatus === 201) {
+      // Reset form data after successful submission
+      setFormData({
+        startingPosition: "",
+        endingPosition: "",
+        tripDuration: "",
+        tripPreference: "",
+      });
       setAlert({
         show: true,
         message: "Trip planned successfully!",
