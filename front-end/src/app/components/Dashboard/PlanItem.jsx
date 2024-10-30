@@ -14,6 +14,7 @@ const PlanItem = ({
   notes,
   itinerary,
   router,
+  onDelete,
 }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const handleOpenDeleteModal = () => setIsDeleteModalOpen(true);
@@ -33,6 +34,7 @@ const PlanItem = ({
         show={isDeleteModalOpen}
         hide={handleCloseDeleteModal}
         planID={id}
+        onDeleteSuccess={() => onDelete(id)} // Pass the onDelete function here
       />
       <Card className="mb-3 rounded-5 mx-12">
         <Row className="g-0">
