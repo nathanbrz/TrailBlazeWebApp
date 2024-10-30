@@ -54,6 +54,9 @@ const deleteUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
+
+        // Delete all trips associated with the user
+        await Trip.deleteMany({ userID: uid });
         
         // Delete the user from Firebase
         await admin.auth().deleteUser(uid);
