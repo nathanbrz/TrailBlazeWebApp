@@ -27,7 +27,7 @@ const app = express()
 // Middleware Setup
 const corsOptions = {
     origin: `${FRONTENDURL}:${FRONTENDPORT}`,
-    methods: ['GET', 'POST'], 
+    methods: ["GET", "POST", "PUT", "DELETE"], 
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
 };
