@@ -1,7 +1,13 @@
 const request = require('supertest');
 const app = require('../../server'); // Import the Express app
 const Trip = require('../../dbmodels/trip');
+const Stop = require('../../dbmodels/stop'); 
+const mongoose = require('mongoose'); // Import mongoose for ObjectId generation
+const { generateItinerary } = require('../../services/openaiService'); // Import the service
+
+
 jest.mock('../../dbmodels/trip'); // Mock the Trip model
+jest.mock('../../dbmodels/stop'); // Mock the Stop model
 
 // Mock Firebase middleware
 jest.mock('../../middleware/firebaseMiddleware', () => (req, res, next) => {
@@ -9,18 +15,17 @@ jest.mock('../../middleware/firebaseMiddleware', () => (req, res, next) => {
     next();
 });
 
+// Mock the generateItinerary function from openaiService
+jest.mock('../../services/openaiService', () => ({
+    generateItinerary: jest.fn(), // Mock the function
+}));
+
+
 describe('Trip Routes', () => {
     describe('POST /trips', () => {
         it('should create a new trip', async () => {
-            // Mocking the save method of the Trip model
-            const mockTrip = {
-                _id: 'mockedTripId',
-                promptID: 'mockedPromptId',
-                userID: 'mockUserId',  // Firebase UID
-                total_duration: 4,
-                start_location: 'Vancouver, BC',
-                end_location: 'Toronto, ON',
-                trip_interest: 'Nature',
+            // Mock itinerary returned by generateItinerary
+            const mockItinerary = {
                 itinerary: [
                     {
                         day: 1,
@@ -49,25 +54,41 @@ describe('Trip Routes', () => {
                 ]
             };
             
+            generateItinerary.mockResolvedValue(mockItinerary); // Mock the return value of generateItinerary
+            // Mock the Stop constructor
+            Stop.mockImplementation((stopData) => stopData);
+
+            const mockTrip = {
+                _id: new mongoose.Types.ObjectId(),
+                promptID: new mongoose.Types.ObjectId(),
+                userID: 'mockUserId',  // Firebase UID
+                total_duration: 4,
+                start_location: 'Vancouver, BC',
+                end_location: 'Banff, AB',
+                trip_interest: 'Nature',
+                itinerary: mockItinerary.itinerary,
+            };
+
             Trip.prototype.save = jest.fn().mockResolvedValue(mockTrip); // Mock save method
 
             const res = await request(app)
                 .post('/api/trips')
                 .send({
-                    promptID: 'mockedPromptId',
+                    promptID: new mongoose.Types.ObjectId(),
                     start_location: 'Vancouver, BC',
-                    end_location: 'Toronto, ON',
-                    total_duration: 7,
+                    end_location: 'Banff, AB',
+                    total_duration: 4,
                     trip_interest: 'Nature'
                 })
                 .set('Authorization', 'Bearer mockFirebaseToken'); // Mock token
             
             expect(res.statusCode).toEqual(201); // Expecting status code 201 (Created)
-            expect(res.body).toHaveProperty('start_location', 'Vancouver, BC'); // Check the start location
-            expect(res.body).toHaveProperty('end_location', 'Toronto, ON'); // Check the end location
-            expect(res.body).toHaveProperty('userID', 'mockUserId'); // Check if userID is correct
             expect(res.body).toHaveProperty('itinerary'); // Check if itinerary is included
+            expect(res.body).toHaveProperty('userID', 'mockUserId'); // Check if userID is correct
+            expect(res.body).toHaveProperty('start_location', 'Vancouver, BC'); // Check the start location
+            expect(res.body).toHaveProperty('end_location', 'Banff, AB'); // Check the end location
             expect(res.body.itinerary[0]).toHaveProperty('location', 'Vancouver, BC'); // Check itinerary details
+
         }, 100000);
 
         it('should return 400 if required fields are missing', async () => {
@@ -78,7 +99,7 @@ describe('Trip Routes', () => {
             
             expect(res.statusCode).toEqual(400); // Expect 400 Bad Request due to missing fields
         });
-    }, 10000);
+    });
 
     describe('GET /trips', () => {
         it('should return all trips for a user', async () => {
@@ -156,6 +177,6 @@ describe('Trip Routes', () => {
             expect(res.body[0]).toHaveProperty('start_location', 'Vancouver, BC');
             expect(res.body[0]).toHaveProperty('itinerary');
             expect(res.body[0].itinerary[0]).toHaveProperty('location', 'Vancouver, BC');
-        }, 10000);
+        });
     });
 });
