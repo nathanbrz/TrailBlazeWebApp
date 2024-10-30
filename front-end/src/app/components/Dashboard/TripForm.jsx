@@ -18,20 +18,7 @@ function TripForm() {
     variant: "",
   });
 
-  const {
-    data,
-    loading,
-    error,
-    responseStatus,
-    fetchData: submitTrip,
-  } = useApi("api/trips", "POST", {
-    body: {
-      start_location: formData.startingPosition,
-      end_location: formData.endingPosition,
-      total_duration: Number(formData.tripDuration),
-      trip_interest: formData.tripPreference,
-    },
-  });
+  const { data, loading, error, responseStatus, fetchData: submitTrip } = useApi("api/trips", "POST");
 
   const handleChange = (e) => {
     setFormData({
@@ -43,10 +30,20 @@ function TripForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Trigger the API request manually
-    await submitTrip();
-    
-    // Check the status code and handle errors/success
+    // Trigger the API request with the latest formData as body
+    await submitTrip({
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        start_location: formData.startingPosition,
+        end_location: formData.endingPosition,
+        total_duration: Number(formData.tripDuration),
+        trip_interest: formData.tripPreference,
+      },
+    });
+
+    // Check the response and handle success/error
     if (responseStatus === 200 || responseStatus === 201) {
       // Reset form data after successful submission
       setFormData({

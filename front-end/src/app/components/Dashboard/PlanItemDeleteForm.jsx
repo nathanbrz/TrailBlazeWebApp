@@ -1,11 +1,10 @@
 import React from "react";
 import { Form } from "react-bootstrap";
 
-function PlanItemDeleteForm() {
+function PlanItemDeleteForm({ onDelete }) {
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add form submit logic here
-    console.log("Delete action triggered");
+    onDelete(); // Trigger the delete action
   };
 
   return (
