@@ -1,4 +1,6 @@
 const User = require('../dbmodels/user');
+const admin = require('../firebaseAdmin/config');
+
 
 // POST: Create a new user
 const createUser = async (req, res) => {
@@ -42,4 +44,28 @@ const getUser = async (req, res) => {
     }
 };
 
-module.exports = { createUser, getUser };
+// DELETE: Delete user by firebaseUID
+const deleteUser = async (req, res) => {
+    const { uid } = req.user;
+
+    try {
+        // Find the user by firebaseUID
+        const user = await User.findOne({ firebaseUID: uid });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        
+        // Delete the user from Firebase
+        await admin.auth().deleteUser(uid);
+
+        // Delete the user from MongoDB
+        await User.deleteOne({ firebaseUID: uid });
+
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ message: 'Error deleting user', error });
+    }
+};
+
+module.exports = { createUser, getUser, deleteUser };

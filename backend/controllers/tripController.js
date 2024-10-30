@@ -60,26 +60,30 @@ const getAllTrips = async (req, res) => {
     }
 };
 
-const requestItinerary = async (req, res) => {
-    const { start_location, end_location, duration, interest } = req.body;
-
-    if (!start_location || !end_location || !duration || !interest) {
-        return res.status(400).json({ error: "Missing required fields" });
-    }
-
+// Delete trip
+const deleteTrip = async (req, res) => {
     try {
-        // Generate itinerary from OpenAI
-        const itinerary = await generateItinerary(start_location, end_location, duration, interest);
+        const userID = req.user.uid;
+        const tripID = req.params.id;
+        const trip = await Trip.findOne({ _id: tripID, userID: userID });
 
-        res.status(200).json(itinerary);
+        if (!trip) {
+            return res.status(404).json({ error: 'Trip not found' });
+        }
+
+        await Trip.deleteOne({_id: tripID});
+        res.status(200).json({ message: 'Trip deleted' });
     } catch (error) {
+        console.error('Error deleting trip:', error);
         res.status(500).json({ error: error.message });
     }
 };
+        
 
 
 module.exports = {
     createTrip,
     getAllTrips,
-    requestItinerary
+    deleteTrip,
 };
+

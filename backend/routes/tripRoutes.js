@@ -1,5 +1,5 @@
 const express = require('express');
-const { createTrip, getAllTrips, requestItinerary } = require('../controllers/tripController');
+const { createTrip, getAllTrips, deleteTrip } = require('../controllers/tripController');
 
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.post('/', authenticateUser, createTrip);
 // Route to get all trips
 router.get('/', authenticateUser, getAllTrips);
 
-// Route to generate itinerary
-router.post('/request-itinerary', requestItinerary);
+// Route to delete a trip
+router.delete('/:id', authenticateUser, deleteTrip);
 
 module.exports = router;
