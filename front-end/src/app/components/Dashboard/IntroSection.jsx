@@ -26,9 +26,9 @@ export default function IntroSection({ user }) {
         <Row>
           <Col>
             <div className="md:text-left">
-              <span className="text-3xl text-gray-900 mb-4">Hey {user && user.first_name ? user.first_name : ''} -</span>
+              <span className="text-3xl text-gray-900 mb-4">Hi {user && user.first_name ? user.first_name : ''}, </span>
               <p className="text-lg text-gray-400 mb-6 inline px-2">
-                here’s what’s happening in your trips
+                here are your saved trips:
               </p>
             </div>
           </Col>
@@ -40,7 +40,7 @@ export default function IntroSection({ user }) {
                 className="btn-blaze lg:w-1/4 text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors"
                 onClick={handleOpenModal}
               >
-                Start a new trip!
+                Plan Your Next Trip!
               </button>
             </div>
           </Col>

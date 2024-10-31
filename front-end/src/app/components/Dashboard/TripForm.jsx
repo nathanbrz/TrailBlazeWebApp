@@ -29,6 +29,15 @@ function TripForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Check if trip duration is valid
+    if (formData.tripDuration < 1 || formData.tripDuration > 20) {
+      setAlert({
+        show: true,
+        message: "Trip duration must be between 1 and 20 days.",
+        variant: "danger",
+      });
+      return;
+    }
     
     // Trigger the API request with the latest formData as body
     await submitTrip({
@@ -77,7 +86,7 @@ function TripForm() {
     <Form onSubmit={handleSubmit} className="mx-4">
       {/* Starting Position */}
       <Form.Group className="mb-3" controlId="startingPosition">
-        <Form.Label>Starting Position</Form.Label>
+        <Form.Label>Starting City</Form.Label>
         <Form.Control
           type="text"
           name="startingPosition"
@@ -88,7 +97,7 @@ function TripForm() {
       </Form.Group>
       {/* Ending Position */}
       <Form.Group className="mb-3" controlId="endingPosition">
-        <Form.Label>Ending Position</Form.Label>
+        <Form.Label>Ending City</Form.Label>
         <Form.Control
           type="text"
           name="endingPosition"
@@ -97,15 +106,17 @@ function TripForm() {
           onChange={handleChange}
         />
       </Form.Group>
-      {/* Ideal Trip Duration */}
+      {/* Ideal Trip Duration (1 - 20 Days) */}
       <Form.Group className="mb-3" controlId="tripDuration">
-        <Form.Label>Ideal Trip Duration (days)</Form.Label>
+        <Form.Label>Ideal Trip Duration (1 - 20 days)</Form.Label>
         <Form.Control
           type="number"
           name="tripDuration"
-          placeholder="20"
+          placeholder="10"
           value={formData.tripDuration}
           onChange={handleChange}
+          min={1}
+          max={20}
         />
       </Form.Group>
       {/* What are you looking for in this trip? */}
