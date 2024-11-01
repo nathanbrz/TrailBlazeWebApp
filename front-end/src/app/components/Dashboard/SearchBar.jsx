@@ -52,13 +52,17 @@ export default function SearchBar() {
                 bsPrefix="p-0"
                 id="dropdown-basic"
               >
-                <Image
-                  src="/images/user-icon.png"
-                  width="50"
-                  height="50"
-                  alt="profile image"
-                  style={{ cursor: "pointer" }}
-                />
+                <div className="p-2 rounded-full">
+                  {" "}
+                  {/* Add padding and optional background */}
+                  <Image
+                    src="/images/user-icon.png"
+                    width="50"
+                    height="50"
+                    alt="profile image"
+                    style={{ cursor: "pointer" }}
+                  />
+                </div>
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
