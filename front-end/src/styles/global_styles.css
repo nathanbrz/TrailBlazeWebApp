@@ -60,3 +60,9 @@ html, body {
   justify-content: center;
   align-items: center;
 }
+
+/* Custom style for dropdown items */
+.custom-dropdown-item:hover {
+  background-color: #800000 !important; /* Dark maroon color on hover */
+  color: white !important; /* Optional: Change text color on hover */
+}
