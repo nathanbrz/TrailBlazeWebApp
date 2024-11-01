@@ -2,8 +2,9 @@
 import React, { useState } from "react";
 import GenericNav from "../../components/GenericNav";
 import Footer from "../../components/Footer";
+import withAuth from "@/app/components/withAuth";
 
-export default function UserSettings() {
+function UserSettings() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -139,3 +140,4 @@ export default function UserSettings() {
     </>
   );
 }
+export default withAuth(UserSettings); // Wrap the page with withAuth

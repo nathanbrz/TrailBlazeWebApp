@@ -1,3 +1,4 @@
+// src/pages/itinerary.js
 "use client";
 import "../../styles/global_styles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -6,13 +7,15 @@ import TimelineView from "../components/Itinerary/TimelineView";
 import GenericNav from "../components/GenericNav";
 import Footer from "../components/Footer";
 import { useSearchParams } from "next/navigation";
+import withAuth from "../components/withAuth"; // Import the HOC
 
-export default function page() {
+function ItineraryPage() {
   const searchParams = useSearchParams();
   const encodedData = searchParams.get("itinerary");
   const itinerary = encodedData
     ? JSON.parse(decodeURIComponent(encodedData))
     : {};
+
   return (
     <div>
       <div className="page-container">
@@ -25,3 +28,5 @@ export default function page() {
     </div>
   );
 }
+
+export default withAuth(ItineraryPage); // Wrap the page with withAuth
