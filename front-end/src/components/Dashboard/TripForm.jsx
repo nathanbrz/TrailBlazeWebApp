@@ -4,7 +4,7 @@ import { Form } from "react-bootstrap";
 import MessageAlert from "../MessageAlert";
 import { useApi } from "../../hooks/useApi";
 import Select from "react-select";
-import northAmericanCities from "../../../data/northAmericanCities";
+import northAmericanCities from "../../data/northAmericanCities";
 
 // List of cities for autocomplete
 const cities = northAmericanCities.map((city) => ({ value: city, label: city }));

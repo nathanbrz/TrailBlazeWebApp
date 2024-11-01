@@ -1,11 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import "../../styles/global_styles.css";
-import { doSignInUserWithEmailAndPassword } from "../firebase/auth";
+import { doSignInUserWithEmailAndPassword } from "../../firebase/auth";
 import { useRouter } from "next/navigation";
-import useAuth from "../hooks/useAuth";
-import { useApi } from "../hooks/useApi";
-import MessageAlert from "../components/MessageAlert";
+import useAuth from "../../hooks/useAuth";
+import { useApi } from "../../hooks/useApi";
+import MessageAlert from "../../components/MessageAlert";
 
 const Login = () => {
   // Checks if user is already logged in

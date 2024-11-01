@@ -2,11 +2,11 @@
 
 import React, { useState } from "react";
 import "../../styles/global_styles.css";
-import { doCreateUserWithEmailAndPassword } from "../firebase/auth";
+import { doCreateUserWithEmailAndPassword } from "../../firebase/auth";
 import { useRouter } from "next/navigation";
-import useAuth from "../hooks/useAuth";
-import { useApi } from "../hooks/useApi"; 
-import MessageAlert from "../components/MessageAlert"; 
+import useAuth from "../../hooks/useAuth";
+import { useApi } from "../../hooks/useApi"; 
+import MessageAlert from "../../components/MessageAlert"; 
 
 const Signup = () => {
   // Checks if user is already logged in

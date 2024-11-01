@@ -1,13 +1,13 @@
 "use client";
 import "../../../styles/global_styles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import SearchBar from "../../components/Dashboard/SearchBar";
-import IntroSection from "../../components/Dashboard/IntroSection";
-import PlanListSection from "../../components/Dashboard/PlanListSection";
-import Footer from "../../components/Footer";
+import SearchBar from "../../../components/Dashboard/SearchBar";
+import IntroSection from "../../../components/Dashboard/IntroSection";
+import PlanListSection from "../../../components/Dashboard/PlanListSection";
+import Footer from "../../../components/Footer";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useApi } from "../../hooks/useApi";
+import { useApi } from "../../../hooks/useApi";
 
 export default function Hero() {
   const router = useRouter();
