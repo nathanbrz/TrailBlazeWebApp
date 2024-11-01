@@ -1,10 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import SearchForm from "./SearchForm";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { doSignOut } from "../../firebase/auth"; // Import sign out function
+import { doSignOut } from "../firebase/auth"; // Import sign out function
 
 export default function SearchBar() {
   const [dropdownOpen, setDropdownOpen] = useState(false); // State for dropdown visibility
@@ -40,9 +39,6 @@ export default function SearchBar() {
               TrailBlaze
             </Link>
           </div>
-          <div className="flex-shrink-0 flex items-center col-lg-8 col-6">
-            <SearchForm />
-          </div>
           <div className="relative">
             {/* Profile Image */}
             <Image
@@ -64,7 +60,7 @@ export default function SearchBar() {
                   Dashboard
                 </button>
                 <button
-                  onClick={() => router.push(`/settings/${uid}`)}
+                  onClick={handleSettings}
                   className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
                 >
                   Settings
