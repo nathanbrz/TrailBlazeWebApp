@@ -1,12 +1,13 @@
 const { initializeApp } = require('firebase-admin/app');
 const admin = require('firebase-admin');
 
+let credentials;
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
-  const credentials = require('./firebaseCredentials.json')
+  credentials = require('./firebaseCredentials.json')
 } else {
-  const credentials = require('/etc/secrets/firebaseCredentials.json')
+  credentials = require('/etc/secrets/firebaseCredentials.json')
 }
 
 
