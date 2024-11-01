@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import MessageAlert from "../MessageAlert";
 import { useApi } from "../../hooks/useApi";
@@ -7,7 +7,10 @@ import Select from "react-select";
 import northAmericanCities from "../../../data/northAmericanCities";
 
 // List of cities for autocomplete
-const cities = northAmericanCities.map((city) => ({ value: city, label: city }));
+const cities = northAmericanCities.map((city) => ({
+  value: city,
+  label: city,
+}));
 
 function TripForm() {
   const [formData, setFormData] = useState({
@@ -34,7 +37,7 @@ function TripForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Check if trip duration is valid
+    
     if (formData.tripDuration < 1 || formData.tripDuration > 20) {
       setAlert({
         show: true,
@@ -44,7 +47,6 @@ function TripForm() {
       return;
     }
     
-    // Trigger the API request with the latest formData as body
     await submitTrip({
       headers: {
         "Content-Type": "application/json",
@@ -57,9 +59,7 @@ function TripForm() {
       },
     });
 
-    // Check the response and handle success/error
     if (responseStatus === 200 || responseStatus === 201) {
-      // Reset form data after successful submission
       setFormData({
         startingPosition: null,
         endingPosition: null,
@@ -79,6 +79,13 @@ function TripForm() {
       });
     }
   };
+
+  // Reload the page when `loading` turns from `true` to `false` after a successful response
+  useEffect(() => {
+    if (!loading && (responseStatus === 200 || responseStatus === 201)) {
+      window.location.reload();
+    }
+  }, [loading, responseStatus]);
 
   return alert.show ? (
     <MessageAlert
