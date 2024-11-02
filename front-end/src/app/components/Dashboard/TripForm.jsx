@@ -112,7 +112,7 @@ function TripForm() {
           options={cities}
           value={formData.startingPosition}
           onChange={(option) => handleChange(option, 'startingPosition')}
-          placeholder="Select a city..."
+          placeholder="Select a city in North America..."
         />
       </Form.Group>
       {/* Ending Position */}
@@ -122,7 +122,7 @@ function TripForm() {
           options={cities}
           value={formData.endingPosition}
           onChange={(option) => handleChange(option, 'endingPosition')}
-          placeholder="Select a city..."
+          placeholder="Select a city in North America..."
         />
       </Form.Group>
       {/* Ideal Trip Duration (1 - 20 Days) */}
