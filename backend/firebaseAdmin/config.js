@@ -17,4 +17,4 @@ admin.initializeApp({
   credential: admin.credential.cert(credentials),
 });
 
-module.exports = admin;Is 
+module.exports = admin; 
