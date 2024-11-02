@@ -24,7 +24,6 @@ export default function TimelineView({ itinerary = [] }) {
                   .join(", ")}.`}
                 imageUrl={`/path-to-images/${stop.location.toLowerCase()}.jpg`}
                 duration={stop.stay}
-                travel_time={stop.travel_time}
                 notes={stop.notes}
                 className="z-0" // Ensure PlanItem itself has a lower z-index
               />
@@ -34,7 +33,7 @@ export default function TimelineView({ itinerary = [] }) {
                 <div className="flex justify-center mt-4 z-0">
                   {/* Travel Time Circle */}
                   <div className="bg-red-800 text-white font-bold rounded-full p-2 text-center w-12 h-12 flex items-center justify-center z-0">
-                    {stop.travel_time}h
+                  {itinerary[index + 1].travel_time}h
                   </div>
                 </div>
               )}
