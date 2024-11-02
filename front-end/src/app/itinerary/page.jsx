@@ -8,6 +8,7 @@ import GenericNav from "../components/GenericNav";
 import Footer from "../components/Footer";
 import { useSearchParams } from "next/navigation";
 import withAuth from "../components/withAuth"; // Import the HOC
+import { Suspense } from "react";
 
 function ItineraryPage() {
   const searchParams = useSearchParams();
@@ -17,15 +18,17 @@ function ItineraryPage() {
     : {};
 
   return (
-    <div>
-      <div className="page-container">
-        <div className="content">
-          <GenericNav />
-          <TimelineView itinerary={itinerary} />
+    <Suspense fallback={<div>Loading...</div>}>
+      <div>
+        <div className="page-container">
+          <div className="content">
+            <GenericNav />
+            <TimelineView itinerary={itinerary} />
+          </div>
+          <Footer />
         </div>
-        <Footer />
       </div>
-    </div>
+    </Suspense>
   );
 }
 
