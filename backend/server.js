@@ -27,22 +27,30 @@ const firebaseRoutes = require('./routes/firebaseRoutes')
 const app = express()
 
 const allowedOrigins = [
-    'https://trailblazeapp.vercel.app/', // Production frontend on Vercel
+    'https://trailblazeapp.vercel.app', // Production frontend on Vercel
     `${FRONTENDURL}:${FRONTENDPORT}`,    // Local development frontend
   ];
 
 // Middleware Setup
 app.use(cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true); // Origin is allowed
-      } else {
-        callback(new Error('Not allowed by CORS')); // Origin is not allowed
-      }
-    }
-  }));
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true); // Origin is allowed
+        } else {
+            callback(new Error('Not allowed by CORS')); // Origin is not allowed
+        }
+    },
+    optionsSuccessStatus: 200 // For legacy browser support
+}));
+
+app.options('*', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', allowedOrigins);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.sendStatus(200);
+});
 
 
 app.use(express.json());
