@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 export default function HeroSection() {
   const router = useRouter();
 
+  // Function to handle "Plan Now" button click
   const handlePlanNowClick = () => {
     router.push('/login'); // Navigates to /login
   };

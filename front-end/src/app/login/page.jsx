@@ -11,9 +11,9 @@ const Login = () => {
   // Checks if user is already logged in
   useAuth();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [alert, setAlert] = useState({ show: false, message: "", variant: "" });
+  const [email, setEmail] = useState(""); // State for storing email input
+  const [password, setPassword] = useState(""); // State for storing password input
+  const [alert, setAlert] = useState({ show: false, message: "", variant: "" }); // State for managing alert messages
   const router = useRouter();
 
   // useApi hook for POST request to verify the user's token
@@ -25,7 +25,7 @@ const Login = () => {
   } = useApi("api/firebase/session", "POST");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission
 
     try {
       // Firebase authentication
@@ -57,6 +57,7 @@ const Login = () => {
       // Dynamically navigate to the user-specific dashboard using the userId
       router.push(`/dashboard/${userId}`);
     } catch (error) {
+      // Display an alert if login fails
       setAlert({
         show: true,
         message: error.message,
@@ -69,7 +70,7 @@ const Login = () => {
   };
 
   const handleSignUp = () => {
-    router.push("/signup");
+    router.push("/signup"); // Navigate to the signup page
   };
 
   return (

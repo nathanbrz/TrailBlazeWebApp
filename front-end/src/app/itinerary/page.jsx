@@ -11,10 +11,10 @@ import withAuth from "../components/withAuth"; // Import the HOC
 import { Suspense } from "react";
 
 function ItineraryPage() {
-  const searchParams = useSearchParams();
-  const encodedData = searchParams.get("itinerary");
+  const searchParams = useSearchParams(); // Hook to retrieve query parameters
+  const encodedData = searchParams.get("itinerary"); // Get the "itinerary" parameter
   const itinerary = encodedData
-    ? JSON.parse(decodeURIComponent(encodedData))
+    ? JSON.parse(decodeURIComponent(encodedData)) // Decode and parse the itinerary data
     : {};
 
   return (
@@ -32,4 +32,4 @@ function ItineraryPage() {
   );
 }
 
-export default withAuth(ItineraryPage); // Wrap the page with withAuth
+export default withAuth(ItineraryPage); // Wrap the page with withAuth HOC to protect the route
