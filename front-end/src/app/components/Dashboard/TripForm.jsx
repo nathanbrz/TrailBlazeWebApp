@@ -16,7 +16,7 @@ function TripForm() {
   const [formData, setFormData] = useState({
     startingPosition: null,
     endingPosition: null,
-    tripDuration: "",
+    tripDuration: "10",
     tripPreference: "",
   });
 
@@ -42,6 +42,15 @@ function TripForm() {
       setAlert({
         show: true,
         message: "Trip duration must be between 1 and 20 days.",
+        variant: "danger",
+      });
+      return;
+    }
+
+    if (formData.startingPosition == null || formData.endingPosition == null) {
+      setAlert({
+        show: true,
+        message: "Please select a starting and ending city.",
         variant: "danger",
       });
       return;
