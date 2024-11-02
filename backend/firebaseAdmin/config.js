@@ -1,3 +1,4 @@
+const fs = require('fs');
 const { initializeApp } = require('firebase-admin/app');
 const admin = require('firebase-admin');
 
@@ -7,7 +8,8 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
   credentials = require('./firebaseCredentials.json')
 } else {
-  credentials = require('/etc/secrets/firebaseCredentials.json')
+  const jsonDataFromEtc = fs.readFileSync('/etc/secrets/firebaseCredentials.json', 'utf8');
+  credentials = JSON.parse(jsonDataFromEtc);
 }
 
 
@@ -16,4 +18,4 @@ admin.initializeApp({
   credential: admin.credential.cert(credentials),
 });
 
-module.exports = admin;
+module.exports = admin; 

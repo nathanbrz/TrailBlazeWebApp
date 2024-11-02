@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 const express = require('express')
 const cors = require('cors');
 
+
 const mongoose = require('mongoose')
 const uri = process.env.MONGODB_URI
 const port = process.env.PORT || 4000 //port = 4000 unless specified in .env
@@ -25,16 +26,33 @@ const firebaseRoutes = require('./routes/firebaseRoutes')
 // Create express app
 const app = express()
 
-// Middleware Setup
-const corsOptions = {
-    origin: `${FRONTENDURL}:${FRONTENDPORT}`,
-    methods: ["GET", "POST", "PUT", "DELETE"], 
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-};
+const allowedOrigins = [
+    'https://trailblazeapp.vercel.app', // Production frontend on Vercel
+    `${FRONTENDURL}:${FRONTENDPORT}`,    // Local development frontend
+  ];
 
-// Server and Middleware setup
-app.use(cors(corsOptions));
+// Middleware Setup
+app.use(cors({
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true); // Origin is allowed
+        } else {
+            callback(new Error('Not allowed by CORS')); // Origin is not allowed
+        }
+    },
+    optionsSuccessStatus: 200 // For legacy browser support
+}));
+
+app.options('*', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', allowedOrigins);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.sendStatus(200);
+});
+
+
 app.use(express.json());
 
 app.use((req, res, next) => {
