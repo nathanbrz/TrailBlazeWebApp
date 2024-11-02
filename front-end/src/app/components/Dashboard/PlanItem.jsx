@@ -17,9 +17,14 @@ const PlanItem = ({
   onDelete,
 }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  // Function to open the delete confirmation modal
   const handleOpenDeleteModal = () => setIsDeleteModalOpen(true);
+
+  // Function to close the delete confirmation modal
   const handleCloseDeleteModal = () => setIsDeleteModalOpen(false);
 
+  // Function to handle redirection to the itinerary page with query parameters
   const handleClick = () => {
     // Redirect to the itinerary page for this trip
     // router.push(`/itinerary/${id}`);

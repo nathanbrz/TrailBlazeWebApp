@@ -5,10 +5,11 @@ import Footer from "../../components/Footer";
 import withAuth from "@/app/components/withAuth";
 
 function UserSettings() {
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState(""); // State for storing the user's name
+  const [password, setPassword] = useState(""); // State for storing the user's password
+  const [email, setEmail] = useState(""); // State for storing the user's email
 
+  // Handlers for updating state when input changes
   const handleNameChange = (e) => {
     setName(e.target.value);
   };

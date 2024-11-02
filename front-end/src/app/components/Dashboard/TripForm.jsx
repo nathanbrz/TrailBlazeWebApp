@@ -18,16 +18,18 @@ function TripForm() {
     endingPosition: null,
     tripDuration: "10",
     tripPreference: "",
-  });
+  }); // State to store form input values
 
   const [alert, setAlert] = useState({
     show: false,
     message: "",
     variant: "",
-  });
+  }); // State for displaying alerts
 
+  // Custom hook to handle API calls
   const { data, loading, error, responseStatus, fetchData: submitTrip } = useApi("api/trips", "POST");
 
+  // Function to handle form input changes
   const handleChange = (selectedOption, name) => {
     setFormData({
       ...formData,
@@ -38,6 +40,7 @@ function TripForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Validate trip duration
     if (formData.tripDuration < 1 || formData.tripDuration > 20) {
       setAlert({
         show: true,
@@ -47,6 +50,7 @@ function TripForm() {
       return;
     }
 
+    // Check for empty starting and ending positions
     if (formData.startingPosition == null || formData.endingPosition == null) {
       setAlert({
         show: true,
@@ -56,6 +60,7 @@ function TripForm() {
       return;
     }
     
+    // Submit form data to the API
     await submitTrip({
       headers: {
         "Content-Type": "application/json",
@@ -68,6 +73,7 @@ function TripForm() {
       },
     });
 
+    // Handle API response
     if (responseStatus === 200 || responseStatus === 201) {
       setFormData({
         startingPosition: null,
@@ -97,6 +103,7 @@ function TripForm() {
   }, [loading, responseStatus]);
 
   return alert.show ? (
+    // Show alert message if alert state is active
     <MessageAlert
       variant={alert.variant}
       message={alert.message}

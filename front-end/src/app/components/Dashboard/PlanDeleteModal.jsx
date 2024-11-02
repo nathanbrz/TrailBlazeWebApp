@@ -1,12 +1,14 @@
 import Modal from "../Modal";
 import React, { useEffect, useState } from "react";
-import PlanItemDeleteForm from "./PlanItemDeleteForm";
+import PlanItemDeleteForm from "./PlanItemDeleteForm"; // Form component to confirm the deletion
 
+// Functional component for handling the delete confirmation modal
 export default function PlanDeleteModal({ show = false, hide, planID, onDeleteSuccess }) {
   const [isModalOpen, setIsModalOpen] = useState(show);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Function to handle the deletion of a plan
   const handleDelete = async () => {
     try {
         setLoading(true);
@@ -36,13 +38,15 @@ export default function PlanDeleteModal({ show = false, hide, planID, onDeleteSu
     }
 };
 
+  // Function to handle closing the modal
   const handleCloseModal = () => {
     setIsModalOpen(false);
     hide();
   };
 
+  // Effect to synchronize the modal state with the `show` prop
   useEffect(() => {
-    setIsModalOpen(show);
+    setIsModalOpen(show); // Update modal visibility when `show` prop changes
   }, [show]);
 
   return (

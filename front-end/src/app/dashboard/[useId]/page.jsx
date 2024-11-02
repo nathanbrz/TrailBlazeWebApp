@@ -11,22 +11,24 @@ import { useApi } from "../../hooks/useApi";
 
 export default function Hero() {
   const router = useRouter();
-  const [user, setUser] = useState(null);
-  const [firebaseUID, setFirebaseUID] = useState(null);
+  const [user, setUser] = useState(null); // State to store user information
+  const [firebaseUID, setFirebaseUID] = useState(null); // State to store Firebase UID
   const [alert, setAlert] = useState({
     show: false,
     message: "",
     variant: "",
-  });
+  }); // State to manage alerts
 
   // Fetch user data only if firebaseUID is set
   const { data, error } = useApi(firebaseUID ? `api/users/${firebaseUID}` : null, "GET");
 
   const [loading, setLoading] = useState(true);
 
+  // Environment variables for backend URL and port
   const URL = process.env.NEXT_PUBLIC_BACK_END_URL || 'http://localhost';
   const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || '4000';
 
+  // Effect to retrieve Firebase UID from localStorage
   useEffect(() => {
     // Only access localStorage on the client side
     if (typeof window !== "undefined") {
@@ -34,10 +36,10 @@ export default function Hero() {
       if (uid) {
         setFirebaseUID(uid);
       } else {
-        router.push("/login");
+        router.push("/login"); // Redirect to login if UID not found
         setAlert({
           show: true,
-          message: "No firebaseUID found",
+          message: "No firebaseUID found", // Set alert message
           variant: "danger",
         });
       }
