@@ -1,21 +1,27 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { createUser, getUser, deleteUser } = require('../controllers/userController');
 
-// Middleware that authenticates Firebase token
+// Import controller functions for user actions
+const {
+  createUser,
+  getUser,
+  deleteUser,
+} = require("../controllers/userController");
+
+// Import middleware to authenticate Firebase tokens
 const authenticateUser = require("../middleware/firebaseMiddleware");
 
-console.log('createUser:', createUser);
-console.log('getUser:', getUser);
-console.log('authenticateUser:', authenticateUser);
+console.log("createUser:", createUser);
+console.log("getUser:", getUser);
+console.log("authenticateUser:", authenticateUser);
 
-// Create user
-router.post('/', authenticateUser, createUser);
+// POST request to '/' with authentication middleware
+router.post("/", authenticateUser, createUser);
 
-// Get user by firebaseUID
-router.get('/:firebaseUID', authenticateUser, getUser);
+// GET request to '/:firebaseUID' with authentication middleware
+router.get("/:firebaseUID", authenticateUser, getUser);
 
-// Delete user by firebaseUID
-router.delete('/:firebaseUID', authenticateUser, deleteUser);
+// DELETE request to '/:firebaseUID' with authentication middleware
+router.delete("/:firebaseUID", authenticateUser, deleteUser);
 
 module.exports = router;
