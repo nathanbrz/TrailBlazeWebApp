@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 export const useApi = (endpoint, method = "GET", options = {}) => {
   const URL = process.env.NEXT_PUBLIC_BACK_END_URL || "http://localhost";
   const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || "4000";
+  const baseUrl = process.env.NODE_ENV === "development" ? `${URL}:${PORT}` : URL; // Use port only in development
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -17,7 +18,7 @@ export const useApi = (endpoint, method = "GET", options = {}) => {
       }
   
       setLoading(true);
-      const response = await fetch(`${URL}:${PORT}/${endpoint}`, {
+      const response = await fetch(`${baseUrl}/${endpoint}`, {
         method,
         headers: {
           Authorization: `Bearer ${token}`,
