@@ -1,3 +1,4 @@
+const fs = require('fs');
 const { initializeApp } = require('firebase-admin/app');
 const admin = require('firebase-admin');
 
