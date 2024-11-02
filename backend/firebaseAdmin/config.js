@@ -1,21 +1,28 @@
-const fs = require('fs');
-const { initializeApp } = require('firebase-admin/app');
-const admin = require('firebase-admin');
+const fs = require("fs");
+
+// Import Firebase Admin SDK functions for app initialization
+const { initializeApp } = require("firebase-admin/app");
+const admin = require("firebase-admin");
 
 let credentials;
 
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-  credentials = require('./firebaseCredentials.json')
+// In non-production (development or testing), load environment variables from a .env file
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+
+  credentials = require("./firebaseCredentials.json");
 } else {
-  const jsonDataFromEtc = fs.readFileSync('/etc/secrets/firebaseCredentials.json', 'utf8');
+  // In production, read Firebase credentials from a secure path
+  const jsonDataFromEtc = fs.readFileSync(
+    "/etc/secrets/firebaseCredentials.json",
+    "utf8"
+  );
   credentials = JSON.parse(jsonDataFromEtc);
 }
 
-
-// Initalizing Web App Instance
+// Initialize Firebase app instance with service account credentials
 admin.initializeApp({
   credential: admin.credential.cert(credentials),
 });
 
-module.exports = admin; 
+module.exports = admin;
