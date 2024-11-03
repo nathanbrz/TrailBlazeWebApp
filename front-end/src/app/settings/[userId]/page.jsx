@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GenericNav from "@/app/components/GenericNav";
 import Footer from "@/app/components/Footer";
 import withAuth from "@/app/components/withAuth";
@@ -20,6 +20,8 @@ function UserSettings() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [alert, setAlert] = useState({ show: false, message: "", variant: "" });
+  const [firebaseUID, setFirebaseUID] = useState(null);
+
   const router = useRouter();
 
   const handleFirstNameChange = (e) => setFirstName(e.target.value);
@@ -27,6 +29,11 @@ function UserSettings() {
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handleEmailChange = (e) => setEmail(e.target.value);
 
+  // fetch user data
+  const { data, error } = useApi(
+    firebaseUID ? `api/users/${firebaseUID}` : null,
+    "GET"
+  );
   // useApi hook for updating the user's name
   const {
     loading: updatingName,
@@ -40,6 +47,36 @@ function UserSettings() {
     error: updateEmailError,
     fetchData: updateEmail,
   } = useApi("api/users/email", "PUT");
+
+  // Effect to retrieve Firebase UID from localStorage
+  useEffect(() => {
+    // Only access localStorage on the client side
+    if (typeof window !== "undefined") {
+      const uid = localStorage.getItem("uuid");
+      if (uid) {
+        setFirebaseUID(uid);
+      } else {
+        router.push("/login"); // Redirect to login if UID not found
+        setAlert({
+          show: true,
+          message: "No firebaseUID found", // Set alert message
+          variant: "danger",
+        });
+      }
+    }
+  }, [router]);
+
+  // Set the default input values
+  // Check for error from useApi and set the alert accordingly
+  useEffect(() => {
+    if (error) {
+      console.error("Error fetching user data:", error);
+    } else if (data && data.user) {
+      setFirstName(data.user.first_name);
+      setLastName(data.user.last_name);
+      setEmail(data.user.email);
+    }
+  }, [data, error]);
 
   const validateName = () => {
     if (!firstName || firstName.length < 2) {
