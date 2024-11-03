@@ -24,8 +24,33 @@ const Login = () => {
     fetchData: verifyToken,
   } = useApi("api/firebase/session", "POST");
 
+  // Regular expression for basic email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
+
+    // Initialize error messages
+    let errorMessages = [];
+
+    // Input validation checks
+    if (!emailRegex.test(email)) {
+      errorMessages.push("Please enter a valid email address.");
+    }
+
+    if (password.length < 6) {
+      errorMessages.push("Password must be at least 6 characters long.");
+    }
+
+    // If there are validation errors, show them in the alert and stop execution
+    if (errorMessages.length > 0) {
+      setAlert({
+        show: true,
+        message: errorMessages.join("\n"),
+        variant: "danger",
+      });
+      return;
+    }
 
     try {
       // Firebase authentication
@@ -87,13 +112,21 @@ const Login = () => {
         {alert.show && (
           <MessageAlert
             variant={alert.variant}
-            message={alert.message}
+            message={
+              <ul style={{ paddingLeft: "20px" }}>
+                {alert.message.split("\n").map((msg, index) => (
+                  <li key={index} style={{ listStyleType: "disc" }}>
+                    {msg}
+                  </li>
+                ))}
+              </ul>
+            }
             show={alert.show}
             setShow={(value) => setAlert({ ...alert, show: value })}
           />
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email address

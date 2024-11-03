@@ -6,6 +6,9 @@ import { GoogleAuthProvider } from "firebase/auth";
 import { signOut } from "firebase/auth";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { updatePassword } from "firebase/auth";
+import { deleteUser } from "firebase/auth";
+import { updateEmail } from "firebase/auth";
+import { updateProfile } from "firebase/auth";
 
 // Creates user and stores information
 export const doCreateUserWithEmailAndPassword = async (email, password) => {
@@ -122,5 +125,62 @@ export const doPasswordChange = async (newPassword) => {
     } catch (error) {
         console.log("Error changing password: ", error.message);
         throw new Error("Error changing password. Please try again");
+    }
+};
+
+/* 
+    Deletes the users password
+    User has to be currently logged in
+*/
+export const doDeleteUser = async () => {
+    try {
+        const user = auth.currentUser;
+        if (user) {
+            await deleteUser(user);
+            console.log("User deleted successfully");
+        } else {
+            throw new Error("User is not currently logged in");
+        }
+    } catch (error) {
+        console.error("Error deleting user:", error.message);
+        throw new Error("Error deleting user. Please try again");
+    }
+};
+
+/* 
+    Updates the users email
+    User has to be currently logged in
+*/
+export const doUpdateEmail = async (newEmail) => {
+    try {
+        const user = auth.currentUser;
+        if (user) {
+            await updateEmail(user, newEmail);
+            console.log("Email updated successfully");
+        } else {
+            throw new Error("User is not currently logged in");
+        }
+    } catch (error) {
+        console.error("Error updating email:", error.message);
+        throw new Error("Error updating email. Please try again");
+    }
+};
+
+/* 
+    Updates the users name
+    User has to be currently logged in
+*/
+export const doUpdateName = async (newName) => {
+    try {
+        const user = auth.currentUser;
+        if (user) {
+            await updateProfile(user, { displayName: newName });
+            console.log("Name updated successfully");
+        } else {
+            throw new Error("User is not currently logged in");
+        }
+    } catch (error) {
+        console.error("Error updating name:", error.message);
+        throw new Error("Error updating name. Please try again");
     }
 };
