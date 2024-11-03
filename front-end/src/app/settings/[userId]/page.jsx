@@ -22,7 +22,8 @@ function UserSettings() {
   const [alert, setAlert] = useState({ show: false, message: "", variant: "" });
   const router = useRouter();
 
-  const handleNameChange = (e) => setName(e.target.value);
+  const handleFirstNameChange = (e) => setFirstName(e.target.value);
+  const handleLastNameChange = (e) => setLastName(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handleEmailChange = (e) => setEmail(e.target.value);
 
@@ -32,6 +33,13 @@ function UserSettings() {
     error: updateNameError,
     fetchData: updateName,
   } = useApi("api/users/names", "PUT");
+
+  // useApi hook for updating the user's email
+  const {
+    loading: updatingEmail,
+    error: updateEmailError,
+    fetchData: updateEmail,
+  } = useApi("api/users/email", "PUT");
 
   const validateName = () => {
     if (!firstName || firstName.length < 2) {
@@ -138,21 +146,45 @@ function UserSettings() {
     }
   };
 
-  const handleEmailChangeSubmission = (e) => {
+  const handleEmailChangeSubmission = async (e) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: "smooth" });
-    if (validateEmail()) {
-      doUpdateEmail(email)
-        .then(() => {
-          setAlert({
-            show: true,
-            message: "Email change successful.",
-            variant: "success",
-          });
-        })
-        .catch((error) => {
-          setAlert({ show: true, message: error.message, variant: "danger" });
+
+    // Ensure the email is valid before proceeding
+    if (!validateEmail()) return;
+
+    try {
+      // Call the API endpoint to update the email
+      await updateEmail({
+        body: { email },
+      });
+
+      // Check for API errors and display error alert if present
+      if (updateEmailError) {
+        setAlert({
+          show: true,
+          message: updateEmailError,
+          variant: "danger",
         });
+        return;
+      }
+
+      // Update email on Firebase or other systems as well
+      await doUpdateEmail(email);
+
+      // Show success alert if both updates are successful
+      setAlert({
+        show: true,
+        message: "Email change successful.",
+        variant: "success",
+      });
+    } catch (error) {
+      // Handle any errors and display an error alert
+      setAlert({
+        show: true,
+        message: error.message,
+        variant: "danger",
+      });
     }
   };
 
@@ -219,7 +251,7 @@ function UserSettings() {
               id="firstName"
               className="form-control w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
               value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={handleFirstNameChange}
             />
           </div>
 
@@ -236,7 +268,7 @@ function UserSettings() {
               id="lastName"
               className="form-control w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
               value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={handleLastNameChange}
             />
           </div>
           <button
