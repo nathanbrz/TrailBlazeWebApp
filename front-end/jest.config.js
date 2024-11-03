@@ -4,7 +4,7 @@ module.exports = {
     setupFilesAfterEnv: ['<rootDir>/src/app/tests/setupTests.js'],
     
     transform: {
-      '^.+\\.jsx?$': 'babel-jest',
+        '^.+\\.jsx?$': ['babel-jest', { configFile: './.babelrc.test.json' }],
     },
     transformIgnorePatterns: [
       'node_modules/(?!(@emotion/react|@emotion/styled))'
