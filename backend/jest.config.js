@@ -9,5 +9,6 @@ module.exports = {
         'middleware/**/*.js',
         'routes/**/*.js',
         'services/**/*.js'
-    ]
+    ],
+    setupFilesAfterEnv: ['./testSetup/setupTests.js']
 };

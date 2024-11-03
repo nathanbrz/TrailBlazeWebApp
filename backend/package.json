@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "concurrently": "^9.0.1",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "mongodb-memory-server": "^10.1.2"
   }
 }

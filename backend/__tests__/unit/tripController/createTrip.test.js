@@ -18,7 +18,7 @@ jest.mock('../../../services/openaiService', () => ({
     generateItinerary: jest.fn(), 
 }));
 
-describe('Trip Controller - createTrip', () => {
+describe('Trip Controller - createTrip (Unit Test)', () => {
     it('should create a new trip and return it', async () => {
         // Mock itinerary returned by generateItinerary
         const mockItinerary = {
@@ -81,7 +81,7 @@ describe('Trip Controller - createTrip', () => {
 
     it('should return 400 if there is an error creating the trip', async () => {
         // Mock generateItinerary to throw an error
-        generateItinerary.mockRejectedValue(new Error('Failed to generate itinerary'));
+        generateItinerary.mockRejectedValue(new Error('Failed to create new trip'));
 
         const res = await request(app)
             .post('/api/trips')
@@ -94,6 +94,6 @@ describe('Trip Controller - createTrip', () => {
             .set('Authorization', 'Bearer mockFirebaseToken'); // Mock token
 
         expect(res.statusCode).toEqual(400); // Expecting status code 400 (Bad Request)
-        expect(res.body).toHaveProperty('error', 'Failed to generate itinerary'); // Check for the error message
+        expect(res.body).toHaveProperty('error', 'Failed to create new trip'); // Check for the error message
     });
 });
