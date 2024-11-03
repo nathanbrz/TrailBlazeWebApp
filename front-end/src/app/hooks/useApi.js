@@ -2,30 +2,33 @@
 import { useState, useEffect } from "react";
 
 export const useApi = (endpoint, method = "GET", options = {}) => {
+  // Base URL setup
   const URL = process.env.NEXT_PUBLIC_BACK_END_URL || "http://localhost";
   const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || "4000";
   const baseUrl = process.env.NODE_ENV === "development" ? `${URL}:${PORT}` : URL; // Use port only in development
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [responseStatus, setResponseStatus] = useState(null);
 
+  const [data, setData] = useState(null); // State to store API response data
+  const [loading, setLoading] = useState(false); // State to manage loading status
+  const [error, setError] = useState(null); // State to store any error messages
+  const [responseStatus, setResponseStatus] = useState(null); // State to store the HTTP response status
+
+  // Function to fetch data from the API
   const fetchData = async (fetchOptions = {}) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        throw new Error("User not authenticated");
+        throw new Error("User not authenticated"); // Throw error if token is missing
       }
   
       setLoading(true);
       const response = await fetch(`${baseUrl}/${endpoint}`, {
-        method,
+        method, // HTTP method (GET, POST, etc.)
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           ...fetchOptions.headers, // Use headers from fetchOptions if provided
         },
-        body: method !== "GET" ? JSON.stringify(fetchOptions.body) : null, // Use body from fetchOptions if provided
+        body: method !== "GET" ? JSON.stringify(fetchOptions.body) : null, // Request body if method is not GET
       });
   
       setResponseStatus(response.status);
@@ -34,17 +37,18 @@ export const useApi = (endpoint, method = "GET", options = {}) => {
         throw new Error(`Failed to fetch: ${response.statusText}`);
       }
   
-      const result = await response.json();
-      setData(result);
-      setError(null);
+      const result = await response.json(); 
+      setData(result); 
+      setError(null); 
     } catch (err) {
-      setError(err.message);
-      setData(null);
+      setError(err.message); 
+      setData(null); 
     } finally {
       setLoading(false);
     }
   };
 
+  // Effect to automatically fetch data for GET requests
   useEffect(() => {
     if (method === "GET") {
       fetchData();

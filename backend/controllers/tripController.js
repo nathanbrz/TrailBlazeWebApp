@@ -68,6 +68,15 @@ const getAllTrips = async (req, res) => {
   }
 };
 
+const updateTripName = async (req, res) => {
+  try {
+    // stub
+  } catch (error) {
+    console.error("Error updating trip:", error);
+    res.status(500).json({ error: error.message });
+  }
+}
+
 // DELETE: Delete a specific trip by ID
 const deleteTrip = async (req, res) => {
   try {
@@ -94,4 +103,5 @@ module.exports = {
   createTrip,
   getAllTrips,
   deleteTrip,
+  updateTripName
 };

@@ -12,6 +12,7 @@ const Signup = () => {
   // Checks if user is already logged in
   useAuth();
 
+  // State variables for form inputs
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -31,6 +32,7 @@ const Signup = () => {
     "POST"
   );
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior to handle it with JavaScript
 

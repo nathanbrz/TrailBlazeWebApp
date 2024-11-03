@@ -3,14 +3,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.min.css";
 
 const SearchForm = ({ onSearch }) => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(""); // State to hold the search query
 
+  // Function to handle the search action
   const handleSearch = () => {
     if (onSearch) {
       onSearch(query); // Trigger the search action with the query
     }
   };
 
+  // Function to handle 'Enter' key press
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       handleSearch();

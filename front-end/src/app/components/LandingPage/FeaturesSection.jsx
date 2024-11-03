@@ -1,7 +1,7 @@
 import React from 'react';
 
 const FeaturesSection = () => {
-  // Data for the cards
+  // Data for the feature cards
   const features = [
     {
       id: 1,

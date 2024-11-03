@@ -7,9 +7,15 @@ import { useState } from "react";
 import Modal from "../../components/Modal";
 import TripForm from "./TripForm";
 
+// Main functional component for the introductory section of the page
 export default function IntroSection({ user }) {
+  // State variable to track whether the modal is open or closed
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Function to open the modal
   const handleOpenModal = () => setIsModalOpen(true);
+
+  // Function to close the modal
   const handleCloseModal = () => setIsModalOpen(false);
 
   return (
@@ -37,7 +43,7 @@ export default function IntroSection({ user }) {
           <Col>
             <div className="mt-12 text-center">
               <button
-                className="btn-blaze lg:w-1/4 text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors"
+                className="btn-blaze lg:w-1/4 text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors cursor-pointer"
                 onClick={handleOpenModal}
               >
                 Plan Your Next Trip!
