@@ -6,6 +6,8 @@ const {
   createUser,
   getUser,
   deleteUser,
+  updateUserNames,
+  updateUserEmail
 } = require("../controllers/userController");
 
 // Import middleware to authenticate Firebase tokens
@@ -20,6 +22,12 @@ router.post("/", authenticateUser, createUser);
 
 // GET request to '/:firebaseUID' with authentication middleware
 router.get("/:firebaseUID", authenticateUser, getUser);
+
+// PUT request to /names with authentication middleware
+router.put("/names", authenticateUser, updateUserNames);
+
+// PUT request to /email with authentication middleware
+router.put("/email", authenticateUser, updateUserEmail)
 
 // DELETE request to '/:firebaseUID' with authentication middleware
 router.delete("/:firebaseUID", authenticateUser, deleteUser);
