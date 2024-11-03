@@ -2,7 +2,7 @@ const request = require('supertest');
 const app = require('../../../server'); // Import the Express app
 const Trip = require('../../../dbmodels/trip');
 const Stop = require('../../../dbmodels/stop');
-const { generateItinerary } = require('../../../services/openaiService'); // Import the service
+const { generateItinerary } = require('../../../services/openaiService'); // Import the open ai service
 
 jest.mock('../../../dbmodels/trip'); // Mock the Trip model
 jest.mock('../../../dbmodels/stop'); // Mock the Stop model
@@ -15,10 +15,10 @@ jest.mock('../../../middleware/firebaseMiddleware', () => (req, res, next) => {
 
 // Mock the generateItinerary function from openaiService
 jest.mock('../../../services/openaiService', () => ({
-    generateItinerary: jest.fn(), // Mock the function
+    generateItinerary: jest.fn(), 
 }));
 
-describe('Trip Routes - createTrip', () => {
+describe('Trip Controller - createTrip', () => {
     it('should create a new trip and return it', async () => {
         // Mock itinerary returned by generateItinerary
         const mockItinerary = {
@@ -55,7 +55,7 @@ describe('Trip Routes - createTrip', () => {
         // Mock the Stop model constructor
         Stop.mockImplementation((stopData) => ({ ...stopData }));
 
-        // Mock the Trip model constructor
+        // Mock the Trip model constructor to simulate behavior of a Trip instance being created and then saved
         Trip.mockImplementation((tripData) => ({
             ...tripData,
             save: jest.fn().mockResolvedValue({ ...tripData, _id: "mockTripId" }),

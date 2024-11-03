@@ -10,7 +10,7 @@ jest.mock('../../../middleware/firebaseMiddleware', () => (req, res, next) => {
     next();
 });
 
-describe('Trip Routes - getAllTrips', () => {
+describe('Trip Controller - getAllTrips', () => {
     it('should return all trips for a user', async () => {
         // Mock user's saved trips
         const mockTrips = [
