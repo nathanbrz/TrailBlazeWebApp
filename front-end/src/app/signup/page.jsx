@@ -5,8 +5,8 @@ import "../../styles/global_styles.css";
 import { doCreateUserWithEmailAndPassword } from "../firebase/auth";
 import { useRouter } from "next/navigation";
 import useAuth from "../hooks/useAuth";
-import { useApi } from "../hooks/useApi"; 
-import MessageAlert from "../components/MessageAlert"; 
+import { useApi } from "../hooks/useApi";
+import MessageAlert from "../components/MessageAlert";
 
 const Signup = () => {
   // Checks if user is already logged in
@@ -35,20 +35,56 @@ const Signup = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior to handle it with JavaScript
-  
+
+    let errorMessages = [];
+
+    // Input validation
+    if (!/^[a-zA-Z]+$/.test(first_name)) {
+      errorMessages.push("First name should contain only letters.");
+    }
+    if (!/^[a-zA-Z]+$/.test(last_name)) {
+      errorMessages.push("Last name should contain only letters.");
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errorMessages.push("Please enter a valid email address.");
+    }
+    if (password.length < 6) {
+      errorMessages.push("Password should be at least 6 characters long.");
+    }
+
+    if (errorMessages.length > 0) {
+      setAlert({
+        show: true,
+        message: (
+          <ul style={{ paddingLeft: "20px" }}>
+            {errorMessages.map((msg, index) => (
+              <li key={index} style={{ listStyleType: "disc" }}>
+                {msg}
+              </li>
+            ))}
+          </ul>
+        ),
+        variant: "danger",
+      });
+      return;
+    }
+
     try {
       // Step 1: Use Firebase's sign-up function to create a new user with email and password.
-      const userCredential = await doCreateUserWithEmailAndPassword(email, password);
-      console.log("User signed up:", userCredential); 
-  
+      const userCredential = await doCreateUserWithEmailAndPassword(
+        email,
+        password
+      );
+      console.log("User signed up:", userCredential);
+
       // Step 2: Retrieve the ID token and UID for the newly signed-up user.
-      const token = await userCredential.user.getIdToken(); 
-      const userId = userCredential.user.uid; 
-      console.log("Token and UID received:", { token, userId }); 
-  
+      const token = await userCredential.user.getIdToken();
+      const userId = userCredential.user.uid;
+      console.log("Token and UID received:", { token, userId });
+
       // Step 3: Verify the token by sending it to the backend for validation.
-      await verifyToken({ body: { token } }); 
-  
+      await verifyToken({ body: { token } });
+
       // Step 4: Check if there was an error during token verification.
       if (verifyTokenError) {
         // If there's an error with the verification, throw an error with details
@@ -57,19 +93,19 @@ const Signup = () => {
         );
       }
       console.log("Token verified successfully.");
-  
+
       // Step 5: Create a new user in the backend database, including the first name and last name.
       await createUser({
         body: { first_name, last_name },
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log("User created in the backend.");
-  
+
       // Step 6: Store the token and UID in local storage for session persistence.
       localStorage.setItem("token", token);
-      localStorage.setItem("uuid", userId); 
-      console.log("Stored token and uuid in localStorage"); 
-  
+      localStorage.setItem("uuid", userId);
+      console.log("Stored token and uuid in localStorage");
+
       // Step 7: Redirect the user to their dashboard, using their unique UID for dynamic navigation.
       router.push(`/dashboard/${userId}`);
     } catch (error) {
@@ -81,9 +117,14 @@ const Signup = () => {
       });
       console.error("Signup error:", error); // Log the error for debugging
     }
-  
+
     // Log the signup data to confirm the values at submission
-    console.log("Signup submitted:", { email, password, first_name, last_name });
+    console.log("Signup submitted:", {
+      email,
+      password,
+      first_name,
+      last_name,
+    });
   };
 
   return (
@@ -106,7 +147,7 @@ const Signup = () => {
           />
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           <div className="mb-3">
             <label htmlFor="firstName" className="form-label">
               First Name
