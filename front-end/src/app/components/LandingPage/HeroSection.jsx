@@ -22,7 +22,7 @@ export default function HeroSection() {
           Clarity gives you the blocks & components you need to create a truly
           professional website, landing page, or admin panel for your SaaS.
         </p>
-        <button className="btn-blaze text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors" onClick={handlePlanNowClick}>
+        <button className="btn-blaze text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors cursor-pointer" onClick={handlePlanNowClick}>
           Plan Now
         </button>
       </div>
