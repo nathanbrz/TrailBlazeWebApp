@@ -3,11 +3,22 @@ import React, { useState } from "react";
 import GenericNav from "../../components/GenericNav";
 import Footer from "../../components/Footer";
 import withAuth from "@/app/components/withAuth";
+import {
+  doPasswordChange,
+  doDeleteUser,
+  doSignOut,
+  doUpdateEmail,
+  doUpdateName,
+} from "@/app/firebase/auth";
+import MessageAlert from "@/app/components/MessageAlert";
+import { useRouter } from "next/navigation";
 
 function UserSettings() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [alert, setAlert] = useState({ show: false, message: "", variant: "" });
+  const router = useRouter();
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -21,17 +32,99 @@ function UserSettings() {
     setEmail(e.target.value);
   };
 
-  const handleDeleteAccount = () => {
-    console.log("Account deletion logic goes here");
+  const handleNameChangeSubmission = (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    doUpdateName(name)
+      .then(() => {
+        setAlert({
+          show: true,
+          message: "Name change successful.",
+          variant: "success",
+        });
+      })
+      .catch((error) => {
+        setAlert({ show: true, message: error.message, variant: "danger" });
+      });
+  };
+
+  const handlePasswordChangeSubmission = (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    doPasswordChange(password)
+      .then(() => {
+        setAlert({
+          show: true,
+          message: "Password change successful.",
+          variant: "success",
+        });
+      })
+      .catch((error) => {
+        setAlert({ show: true, message: error.message, variant: "danger" });
+      });
+  };
+
+  const handleEmailChangeSubmission = (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    doUpdateEmail(email)
+      .then(() => {
+        setAlert({
+          show: true,
+          message: "Email change successful.",
+          variant: "success",
+        });
+      })
+      .catch((error) => {
+        setAlert({ show: true, message: error.message, variant: "danger" });
+      });
+  };
+
+  const handleDeleteAccount = (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    doDeleteUser()
+      .then(() => {
+        setAlert({
+          show: true,
+          message: "Good bye!",
+          variant: "success",
+        });
+        handleLogout();
+      })
+      .catch((error) => {
+        setAlert({ show: true, message: error.message, variant: "danger" });
+      });
+  };
+
+  const handleLogout = async () => {
+    try {
+      await doSignOut(); // Call Firebase sign out
+      // Clear the user token from localStorage and redirect to login
+      localStorage.removeItem("token");
+      localStorage.removeItem("uuid");
+      router.push("/login"); // Redirect to login page
+    } catch (error) {
+      console.error("Failed to log out:", error.message);
+    }
   };
 
   return (
     <>
-      <GenericNav/>
+      <GenericNav />
+
       <div className="container mx-auto mt-10 p-5">
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
           User Settings
         </h2>
+        {alert.show && (
+          <MessageAlert
+            variant={alert.variant}
+            message={alert.message}
+            show={alert.show}
+            setShow={(value) => setAlert({ ...alert, show: value })}
+          />
+        )}
 
         {/* Name Section */}
         <div className="bg-white shadow-lg rounded-lg p-8 mb-6">
@@ -56,6 +149,7 @@ function UserSettings() {
           <button
             type="button"
             className="mt-4 btn-blaze hover:bg-red-700 text-white font-semibold py-2 px-4 rounded focus:outline-none"
+            onClick={handleNameChangeSubmission}
           >
             Save Name
           </button>
@@ -84,6 +178,7 @@ function UserSettings() {
           <button
             type="button"
             className="mt-4 btn-blaze hover:bg-red-700 text-white font-semibold py-2 px-4 rounded focus:outline-none"
+            onClick={handlePasswordChangeSubmission}
           >
             Save Password
           </button>
@@ -111,6 +206,7 @@ function UserSettings() {
           </div>
           <button
             type="button"
+            onClick={handleEmailChangeSubmission}
             className="mt-4 btn-blaze hover:bg-red-700 text-white font-semibold py-2 px-4 rounded focus:outline-none"
           >
             Save Email
@@ -136,7 +232,7 @@ function UserSettings() {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 }
