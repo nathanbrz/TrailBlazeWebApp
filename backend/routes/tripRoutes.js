@@ -1,18 +1,22 @@
-const express = require('express');
-const { createTrip, getAllTrips, requestItinerary } = require('../controllers/tripController');
+const express = require("express");
+const {
+  createTrip,
+  getAllTrips,
+  deleteTrip,
+} = require("../controllers/tripController");
 
 const router = express.Router();
 
 // Middleware that authenticates Firebase token
 const authenticateUser = require("../middleware/firebaseMiddleware");
 
-// Route to create a trip
-router.post('/', authenticateUser, createTrip);
+// POST request to '/' with authentication middleware
+router.post("/", authenticateUser, createTrip);
 
-// Route to get all trips
-router.get('/', authenticateUser, getAllTrips);
+// GET request to '/' with authentication middleware
+router.get("/", authenticateUser, getAllTrips);
 
-// Route to generate itinerary
-router.post('/request-itinerary', requestItinerary);
+// DELETE request to '/:id' with authentication middleware
+router.delete("/:id", authenticateUser, deleteTrip);
 
 module.exports = router;

@@ -5,10 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { doSignOut } from "../../firebase/auth"; // Import sign out function
+import { Dropdown } from "react-bootstrap";
 
 export default function SearchBar() {
   const [dropdownOpen, setDropdownOpen] = useState(false); // State for dropdown visibility
   const router = useRouter();
+  const uid = localStorage.getItem("uuid");
+
+  const handleSettings = () => {
+    router.push(`/settings/${uid}`); // Redirect to settings page with user ID
+  };
 
   const handleLogout = async () => {
     try {
@@ -39,27 +45,47 @@ export default function SearchBar() {
             <SearchForm />
           </div>
           <div className="relative">
-            {/* Profile Image */}
-            <Image
-              src="/images/user-icon.png"
-              width="50"
-              height="50"
-              alt="profile image"
-              onClick={() => setDropdownOpen(!dropdownOpen)} // Toggle dropdown on click
-              style={{ cursor: "pointer" }}
-            />
+            {/* Bootstrap Dropdown */}
+            <Dropdown align="end">
+              <Dropdown.Toggle
+                variant="link"
+                bsPrefix="p-0"
+                id="dropdown-basic"
+              >
+                <div className="p-2 rounded-full">
+                  {" "}
+                  {/* Add padding and optional background */}
+                  <Image
+                    src="/images/user-icon.png"
+                    width="50"
+                    height="50"
+                    alt="profile image"
+                    style={{ cursor: "pointer" }}
+                  />
+                </div>
+              </Dropdown.Toggle>
 
-            {/* Dropdown Menu */}
-            {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2">
-                <button
+              <Dropdown.Menu>
+                <Dropdown.Item
+                  className="custom-dropdown-item"
+                  onClick={() => router.push(`/dashboard/${uid}`)}
+                >
+                  Dashboard
+                </Dropdown.Item>
+                <Dropdown.Item
+                  className="custom-dropdown-item"
+                  onClick={handleSettings}
+                >
+                  Settings
+                </Dropdown.Item>
+                <Dropdown.Item
+                  className="custom-dropdown-item"
                   onClick={handleLogout}
-                  className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
                 >
                   Log Out
-                </button>
-              </div>
-            )}
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
         </div>
       </div>

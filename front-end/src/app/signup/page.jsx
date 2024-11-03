@@ -5,13 +5,14 @@ import "../../styles/global_styles.css";
 import { doCreateUserWithEmailAndPassword } from "../firebase/auth";
 import { useRouter } from "next/navigation";
 import useAuth from "../hooks/useAuth";
-import { useApi } from "../hooks/useApi"; // Import the useApi hook
-import MessageAlert from "../components/MessageAlert"; // Import the MessageAlert component
+import { useApi } from "../hooks/useApi"; 
+import MessageAlert from "../components/MessageAlert"; 
 
 const Signup = () => {
   // Checks if user is already logged in
   useAuth();
 
+  // State variables for form inputs
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -25,63 +26,64 @@ const Signup = () => {
     error: verifyTokenError,
     responseStatus: verifyTokenStatus,
   } = useApi("api/firebase/session", "POST");
+
   const { fetchData: createUser, error: createUserError } = useApi(
     "api/users",
     "POST"
   );
 
+  // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
+    e.preventDefault(); // Prevent the default form submission behavior to handle it with JavaScript
+  
     try {
-      // Handling authentication through Firebase
-      const userCredential = await doCreateUserWithEmailAndPassword(
-        email,
-        password
-      );
-      console.log("User signed up!");
-
-      // Getting the user's token and uid after successful signup
-      const token = await userCredential.user.getIdToken();
-      const userId = userCredential.user.uid; // Get the userId (uid)
-
-      // Send the token to the backend for verification
-      await verifyToken({ body: { token } });
-
-      // Check for token verification errors
+      // Step 1: Use Firebase's sign-up function to create a new user with email and password.
+      const userCredential = await doCreateUserWithEmailAndPassword(email, password);
+      console.log("User signed up:", userCredential); 
+  
+      // Step 2: Retrieve the ID token and UID for the newly signed-up user.
+      const token = await userCredential.user.getIdToken(); 
+      const userId = userCredential.user.uid; 
+      console.log("Token and UID received:", { token, userId }); 
+  
+      // Step 3: Verify the token by sending it to the backend for validation.
+      await verifyToken({ body: { token } }); 
+  
+      // Step 4: Check if there was an error during token verification.
       if (verifyTokenError) {
+        // If there's an error with the verification, throw an error with details
         throw new Error(
           `Token verification failed: ${verifyTokenError} (Status: ${verifyTokenStatus})`
         );
       }
-
-      // Save the user in the database
+      console.log("Token verified successfully.");
+  
+      // Step 5: Create a new user in the backend database, including the first name and last name.
       await createUser({
         body: { first_name, last_name },
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      // Saving the token and userID in local storage
+      console.log("User created in the backend.");
+  
+      // Step 6: Store the token and UID in local storage for session persistence.
       localStorage.setItem("token", token);
-      localStorage.setItem("uuid", userId);
-
-      // Dynamically navigate to the user-specific dashboard using the userId
+      localStorage.setItem("uuid", userId); 
+      console.log("Stored token and uuid in localStorage"); 
+  
+      // Step 7: Redirect the user to their dashboard, using their unique UID for dynamic navigation.
       router.push(`/dashboard/${userId}`);
     } catch (error) {
+      // If any errors occur in the process, display an alert with the error message.
       setAlert({
         show: true,
         message: error.message,
         variant: "danger",
       });
-      console.log(error);
+      console.error("Signup error:", error); // Log the error for debugging
     }
-
-    console.log("Signup submitted:", {
-      email,
-      password,
-      first_name,
-      last_name,
-    });
+  
+    // Log the signup data to confirm the values at submission
+    console.log("Signup submitted:", { email, password, first_name, last_name });
   };
 
   return (

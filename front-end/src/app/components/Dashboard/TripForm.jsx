@@ -1,45 +1,86 @@
-import React, { useState } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import MessageAlert from "../MessageAlert";
 import { useApi } from "../../hooks/useApi";
+import Select from "react-select";
+import northAmericanCities from "../../../data/northAmericanCities";
+
+// List of cities for autocomplete
+const cities = northAmericanCities.map((city) => ({
+  value: city,
+  label: city,
+}));
 
 function TripForm() {
   const [formData, setFormData] = useState({
-    startingPosition: "",
-    endingPosition: "",
-    tripDuration: "",
+    startingPosition: null,
+    endingPosition: null,
+    tripDuration: "10",
     tripPreference: "",
-  });
+  }); // State to store form input values
 
   const [alert, setAlert] = useState({
     show: false,
     message: "",
     variant: "",
-  });
+  }); // State for displaying alerts
 
-  const {
-    data,
-    loading,
-    error,
-    responseStatus,
-    fetchData: submitTrip,
-  } = useApi("api/trips", "POST", { body: formData });
+  // Custom hook to handle API calls
+  const { data, loading, error, responseStatus, fetchData: submitTrip } = useApi("api/trips", "POST");
 
-  const handleChange = (e) => {
+  // Function to handle form input changes
+  const handleChange = (selectedOption, name) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: selectedOption,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate trip duration
+    if (formData.tripDuration < 1 || formData.tripDuration > 20) {
+      setAlert({
+        show: true,
+        message: "Trip duration must be between 1 and 20 days.",
+        variant: "danger",
+      });
+      return;
+    }
 
-    // Trigger the API request manually
-    await submitTrip();
+    // Check for empty starting and ending positions
+    if (formData.startingPosition == null || formData.endingPosition == null) {
+      setAlert({
+        show: true,
+        message: "Please select a starting and ending city.",
+        variant: "danger",
+      });
+      return;
+    }
+    
+    // Submit form data to the API
+    await submitTrip({
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        start_location: formData.startingPosition?.value,
+        end_location: formData.endingPosition?.value,
+        total_duration: Number(formData.tripDuration),
+        trip_interest: formData.tripPreference,
+      },
+    });
 
-    // Check the status code and handle errors/success
+    // Handle API response
     if (responseStatus === 200 || responseStatus === 201) {
+      setFormData({
+        startingPosition: null,
+        endingPosition: null,
+        tripDuration: "",
+        tripPreference: "",
+      });
       setAlert({
         show: true,
         message: "Trip planned successfully!",
@@ -54,7 +95,15 @@ function TripForm() {
     }
   };
 
+  // Reload the page when `loading` turns from `true` to `false` after a successful response
+  useEffect(() => {
+    if (!loading && (responseStatus === 200 || responseStatus === 201)) {
+      window.location.reload();
+    }
+  }, [loading, responseStatus]);
+
   return alert.show ? (
+    // Show alert message if alert state is active
     <MessageAlert
       variant={alert.variant}
       message={alert.message}
@@ -65,35 +114,35 @@ function TripForm() {
     <Form onSubmit={handleSubmit} className="mx-4">
       {/* Starting Position */}
       <Form.Group className="mb-3" controlId="startingPosition">
-        <Form.Label>Starting Position</Form.Label>
-        <Form.Control
-          type="text"
-          name="startingPosition"
-          placeholder="Location Start"
+        <Form.Label>Start City</Form.Label>
+        <Select
+          options={cities}
           value={formData.startingPosition}
-          onChange={handleChange}
+          onChange={(option) => handleChange(option, 'startingPosition')}
+          placeholder="Select a city in North America..."
         />
       </Form.Group>
       {/* Ending Position */}
       <Form.Group className="mb-3" controlId="endingPosition">
-        <Form.Label>Ending Position</Form.Label>
-        <Form.Control
-          type="text"
-          name="endingPosition"
-          placeholder="Location End"
+        <Form.Label>End City</Form.Label>
+        <Select
+          options={cities}
           value={formData.endingPosition}
-          onChange={handleChange}
+          onChange={(option) => handleChange(option, 'endingPosition')}
+          placeholder="Select a city in North America..."
         />
       </Form.Group>
-      {/* Ideal Trip Duration */}
+      {/* Ideal Trip Duration (1 - 20 Days) */}
       <Form.Group className="mb-3" controlId="tripDuration">
-        <Form.Label>Ideal Trip Duration (days)</Form.Label>
+        <Form.Label>Ideal Trip Duration (1 - 20 days)</Form.Label>
         <Form.Control
           type="number"
           name="tripDuration"
-          placeholder="20"
+          placeholder="10"
           value={formData.tripDuration}
-          onChange={handleChange}
+          onChange={(e) => setFormData({ ...formData, tripDuration: e.target.value })}
+          min={1}
+          max={20}
         />
       </Form.Group>
       {/* What are you looking for in this trip? */}
@@ -102,7 +151,7 @@ function TripForm() {
         <Form.Select
           name="tripPreference"
           value={formData.tripPreference}
-          onChange={handleChange}
+          onChange={(e) => setFormData({ ...formData, tripPreference: e.target.value })}
           aria-label="Default select example"
         >
           <option value="">N/A</option>

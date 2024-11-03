@@ -14,11 +14,17 @@ const PlanItem = ({
   notes,
   itinerary,
   router,
+  onDelete,
 }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  // Function to open the delete confirmation modal
   const handleOpenDeleteModal = () => setIsDeleteModalOpen(true);
+
+  // Function to close the delete confirmation modal
   const handleCloseDeleteModal = () => setIsDeleteModalOpen(false);
 
+  // Function to handle redirection to the itinerary page with query parameters
   const handleClick = () => {
     // Redirect to the itinerary page for this trip
     // router.push(`/itinerary/${id}`);
@@ -33,6 +39,7 @@ const PlanItem = ({
         show={isDeleteModalOpen}
         hide={handleCloseDeleteModal}
         planID={id}
+        onDeleteSuccess={() => onDelete(id)} // Pass the onDelete function here
       />
       <Card className="mb-3 rounded-5 mx-12">
         <Row className="g-0">

@@ -5,10 +5,12 @@ import { useRouter } from "next/navigation";
 export default function Navbar() {
   const router = useRouter();
 
+  // Function to navigate to the login page
   const handlePlanNowClick = () => {
     router.push('/login'); // Navigates to /login
   };
 
+  // Function to scroll to a specific section on the page
   const scrollToSection = (sectionId) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -19,10 +21,11 @@ export default function Navbar() {
     }
   };
 
+  // Function to scroll to the top of the page
   const scrollToTop = () => {
     window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
+      top: 0,  // Scroll to the top of the page
+      behavior: 'smooth', // Smooth scrolling
     });
   };
 
