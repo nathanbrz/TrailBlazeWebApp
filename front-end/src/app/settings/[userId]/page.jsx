@@ -20,64 +20,99 @@ function UserSettings() {
   const [alert, setAlert] = useState({ show: false, message: "", variant: "" });
   const router = useRouter();
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
+  const handleNameChange = (e) => setName(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleEmailChange = (e) => setEmail(e.target.value);
+
+  const validateName = () => {
+    if (!name || name.length < 2) {
+      setAlert({
+        show: true,
+        message: "Name must be at least 2 characters.",
+        variant: "danger",
+      });
+      return false;
+    }
+    return true;
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+  const validatePassword = () => {
+    if (!password || password.length < 6) {
+      setAlert({
+        show: true,
+        message: "Password must be at least 6 characters.",
+        variant: "danger",
+      });
+      return false;
+    }
+    return true;
   };
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+  const validateEmail = () => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailPattern.test(email)) {
+      setAlert({
+        show: true,
+        message: "Please enter a valid email address.",
+        variant: "danger",
+      });
+      return false;
+    }
+    return true;
   };
 
   const handleNameChangeSubmission = (e) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: "smooth" });
-    doUpdateName(name)
-      .then(() => {
-        setAlert({
-          show: true,
-          message: "Name change successful.",
-          variant: "success",
+    if (validateName()) {
+      doUpdateName(name)
+        .then(() => {
+          setAlert({
+            show: true,
+            message: "Name change successful.",
+            variant: "success",
+          });
+        })
+        .catch((error) => {
+          setAlert({ show: true, message: error.message, variant: "danger" });
         });
-      })
-      .catch((error) => {
-        setAlert({ show: true, message: error.message, variant: "danger" });
-      });
+    }
   };
 
   const handlePasswordChangeSubmission = (e) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: "smooth" });
-    doPasswordChange(password)
-      .then(() => {
-        setAlert({
-          show: true,
-          message: "Password change successful.",
-          variant: "success",
+    if (validatePassword()) {
+      doPasswordChange(password)
+        .then(() => {
+          setAlert({
+            show: true,
+            message: "Password change successful.",
+            variant: "success",
+          });
+        })
+        .catch((error) => {
+          setAlert({ show: true, message: error.message, variant: "danger" });
         });
-      })
-      .catch((error) => {
-        setAlert({ show: true, message: error.message, variant: "danger" });
-      });
+    }
   };
 
   const handleEmailChangeSubmission = (e) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: "smooth" });
-    doUpdateEmail(email)
-      .then(() => {
-        setAlert({
-          show: true,
-          message: "Email change successful.",
-          variant: "success",
+    if (validateEmail()) {
+      doUpdateEmail(email)
+        .then(() => {
+          setAlert({
+            show: true,
+            message: "Email change successful.",
+            variant: "success",
+          });
+        })
+        .catch((error) => {
+          setAlert({ show: true, message: error.message, variant: "danger" });
         });
-      })
-      .catch((error) => {
-        setAlert({ show: true, message: error.message, variant: "danger" });
-      });
+    }
   };
 
   const handleDeleteAccount = (e) => {
@@ -87,7 +122,7 @@ function UserSettings() {
       .then(() => {
         setAlert({
           show: true,
-          message: "Good bye!",
+          message: "Goodbye!",
           variant: "success",
         });
         handleLogout();
@@ -99,11 +134,10 @@ function UserSettings() {
 
   const handleLogout = async () => {
     try {
-      await doSignOut(); // Call Firebase sign out
-      // Clear the user token from localStorage and redirect to login
+      await doSignOut();
       localStorage.removeItem("token");
       localStorage.removeItem("uuid");
-      router.push("/login"); // Redirect to login page
+      router.push("/login");
     } catch (error) {
       console.error("Failed to log out:", error.message);
     }
@@ -112,7 +146,6 @@ function UserSettings() {
   return (
     <>
       <GenericNav />
-
       <div className="container mx-auto mt-10 p-5">
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
           User Settings
@@ -215,25 +248,24 @@ function UserSettings() {
 
         {/* Delete Account Section */}
         <div className="bg-red-100 shadow-lg rounded-lg p-8">
-          <div className="p-8">
-            <h3 className="text-xl font-semibold text-red-700 mb-4">
-              Danger Zone
-            </h3>
-            <p className="text-gray-700 mb-4">
-              Permanently delete your account. This action cannot be undone.
-            </p>
-            <button
-              type="button"
-              onClick={handleDeleteAccount}
-              className="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded focus:outline-none"
-            >
-              Delete Account
-            </button>
-          </div>
+          <h3 className="text-xl font-semibold text-red-700 mb-4">
+            Danger Zone
+          </h3>
+          <p className="text-gray-700 mb-4">
+            Permanently delete your account. This action cannot be undone.
+          </p>
+          <button
+            type="button"
+            onClick={handleDeleteAccount}
+            className="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded focus:outline-none"
+          >
+            Delete Account
+          </button>
         </div>
       </div>
       <Footer />
     </>
   );
 }
-export default withAuth(UserSettings); // Wrap the page with withAuth
+
+export default withAuth(UserSettings);
