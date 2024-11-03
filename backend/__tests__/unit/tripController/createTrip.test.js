@@ -78,4 +78,22 @@ describe('Trip Controller - createTrip', () => {
         expect(res.body).toHaveProperty('end_location', 'Banff, AB'); // Check the end location
         expect(res.body.itinerary[1]).toHaveProperty('hotel', 'Banff Springs Hotel'); // Check itinerary details
     });
+
+    it('should return 400 if there is an error creating the trip', async () => {
+        // Mock generateItinerary to throw an error
+        generateItinerary.mockRejectedValue(new Error('Failed to generate itinerary'));
+
+        const res = await request(app)
+            .post('/api/trips')
+            .send({
+                start_location: 'Vancouver, BC',
+                end_location: 'Banff, AB',
+                total_duration: 4,
+                trip_interest: 'Nature'
+            })
+            .set('Authorization', 'Bearer mockFirebaseToken'); // Mock token
+
+        expect(res.statusCode).toEqual(400); // Expecting status code 400 (Bad Request)
+        expect(res.body).toHaveProperty('error', 'Failed to generate itinerary'); // Check for the error message
+    });
 });
