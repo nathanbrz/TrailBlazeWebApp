@@ -89,4 +89,11 @@ async function connect() {
     });
   }
 }
-connect(); // Call the connect function to start the server
+
+// Export the app for testing purposes
+module.exports = app;
+
+// Call the connect function if not in a test environment
+if (process.env.NODE_ENV !== "test") {
+  connect();
+}
