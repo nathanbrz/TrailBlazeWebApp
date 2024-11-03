@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import GenericNav from "../../components/GenericNav";
-import Footer from "../../components/Footer";
+import GenericNav from "@/app/components/GenericNav";
+import Footer from "@/app/components/Footer";
 import withAuth from "@/app/components/withAuth";
 import {
   doPasswordChange,
@@ -12,9 +12,11 @@ import {
 } from "@/app/firebase/auth";
 import MessageAlert from "@/app/components/MessageAlert";
 import { useRouter } from "next/navigation";
+import { useApi } from "@/app/hooks/useApi";
 
 function UserSettings() {
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [alert, setAlert] = useState({ show: false, message: "", variant: "" });
@@ -24,11 +26,26 @@ function UserSettings() {
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handleEmailChange = (e) => setEmail(e.target.value);
 
+  // useApi hook for updating the user's name
+  const {
+    loading: updatingName,
+    error: updateNameError,
+    fetchData: updateName,
+  } = useApi("api/users/names", "PUT");
+
   const validateName = () => {
-    if (!name || name.length < 2) {
+    if (!firstName || firstName.length < 2) {
       setAlert({
         show: true,
-        message: "Name must be at least 2 characters.",
+        message: "First name must be at least 2 characters.",
+        variant: "danger",
+      });
+      return false;
+    }
+    if (!lastName || lastName.length < 2) {
+      setAlert({
+        show: true,
+        message: "Last name must be at least 2 characters.",
         variant: "danger",
       });
       return false;
@@ -61,21 +78,45 @@ function UserSettings() {
     return true;
   };
 
-  const handleNameChangeSubmission = (e) => {
+  const handleNameChangeSubmission = async (e) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: "smooth" });
-    if (validateName()) {
-      doUpdateName(name)
-        .then(() => {
-          setAlert({
-            show: true,
-            message: "Name change successful.",
-            variant: "success",
-          });
-        })
-        .catch((error) => {
-          setAlert({ show: true, message: error.message, variant: "danger" });
+
+    // Ensure the name is valid before proceeding
+    if (!validateName()) return;
+
+    try {
+      // Call the API endpoint to update the name
+      await updateName({
+        body: { first_name: firstName, last_name: lastName },
+      });
+
+      // Check for API errors and display error alert if present
+      if (updateNameError) {
+        setAlert({
+          show: true,
+          message: updateNameError,
+          variant: "danger",
         });
+        return;
+      }
+
+      // Update display name on firebase as well
+      await doUpdateName(firstName);
+
+      // Show success alert if both updates are successful
+      setAlert({
+        show: true,
+        message: "Name change successful.",
+        variant: "success",
+      });
+    } catch (error) {
+      // Handle errors from either API call and display error alert
+      setAlert({
+        show: true,
+        message: error.message,
+        variant: "danger",
+      });
     }
   };
 
@@ -164,19 +205,38 @@ function UserSettings() {
           <h3 className="text-xl font-semibold text-gray-700 mb-4">
             Change Name
           </h3>
-          <div className="form-group">
+
+          {/* First Name Field */}
+          <div className="form-group mb-4">
             <label
-              htmlFor="name"
+              htmlFor="firstName"
               className="block text-gray-600 font-medium mb-2"
             >
-              Name
+              First Name
             </label>
             <input
               type="text"
-              id="name"
+              id="firstName"
               className="form-control w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-              value={name}
-              onChange={handleNameChange}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+          </div>
+
+          {/* Last Name Field */}
+          <div className="form-group mb-4">
+            <label
+              htmlFor="lastName"
+              className="block text-gray-600 font-medium mb-2"
+            >
+              Last Name
+            </label>
+            <input
+              type="text"
+              id="lastName"
+              className="form-control w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
             />
           </div>
           <button
