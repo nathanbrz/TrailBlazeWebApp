@@ -84,4 +84,16 @@ describe('Trip Controller - getAllTrips', () => {
         expect(res.body[0]).toHaveProperty('itinerary');
         expect(res.body[0].itinerary[0]).toHaveProperty('location', 'Vancouver, BC');
     });
+
+    it('should return 500 if there is a server error', async () => {
+        // Simulate a server error
+        Trip.find = jest.fn().mockRejectedValue(new Error('Database error'));
+
+        const res = await request(app)
+            .get('/api/trips')
+            .set('Authorization', 'Bearer mockFirebaseToken'); // Mock token
+
+        expect(res.statusCode).toEqual(500); // Status 500 for server error
+        expect(res.body).toHaveProperty('error', 'Database error'); // Check for the error message
+    });
 });
