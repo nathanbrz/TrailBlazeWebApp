@@ -43,7 +43,7 @@ export default function IntroSection({ user }) {
           <Col>
             <div className="mt-12 text-center">
               <button
-                className="btn-blaze lg:w-1/4 text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors"
+                className="btn-blaze lg:w-1/4 text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors cursor-pointer"
                 onClick={handleOpenModal}
               >
                 Plan Your Next Trip!
