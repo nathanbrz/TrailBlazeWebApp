@@ -50,6 +50,43 @@ const getUser = async (req, res) => {
   }
 };
 
+// UPDATE: Update user names
+// NOTE: Send both names in the request even if only one is updated
+const updateUserNames = async (req, res) => {
+    const { uid } = req.user;
+    const new_first_name = req.body.first_name;
+    const new_last_name = req.body.last_name;
+    try {
+       await User.findOneAndUpdate({firebaseUID: uid}, {
+        $set: {
+            first_name: new_first_name,
+            last_name: new_last_name
+        }
+       })
+       res.status(200).json({ message: 'User names updated successfully' });
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ message: 'Error updating user', error });
+    }
+}
+// UPDATE: Update user email
+// NOTE TO FRONTEND: You must change the email in firebase as well!
+const updateUserEmail = async (req, res) => {
+    const { uid } = req.user;
+    const new_email = req.body.email
+    try {
+        await User.findOneAndUpdate({firebaseUID: uid}, { 
+        $set: {
+            email: new_email
+        }
+        })
+        res.status(200).json({ message: 'User email updated successfully' });
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ message: 'Error updating user', error });
+    }
+}
+
 // DELETE: Delete user by firebaseUID
 const deleteUser = async (req, res) => {
   const { uid } = req.user;
@@ -77,4 +114,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { createUser, getUser, deleteUser };
+module.exports = { createUser, getUser, deleteUser, updateUserNames, updateUserEmail };

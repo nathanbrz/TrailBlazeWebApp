@@ -52,6 +52,7 @@ export default function PlanListSection({ router }) {
             itinerary={trip.itinerary}
             router={router}
             onDelete={handleDeleteTrip} // Pass the delete handler to PlanItem
+            isClickable={true}
           />
         ))}
 

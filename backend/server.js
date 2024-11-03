@@ -10,18 +10,18 @@ const mongoose = require("mongoose");
 const uri = process.env.MONGODB_URI;
 const port = process.env.PORT || 4000; // Default port is 4000 if not specified
 
-const User = require('./dbmodels/user')
-const Trip = require('./dbmodels/trip')
-const tripRoutes = require('./routes/tripRoutes')
-const userRoutes = require('./routes/userRoutes')
-const promptRoutes = require('./routes/promptRoutes')
+const User = require("./dbmodels/user");
+const Trip = require("./dbmodels/trip");
 
-const FRONTENDURL = process.env.FRONT_END_URL || 'http://localhost';
-const FRONTENDPORT = process.env.FRONT_END_PORT || '3001'
+// Import route modules
+const tripRoutes = require("./routes/tripRoutes");
+const userRoutes = require("./routes/userRoutes");
+const promptRoutes = require("./routes/promptRoutes");
+const firebaseRoutes = require("./routes/firebaseRoutes"); // Authentication
 
-
-// Authentication
-const firebaseRoutes = require('./routes/firebaseRoutes')
+// Frontend configuration (production and development)
+const FRONTENDURL = process.env.FRONT_END_URL || "http://localhost";
+const FRONTENDPORT = process.env.FRONT_END_PORT || "3001";
 
 // Create express app
 const app = express();
@@ -77,7 +77,6 @@ app.get("/", (req, res) => {
 // Route definitions with base paths
 app.use("/api/trips", tripRoutes); // Routes for trip-related endpoints
 app.use("/api/users", userRoutes); // Routes for user-related endpoints
-app.use("/api/prompts", promptRoutes); // Routes for prompt-related endpoints
 app.use("/api/firebase", firebaseRoutes); // Routes for Firebase authentication-related endpoints
 
 // Export the app for testing
@@ -96,8 +95,8 @@ if (process.env.NODE_ENV !== "test") {
       console.error(err);
     }
   }
-  connect();
 }
+connect(); // Call the connect function to start the server
 
 // Here is some example code showing how to create and query MongoDB models.
 // try {
