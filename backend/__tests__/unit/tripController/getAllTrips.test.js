@@ -19,7 +19,7 @@ describe('Trip Controller - getAllTrips', () => {
                 userID: 'mockUserId',
                 total_duration: 4,
                 start_location: 'Vancouver, BC',
-                end_location: 'Toronto, ON',
+                end_location: 'Banff, AB',
                 trip_interest: 'Nature',
                 itinerary: [
                     {
@@ -33,6 +33,18 @@ describe('Trip Controller - getAllTrips', () => {
                         ],
                         travel_time: 0,
                         notes: 'Enjoy Vancouver’s urban nature spots.'
+                    },
+                    {
+                        day: 3,
+                        location: 'Banff, AB',
+                        stay: 1,
+                        hotel: 'Banff Springs Hotel',
+                        activities: [
+                            { name: 'Visit Banff National Park', description: 'A stunning national park in the Rockies.' },
+                            { name: 'Hike Johnston Canyon', description: 'A beautiful hike with waterfalls.' }
+                        ],
+                        travel_time: 10,
+                        notes: 'Drive through the Rocky Mountains to Banff.'
                     }
                 ]
             },
@@ -78,6 +90,7 @@ describe('Trip Controller - getAllTrips', () => {
             .get('/api/trips')
             .set('Authorization', 'Bearer mockFirebaseToken'); // Mock token
 
+        // Assertions
         expect(res.statusCode).toEqual(200); // Status 200 for success
         expect(res.body.length).toBe(2); // Expecting two trips in the response
         expect(res.body[0]).toHaveProperty('start_location', 'Vancouver, BC');

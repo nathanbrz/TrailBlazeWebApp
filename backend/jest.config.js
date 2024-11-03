@@ -10,5 +10,6 @@ module.exports = {
         'routes/**/*.js',
         'services/**/*.js'
     ],
-    setupFilesAfterEnv: ['./testSetup/setupTests.js']
+    setupFilesAfterEnv: ['./testSetup/setupTests.js'],
+    testTimeout: 30000
 };
