@@ -11,7 +11,7 @@ function PlanItemDeleteForm({ onDelete }) {
   return (
     <Form onSubmit={handleSubmit} className="mx-4">
       <button
-        className="btn-blaze w-100 text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors"
+        className="btn-blaze w-100 text-white px-6 py-3 rounded-md hover:bg-red-700 transition-colors cursor-pointer"
         type="submit"
       >
         Delete

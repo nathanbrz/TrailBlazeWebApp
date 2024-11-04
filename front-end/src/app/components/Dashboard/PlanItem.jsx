@@ -15,6 +15,7 @@ const PlanItem = ({
   itinerary,
   router,
   onDelete,
+  isClickable,
 }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -55,11 +56,14 @@ const PlanItem = ({
           </Col> */}
 
           {/* Title and description */}
-          <Col md={10} onClick={handleClick}>
-            <Card.Body>
-              <Card.Title>{title}</Card.Title>
+          <Col md={10}>
+            <Card.Body
+              className={`${isClickable ? "cursor-pointer" : ""}`}
+              onClick={isClickable ? handleClick : null} // Only make clickable if `isClickable` is true
+            >
+              <Card.Title className>{title}</Card.Title>
               <Card.Text className="text-secondary">
-                <span className="d-block">{description}</span> <br />
+                <span className="d-block ">{description}</span> <br />
                 {type && <span className="d-block">Type: {type}</span>}
                 <span className="d-block">Duration (days): {duration}</span>
                 {travel_time && (
@@ -75,18 +79,20 @@ const PlanItem = ({
             md={2}
             className="d-flex justify-content-end align-items-start py-2 pr-6"
           >
-            <div className="pr-3">
-              <Button variant="outline-none" size="sm" className="me-2">
-                <i className="bi bi-pencil"></i>
-              </Button>
-              <Button
-                variant="outline-none"
-                size="sm"
-                onClick={handleOpenDeleteModal}
-              >
-                <i className="bi bi-trash"></i>
-              </Button>
-            </div>
+            {isClickable && (
+              <div className="pr-3">
+                <Button variant="outline-none" size="sm" className="me-2">
+                  <i className="bi bi-pencil"></i>
+                </Button>
+                <Button
+                  variant="outline-none"
+                  size="sm"
+                  onClick={handleOpenDeleteModal}
+                >
+                  <i className="bi bi-trash"></i>
+                </Button>
+              </div>
+            )}
           </Col>
         </Row>
       </Card>

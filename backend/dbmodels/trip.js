@@ -16,7 +16,7 @@ const tripSchema = new Schema({
 	start_location: String,
 	end_location: String,
 	trip_interest: String,
-	itinerary: [Stop.schema] // An array of Stop schema items (sub-document) that represent each stop in the trip
+	itinerary: [new Schema(Stop.schema)] // An array of Stop schema items (sub-document) that represent each stop in the trip
 }, { timestamps: true })
 
 const Trip = mongoose.model('trip', tripSchema)
