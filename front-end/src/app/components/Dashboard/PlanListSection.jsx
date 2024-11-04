@@ -12,7 +12,7 @@ export default function PlanListSection({ router }) {
   const { data: trips, loading, error, fetchData } = useApi("api/trips");
 
   const handleTripsUpdate = (deletedTripId) => {
-    fetchData(); // Refresh the trip list from the server after deletion
+    fetchData(); // Refresh the trip list from the server after deletion 
   };
 
   return (

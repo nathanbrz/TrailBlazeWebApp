@@ -24,7 +24,7 @@ const app = express();
 
 // List of allowed origins for CORS
 const allowedOrigins = [
-  "https://trailblazeapp.vercel.app", // Production frontend on Vercel
+  "https://trailblaze-webapp.vercel.app", // Production frontend on Vercel
   `${FRONTENDURL}:${FRONTENDPORT}`, // Local development frontend
 ];
 

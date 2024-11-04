@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Dropdown } from "react-bootstrap";
 import { doSignOut } from "../firebase/auth"; // Import sign out function
 
-export default function SearchBar() {
+export default function SearchBar({ profileMenu = true }) {
   const router = useRouter();
   const uid = localStorage.getItem("uuid");
 
@@ -41,38 +41,44 @@ export default function SearchBar() {
           </div>
 
           {/* Bootstrap Dropdown */}
-          <Dropdown align="end">
-            <Dropdown.Toggle variant="link" bsPrefix="p-0" id="dropdown-basic">
-              <Image
-                src="/images/user-icon.png"
-                width="50"
-                height="50"
-                alt="profile image"
-                style={{ cursor: "pointer" }}
-              />
-            </Dropdown.Toggle>
+          {profileMenu && (
+            <Dropdown align="end">
+              <Dropdown.Toggle
+                variant="link"
+                bsPrefix="p-0"
+                id="dropdown-basic"
+              >
+                <Image
+                  src="/images/user-icon.png"
+                  width="50"
+                  height="50"
+                  alt="profile image"
+                  style={{ cursor: "pointer" }}
+                />
+              </Dropdown.Toggle>
 
-            <Dropdown.Menu>
-              <Dropdown.Item
-                className="custom-dropdown-item"
-                onClick={() => router.push(`/dashboard/${uid}`)}
-              >
-                Dashboard
-              </Dropdown.Item>
-              <Dropdown.Item
-                className="custom-dropdown-item"
-                onClick={handleSettings}
-              >
-                Settings
-              </Dropdown.Item>
-              <Dropdown.Item
-                className="custom-dropdown-item"
-                onClick={handleLogout}
-              >
-                Log Out
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+              <Dropdown.Menu>
+                <Dropdown.Item
+                  className="custom-dropdown-item"
+                  onClick={() => router.push(`/dashboard/${uid}`)}
+                >
+                  Dashboard
+                </Dropdown.Item>
+                <Dropdown.Item
+                  className="custom-dropdown-item"
+                  onClick={handleSettings}
+                >
+                  Settings
+                </Dropdown.Item>
+                <Dropdown.Item
+                  className="custom-dropdown-item"
+                  onClick={handleLogout}
+                >
+                  Log Out
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          )}
         </div>
       </div>
     </nav>
