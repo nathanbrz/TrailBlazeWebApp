@@ -46,7 +46,7 @@ export default function PlanListSection({ router }) {
           <PlanItem
             key={trip._id}
             id={trip._id}
-            name={trip.name}
+            name={trip.name ? trip.name : `${trip.start_location} to ${trip.end_location}`}
             title={`${trip.start_location} to ${trip.end_location}`}
             type={trip.trip_interest}
             duration={trip.total_duration}
