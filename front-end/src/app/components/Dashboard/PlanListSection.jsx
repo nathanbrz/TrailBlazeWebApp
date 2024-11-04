@@ -11,7 +11,7 @@ export default function PlanListSection({ router }) {
   // Using the custom hook to make the API call
   const { data: trips, loading, error, fetchData } = useApi("api/trips");
 
-  const handleDeleteTrip = (deletedTripId) => {
+  const handleTripsUpdate = (deletedTripId) => {
     fetchData(); // Refresh the trip list from the server after deletion
   };
 
@@ -46,12 +46,13 @@ export default function PlanListSection({ router }) {
           <PlanItem
             key={trip._id}
             id={trip._id}
+            name={trip.name}
             title={`${trip.start_location} to ${trip.end_location}`}
             type={trip.trip_interest}
             duration={trip.total_duration}
             itinerary={trip.itinerary}
             router={router}
-            onDelete={handleDeleteTrip} // Pass the delete handler to PlanItem
+            onDelete={handleTripsUpdate} // Pass the delete handler to PlanItem
             isClickable={true}
           />
         ))}

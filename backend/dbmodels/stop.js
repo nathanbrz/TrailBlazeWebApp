@@ -7,7 +7,7 @@ const stopSchema = new Schema({
 	location: String,
 	stay: Number,
 	hotel: String,
-	activities: [Activity.schema],
+	activities: [new Schema(Activity.schema)],
 	travel_time: Number,
 	notes: String
 })
