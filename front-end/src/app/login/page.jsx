@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import useAuth from "../hooks/useAuth";
 import { useApi } from "../hooks/useApi";
 import MessageAlert from "../components/MessageAlert";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const Login = () => {
   // Checks if user is already logged in
