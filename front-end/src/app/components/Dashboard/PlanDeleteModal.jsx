@@ -1,42 +1,45 @@
 import Modal from "../Modal";
 import React, { useEffect, useState } from "react";
 import PlanItemDeleteForm from "./PlanItemDeleteForm"; // Form component to confirm the deletion
+import { useApi } from "@/app/hooks/useApi";
 
 // Functional component for handling the delete confirmation modal
-export default function PlanDeleteModal({ show = false, hide, planID, onDeleteSuccess }) {
+export default function PlanDeleteModal({
+  show = false,
+  hide,
+  planID,
+  onDeleteSuccess,
+}) {
   const [isModalOpen, setIsModalOpen] = useState(show);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+
+  // Setup useApi for the DELETE request
+  const { data, loading, error, fetchData } = useApi(
+    `api/trips/${planID}`,
+    "DELETE"
+  );
 
   // Function to handle the deletion of a plan
   const handleDelete = async () => {
     try {
-        setLoading(true);
-        const token = localStorage.getItem("token");
-        const response = await fetch(`http://localhost:4000/api/trips/${planID}`, {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-            },
-        });
-
-        const result = await response.json();
-        console.log("Delete response:", result); // Log the response
-
-        if (!response.ok) {
-            throw new Error(result.error || "Failed to delete");
-        }
-
+      await fetchData(); // Call fetchData to initiate DELETE request
+      if (data) {
+        console.log("Delete response:", data); // Log the response
         onDeleteSuccess(); // Refresh the list in PlanListSection
         hide(); // Close modal
+      }
     } catch (err) {
-        setError(err.message);
-        console.error("Delete error:", err.message); // Log the error
-    } finally {
-        setLoading(false);
+      console.error("Delete error:", error); // Log the error
     }
-};
+  };
+
+  // Effect to handle page refresh after delete completes
+  useEffect(() => {
+    if (!loading && data) {
+      onDeleteSuccess(); // Refresh the list in PlanListSection
+      hide(); // Close modal
+      window.location.reload(); // Refresh the page
+    }
+  }, [loading, data, onDeleteSuccess, hide]);
 
   // Function to handle closing the modal
   const handleCloseModal = () => {
@@ -54,8 +57,16 @@ export default function PlanDeleteModal({ show = false, hide, planID, onDeleteSu
       show={isModalOpen}
       onClose={handleCloseModal}
       button={null}
-      title={<h3 className="py-4">Are you sure you want to delete this plan?</h3>}
-      body={<PlanItemDeleteForm onDelete={handleDelete} />}
+      title={
+        <h3 className="py-4">Are you sure you want to delete this plan?</h3>
+      }
+      body={
+        <>
+          {loading && <p>Loading...</p>}
+          {error && <p>Error: {error}</p>}
+          <PlanItemDeleteForm onDelete={handleDelete} />
+        </>
+      }
     />
   );
 }
