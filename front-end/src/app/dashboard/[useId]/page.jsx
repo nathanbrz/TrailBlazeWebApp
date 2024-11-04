@@ -1,4 +1,5 @@
 "use client";
+import React from 'react';
 import "../../../styles/global_styles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import SearchBar from "../../components/Dashboard/SearchBar";
