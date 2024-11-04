@@ -8,7 +8,7 @@ jest.mock('../../middleware/firebaseMiddleware', () => (req, res, next) => {
   next();
 });
 
-describe('Trip Retrieval Flow - Integration Test (Controller and Database with Mocked Authentication)', () => {
+describe('GET /api/trips - Get All Trips Flow (Integration Test: Controller, Database, and Mocked Authentication)', () => {
   // Add some mock trips to the database before each test
   beforeEach(async () => {
     // Add mock trips to the test database

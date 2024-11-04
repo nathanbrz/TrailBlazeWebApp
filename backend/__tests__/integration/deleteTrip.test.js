@@ -8,7 +8,7 @@ jest.mock('../../middleware/firebaseMiddleware', () => (req, res, next) => {
   next();
 });
 
-describe('Trip Deletion Flow - Integration Test (Controller and Database with Mocked Authentication)', () => {
+describe('DELETE /api/trips/:id - Delete Trip Flow (Integration Test: Controller, Database, and Mocked Authentication)', () => {
   let tripId;
 
   // Set up the test database with a trip before each test

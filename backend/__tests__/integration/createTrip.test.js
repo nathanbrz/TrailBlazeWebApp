@@ -9,7 +9,7 @@ jest.mock('../../middleware/firebaseMiddleware', () => (req, res, next) => {
   next();
 });
 
-describe('Trip Creation Flow - Integration Test (Controller, OpenAI Service, and Database)', () => {
+describe('POST /api/trips - Create Trip Flow (Integration Test: Controller, OpenAI Service, and Database with Mocked Authentication)', () => {
   beforeEach(async () => {
     // This will run before each test, ensuring a clean state
   });
