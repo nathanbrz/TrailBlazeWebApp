@@ -16,8 +16,8 @@ export default function TimelineView({ itinerary = [] }) {
               {/* Render the card (PlanItem) with a lower z-index */}
               <PlanItem
                 id={stop._id}
-                title={stop.location}
-                description={`Stay at ${
+                name={stop.location}
+                title={`Stay at ${
                   stop.hotel
                 }. Activities: ${stop.activities
                   .map((a) => a.name)
