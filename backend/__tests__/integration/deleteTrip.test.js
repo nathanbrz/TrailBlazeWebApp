@@ -1,14 +1,14 @@
 const request = require('supertest');
-const app = require('../../../server'); // Import the Express app
-const Trip = require('../../../dbmodels/trip');
+const app = require('../../server'); // Import the Express app
+const Trip = require('../../dbmodels/trip');
 
 // Mock Firebase middleware
-jest.mock('../../../middleware/firebaseMiddleware', () => (req, res, next) => {
+jest.mock('../../middleware/firebaseMiddleware', () => (req, res, next) => {
   req.user = { uid: 'mockUserId' }; // Mock a Firebase UID for the authenticated user
   next();
 });
 
-describe('Trip Controller - deleteTrip (Integration Test)', () => {
+describe('DELETE /api/trips/:id - Delete Trip Flow (Integration Test: Controller, Database, and Mocked Authentication)', () => {
   let tripId;
 
   // Set up the test database with a trip before each test
@@ -16,6 +16,7 @@ describe('Trip Controller - deleteTrip (Integration Test)', () => {
     // Create a mock trip in the test database
     const trip = new Trip({
         userID: 'mockUserId',
+        name: 'Nature vibes',
         total_duration: 4,
         start_location: 'Vancouver, BC',
         end_location: 'Banff, AB',
