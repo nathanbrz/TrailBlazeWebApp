@@ -37,7 +37,6 @@ export default function PlanDeleteModal({
     if (!loading && data) {
       onDeleteSuccess(); // Refresh the list in PlanListSection
       hide(); // Close modal
-      window.location.reload(); // Refresh the page
     }
   }, [loading, data, onDeleteSuccess, hide]);
 
