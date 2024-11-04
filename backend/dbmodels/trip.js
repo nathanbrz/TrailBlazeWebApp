@@ -11,6 +11,7 @@ const tripSchema = new Schema({
         type: String,
         required: true
 	},
+	name: String,
 	total_duration: Number,
 	start_location: String,
 	end_location: String,

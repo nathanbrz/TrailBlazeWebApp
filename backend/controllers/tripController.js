@@ -5,7 +5,7 @@ const { generateItinerary } = require("../services/openaiService");
 // POST: Create a new trip
 const createTrip = async (req, res) => {
   try {
-    const { start_location, end_location, total_duration, trip_interest } =
+    const { name, start_location, end_location, total_duration, trip_interest } =
       req.body;
 
     // Use the userID from the Firebase token
@@ -38,6 +38,7 @@ const createTrip = async (req, res) => {
     // Create a new Trip instance with the parsed itinerary stops
     const newTrip = new Trip({
       userID,
+      name,
       start_location,
       end_location,
       total_duration,
@@ -70,7 +71,15 @@ const getAllTrips = async (req, res) => {
 
 const updateTripName = async (req, res) => {
   try {
-    // stub
+    const tripID = req.params.id
+    const new_name = req.body.name
+
+    await Trip.findByIdAndUpdate(tripID, {
+      $set: {
+        name: new_name
+      }
+    })
+
   } catch (error) {
     console.error("Error updating trip:", error);
     res.status(500).json({ error: error.message });

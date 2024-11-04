@@ -17,8 +17,8 @@ router.post("/", authenticateUser, createTrip);
 // GET request to '/' with authentication middleware
 router.get("/", authenticateUser, getAllTrips);
 
-// PUT request to '/' with authentication middleware
-router.put("/", updateTripName)
+// PUT request to '/:id' with authentication middleware
+router.put("/:id", updateTripName)
 
 // DELETE request to '/:id' with authentication middleware
 router.delete("/:id", authenticateUser, deleteTrip);
