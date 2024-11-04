@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import PlanItem from "../Dashboard/PlanItem";
+import TimelineItem from "../Dashboard/TimelineItem";
 import { Container, Row, Col } from "react-bootstrap";
 
 export default function TimelineView({ itinerary = [] }) {
@@ -14,17 +15,12 @@ export default function TimelineView({ itinerary = [] }) {
           {itinerary.map((stop, index) => (
             <div key={index} className="relative mb-10 z-0">
               {/* Render the card (PlanItem) with a lower z-index */}
-              <PlanItem
-                id={stop._id}
+              <TimelineItem
                 name={stop.location}
-                title={`Stay at ${
-                  stop.hotel
-                }. Activities: ${stop.activities
-                  .map((a) => a.name)
-                  .join(", ")}.`}
-                imageUrl={`/path-to-images/${stop.location.toLowerCase()}.jpg`}
                 duration={stop.stay}
                 notes={stop.notes}
+                imageUrl={`/path-to-images/${stop.location.toLowerCase()}.jpg`}
+                activities={stop.activities}
                 className="z-0" // Ensure PlanItem itself has a lower z-index
               />
 
