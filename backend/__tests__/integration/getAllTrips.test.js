@@ -1,20 +1,21 @@
 const request = require('supertest');
-const app = require('../../../server'); // Import the Express app
-const Trip = require('../../../dbmodels/trip');
+const app = require('../../server'); // Import the Express app
+const Trip = require('../../dbmodels/trip');
 
 // Mock Firebase middleware to provide a mock user ID
-jest.mock('../../../middleware/firebaseMiddleware', () => (req, res, next) => {
+jest.mock('../../middleware/firebaseMiddleware', () => (req, res, next) => {
   req.user = { uid: 'mockUserId' }; // Mock a Firebase UID
   next();
 });
 
-describe('Trip Controller - getAllTrips (Integration Test)', () => {
+describe('Trip Retrieval Flow - Integration Test (Controller and Database with Mocked Authentication)', () => {
   // Add some mock trips to the database before each test
   beforeEach(async () => {
     // Add mock trips to the test database
     await Trip.create([
       {
         userID: 'mockUserId',
+        name: 'Nature vibes',
         total_duration: 4,
         start_location: 'Vancouver, BC',
         end_location: 'Banff, AB',
@@ -60,6 +61,7 @@ describe('Trip Controller - getAllTrips (Integration Test)', () => {
       },
       {
         userID: 'mockUserId',
+        name: 'Weekend Getaway',
         total_duration: 3,
         start_location: 'Calgary, AB',
         end_location: 'Banff, AB',
@@ -106,16 +108,16 @@ describe('Trip Controller - getAllTrips (Integration Test)', () => {
     ]);
   });
 
-  // Clean up the database after each test
-  afterEach(async () => {
-    await Trip.deleteMany({ userID: 'mockUserId' }); // Delete all trips created for the mock user
-  });
-
   it('should return all trips for a user', async () => {
     // Make a GET request to the /api/trips endpoint
     const res = await request(app)
       .get('/api/trips')
       .set('Authorization', 'Bearer mockFirebaseToken'); // Mock token
+
+    // Sort the response by start_location for a predictable order
+    const sortedTrips = res.body.sort((a, b) =>
+      b.start_location.localeCompare(a.start_location)
+    );
 
     // Assertions
     expect(res.statusCode).toEqual(200); // Status code 200 for success

@@ -1,24 +1,25 @@
 const request = require('supertest');
-const app = require('../../../server');
-const Trip = require('../../../dbmodels/trip');
-const { generateItinerary } = require('../../../services/openaiService');
+const app = require('../../server');
+const Trip = require('../../dbmodels/trip');
+const { generateItinerary } = require('../../services/openaiService');
 
 // Mock Firebase middleware
-jest.mock('../../../middleware/firebaseMiddleware', () => (req, res, next) => {
+jest.mock('../../middleware/firebaseMiddleware', () => (req, res, next) => {
   req.user = { uid: 'mockUserId' }; // Mock a Firebase UID
   next();
 });
 
-describe('Trip Controller - createTrip (Integration Test)', () => {
+describe('Trip Creation Flow - Integration Test (Controller, OpenAI Service, and Database)', () => {
   beforeEach(async () => {
     // This will run before each test, ensuring a clean state
   });
 
-  it('should create a new trip and save it to the database', async () => {
+  it('should create a new trip through generating an itinerary using the OpenAI API, then save the trip to the database', async () => {
     // Make a request to create a new trip
     const res = await request(app)
       .post('/api/trips')
       .send({
+        name: 'Nature vibes',
         start_location: 'Vancouver, BC',
         end_location: 'Banff, AB',
         total_duration: 4,
