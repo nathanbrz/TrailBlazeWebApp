@@ -1,43 +1,39 @@
 import Modal from "../Modal";
 import React, { useEffect, useState } from "react";
 import PlanItemUpdateForm from "./PlanItemUpdateForm"; // Form component to confirm the deletion
+import { useApi } from "@/app/hooks/useApi";
 
 // Functional component for handling the delete confirmation modal
-export default function PlanUpdateModal({ show = false, hide, planID, onUpdateSuccess }) {
+export default function PlanUpdateModal({
+  show = false,
+  hide,
+  planID,
+  onUpdateSuccess,
+}) {
   const [isModalOpen, setIsModalOpen] = useState(show);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
-  // Function to handle the deletion of a plan
+  // Setup useApi for the PUT request
+  const { data, loading, error, fetchData } = useApi(
+    `api/trips/${planID}`,
+    "PUT"
+  );
+
+  // Function to handle the update of a plan
   const handleUpdate = async (newName) => {
     try {
-        setLoading(true);
-        const token = localStorage.getItem("token");
-        const response = await fetch(`http://localhost:4000/api/trips/${planID}`, {
-            method: "PUT",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-            },
-			body: JSON.stringify({name: newName})
-        });
-
-        const result = await response.json();
-        console.log("Update response:", result); // Log the response
-
-        if (!response.ok) {
-            throw new Error(result.error || "Failed to update");
-        }
-
-        onUpdateSuccess(); // Refresh the list in PlanListSection
-        hide(); // Close modal
+      await fetchData({ body: { name: newName } }); // Call fetchData with new name
     } catch (err) {
-        setError(err.message);
-        console.error("Update error:", err.message); // Log the error
-    } finally {
-        setLoading(false);
+      console.error("Update error:", error); // Log the error
     }
-};
+  };
+
+  // Effect to trigger onUpdateSuccess when update completes
+  useEffect(() => {
+    if (!loading && data) {
+      onUpdateSuccess(); // Refresh the list in PlanListSection
+      hide();
+    }
+  }, [loading, data, onUpdateSuccess, hide]);
 
   // Function to handle closing the modal
   const handleCloseModal = () => {
