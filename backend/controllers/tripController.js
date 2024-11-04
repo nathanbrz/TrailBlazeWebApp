@@ -1,5 +1,6 @@
 const Trip = require("../dbmodels/trip");
 const Stop = require("../dbmodels/stop");
+const Activity = require("../dbmodels/activity")
 const { generateItinerary } = require("../services/openaiService");
 
 // POST: Create a new trip
@@ -19,21 +20,44 @@ const createTrip = async (req, res) => {
       trip_interest
     );
 
-    // Map the generated itinerary data into Stop model instances
-    const stops = generatedItinerary.itinerary.map((item) => {
-      return new Stop({
+    const stops = []
+
+    generatedItinerary.itinerary.forEach(item => {
+      const activities_list = []
+      item.activities.forEach(activity => {
+        a = new Activity({
+          name: activity.name,
+          description: activity.description
+        })
+        activities_list.push(a)
+      })
+      s = new Stop({
         day: parseInt(item.day), // Convert 'day' to number
         location: item.location,
         stay: parseInt(item.stay), // Convert 'stay' to number
         hotel: item.hotel,
-        activities: item.activities.map((activity) => ({
-          name: activity.name,
-          description: activity.description,
-        })),
+        activities: activities_list,
         travel_time: parseFloat(item.travel_time), // Convert 'travel_time' to number
-        notes: item.notes,
-      });
-    });
+        notes: item.notes
+      })
+      stops.push(s)
+    })
+      
+    
+    // Map the generated itinerary data into Stop model instances
+    // const stops = generatedItinerary.itinerary.map((item) => {
+    //   return new Stop({
+    //     day: parseInt(item.day), // Convert 'day' to number
+    //     location: item.location,
+    //     stay: parseInt(item.stay), // Convert 'stay' to number
+    //     hotel: item.hotel,
+    //     activities: item.activities.map((activity) => ({
+          
+    //     })),
+    //     travel_time: parseFloat(item.travel_time), // Convert 'travel_time' to number
+    //     notes: item.notes,
+    //   });
+    // });
 
     // Create a new Trip instance with the parsed itinerary stops
     const newTrip = new Trip({
@@ -69,6 +93,7 @@ const getAllTrips = async (req, res) => {
   }
 };
 
+// PUT: Update a trip name by ID
 const updateTripName = async (req, res) => {
   try {
     const tripID = req.params.id
@@ -79,7 +104,7 @@ const updateTripName = async (req, res) => {
         name: new_name
       }
     })
-
+    res.status(200).json({ message: "Trip updated" });
   } catch (error) {
     console.error("Error updating trip:", error);
     res.status(500).json({ error: error.message });

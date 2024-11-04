@@ -14,6 +14,7 @@ const cities = northAmericanCities.map((city) => ({
 
 function TripForm() {
   const [formData, setFormData] = useState({
+    name: "New trip",
     startingPosition: null,
     endingPosition: null,
     tripDuration: "10",
@@ -30,10 +31,10 @@ function TripForm() {
   const { data, loading, error, responseStatus, fetchData: submitTrip } = useApi("api/trips", "POST");
 
   // Function to handle form input changes
-  const handleChange = (selectedOption, name) => {
+  const handleChange = (selectedOption, itemname) => {
     setFormData({
       ...formData,
-      [name]: selectedOption,
+      [itemname]: selectedOption,
     });
   };
 
@@ -66,6 +67,7 @@ function TripForm() {
         "Content-Type": "application/json",
       },
       body: {
+        name: formData.name,
         start_location: formData.startingPosition?.value,
         end_location: formData.endingPosition?.value,
         total_duration: Number(formData.tripDuration),
@@ -76,6 +78,7 @@ function TripForm() {
     // Handle API response
     if (responseStatus === 200 || responseStatus === 201) {
       setFormData({
+        name: "",
         startingPosition: null,
         endingPosition: null,
         tripDuration: "",
@@ -112,6 +115,17 @@ function TripForm() {
     />
   ) : (
     <Form onSubmit={handleSubmit} className="mx-4">
+      {/* Name */}
+      <Form.Group className="mb-3" controlId="name">
+        <Form.Label>Name</Form.Label>
+        <Form.Control
+          type="string"
+          name="name"
+          placeholder="New trip"
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+        />
+      </Form.Group>
       {/* Starting Position */}
       <Form.Group className="mb-3" controlId="startingPosition">
         <Form.Label>Start City</Form.Label>

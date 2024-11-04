@@ -3,11 +3,13 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import PlanDeleteModal from "./PlanDeleteModal";
+import PlanUpdateModal from "./PlanUpdateModal"
 
 const PlanItem = ({
   id,
   type,
   title,
+  name,
   description,
   duration,
   travel_time,
@@ -18,12 +20,19 @@ const PlanItem = ({
   isClickable,
 }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
   // Function to open the delete confirmation modal
   const handleOpenDeleteModal = () => setIsDeleteModalOpen(true);
 
   // Function to close the delete confirmation modal
   const handleCloseDeleteModal = () => setIsDeleteModalOpen(false);
+
+   // Function to open the update modal
+  const handleOpenUpdateModal = () => setIsUpdateModalOpen(true);
+
+   // Function to close the update modal
+  const handleCloseUpdateModal = () => setIsUpdateModalOpen(false);
 
   // Function to handle redirection to the itinerary page with query parameters
   const handleClick = () => {
@@ -41,6 +50,12 @@ const PlanItem = ({
         hide={handleCloseDeleteModal}
         planID={id}
         onDeleteSuccess={() => onDelete(id)} // Pass the onDelete function here
+      />
+      <PlanUpdateModal
+        show={isUpdateModalOpen}
+        hide={handleCloseUpdateModal}
+        planID={id}
+        onUpdateSuccess={() => onDelete(id)} // Pass the onDelete function here
       />
       <Card className="mb-3 rounded-5 mx-12">
         <Row className="g-0">
@@ -61,8 +76,10 @@ const PlanItem = ({
               className={`${isClickable ? "cursor-pointer" : ""}`}
               onClick={isClickable ? handleClick : null} // Only make clickable if `isClickable` is true
             >
-              <Card.Title className>{title}</Card.Title>
+              <Card.Title className>{name}</Card.Title>
               <Card.Text className="text-secondary">
+                <span className="d-block ">{description}</span> <br />
+                {title && <span className="d-block">{title}</span>}
                 <span className="d-block ">{description}</span> <br />
                 {type && <span className="d-block">Type: {type}</span>}
                 <span className="d-block">Duration (days): {duration}</span>
@@ -81,7 +98,12 @@ const PlanItem = ({
           >
             {isClickable && (
               <div className="pr-3">
-                <Button variant="outline-none" size="sm" className="me-2">
+                <Button 
+                  variant="outline-none" 
+                  size="sm" 
+                  className="me-2"
+                  onClick={handleOpenUpdateModal}
+                >
                   <i className="bi bi-pencil"></i>
                 </Button>
                 <Button

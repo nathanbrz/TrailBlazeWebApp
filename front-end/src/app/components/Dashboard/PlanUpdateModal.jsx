@@ -1,38 +1,39 @@
 import Modal from "../Modal";
 import React, { useEffect, useState } from "react";
-import PlanItemDeleteForm from "./PlanItemDeleteForm"; // Form component to confirm the deletion
+import PlanItemUpdateForm from "./PlanItemUpdateForm"; // Form component to confirm the deletion
 
 // Functional component for handling the delete confirmation modal
-export default function PlanUpdateModal({ show = false, hide, planID, onDeleteSuccess }) {
+export default function PlanUpdateModal({ show = false, hide, planID, onUpdateSuccess }) {
   const [isModalOpen, setIsModalOpen] = useState(show);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   // Function to handle the deletion of a plan
-  const handleDelete = async () => {
+  const handleUpdate = async (newName) => {
     try {
         setLoading(true);
         const token = localStorage.getItem("token");
         const response = await fetch(`http://localhost:4000/api/trips/${planID}`, {
-            method: "DELETE",
+            method: "PUT",
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
+			body: JSON.stringify({name: newName})
         });
 
         const result = await response.json();
-        console.log("Delete response:", result); // Log the response
+        console.log("Update response:", result); // Log the response
 
         if (!response.ok) {
-            throw new Error(result.error || "Failed to delete");
+            throw new Error(result.error || "Failed to update");
         }
 
-        onDeleteSuccess(); // Refresh the list in PlanListSection
+        onUpdateSuccess(); // Refresh the list in PlanListSection
         hide(); // Close modal
     } catch (err) {
         setError(err.message);
-        console.error("Delete error:", err.message); // Log the error
+        console.error("Update error:", err.message); // Log the error
     } finally {
         setLoading(false);
     }
@@ -54,8 +55,8 @@ export default function PlanUpdateModal({ show = false, hide, planID, onDeleteSu
       show={isModalOpen}
       onClose={handleCloseModal}
       button={null}
-      title={<h3 className="py-4">Are you sure you want to delete this plan?</h3>}
-      body={<PlanItemDeleteForm onDelete={handleDelete} />}
+      title={<h3 className="py-4">Submit a new name</h3>}
+      body={<PlanItemUpdateForm onUpdate={handleUpdate} />}
     />
   );
 }
