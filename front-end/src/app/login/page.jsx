@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import useAuth from "../hooks/useAuth";
 import { useApi } from "../hooks/useApi";
 import MessageAlert from "../components/MessageAlert";
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import GenericNav from "../components/GenericNav";
 
 const Login = () => {
   // Checks if user is already logged in
@@ -101,79 +101,82 @@ const Login = () => {
   };
 
   return (
-    <div
-      className="d-flex align-items-center justify-content-center"
-      style={{ height: "100vh" }}
-    >
+    <>
+      <GenericNav profileMenu= {false} />
       <div
-        className="card p-12 shadow-lg"
-        style={{ width: "100%", maxWidth: "400px" }}
+        className="d-flex align-items-center justify-content-center"
+        style={{ height: "100vh" }}
       >
-        <h2 className="text-center mb-4">Login</h2>
-
-        {alert.show && (
-          <MessageAlert
-            variant={alert.variant}
-            message={
-              <ul style={{ paddingLeft: "20px" }}>
-                {alert.message.split("\n").map((msg, index) => (
-                  <li key={index} style={{ listStyleType: "disc" }}>
-                    {msg}
-                  </li>
-                ))}
-              </ul>
-            }
-            show={alert.show}
-            setShow={(value) => setAlert({ ...alert, show: value })}
-          />
-        )}
-
-        <form onSubmit={handleSubmit} noValidate>
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label">
-              Email address
-            </label>
-            <input
-              type="email"
-              className="form-control"
-              id="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
-              type="password"
-              className="form-control"
-              id="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="btn-blaze text-white px-6 py-3 w-100 rounded-md hover:bg-red-700 transition-colors"
-            disabled={loading}
-          >
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </form>
-        <button
-          type="button"
-          className="bg-zinc-200 my-2 text-black px-6 py-3 w-100 rounded-md hover:bg-zinc-400 transition-colors"
-          onClick={handleSignUp}
+        <div
+          className="card p-12 shadow-lg"
+          style={{ width: "100%", maxWidth: "400px" }}
         >
-          Sign up
-        </button>
+          <h2 className="text-center mb-4">Login</h2>
+
+          {alert.show && (
+            <MessageAlert
+              variant={alert.variant}
+              message={
+                <ul style={{ paddingLeft: "20px" }}>
+                  {alert.message.split("\n").map((msg, index) => (
+                    <li key={index} style={{ listStyleType: "disc" }}>
+                      {msg}
+                    </li>
+                  ))}
+                </ul>
+              }
+              show={alert.show}
+              setShow={(value) => setAlert({ ...alert, show: value })}
+            />
+          )}
+
+          <form onSubmit={handleSubmit} noValidate>
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">
+                Email address
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                id="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                id="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="btn-blaze text-white px-6 py-3 w-100 rounded-md hover:bg-red-700 transition-colors"
+              disabled={loading}
+            >
+              {loading ? "Logging in..." : "Login"}
+            </button>
+          </form>
+          <button
+            type="button"
+            className="bg-zinc-200 my-2 text-black px-6 py-3 w-100 rounded-md hover:bg-zinc-400 transition-colors"
+            onClick={handleSignUp}
+          >
+            Sign up
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
