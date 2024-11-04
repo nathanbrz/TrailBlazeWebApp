@@ -7,6 +7,7 @@ import { doCreateUserWithEmailAndPassword } from '../../firebase/auth';
 import { useApi } from '../../hooks/useApi';
 
 
+// Test suite for signup
 describe('Signup Integration Test', () => {
     beforeEach(() => {
         // Reset the mocks before each test
@@ -15,6 +16,7 @@ describe('Signup Integration Test', () => {
 
     // Test if user can successfully sign up
     it('should successfully sign up a user', async () => {
+        // Creating mock credientials instead of using API call
         const mockUserCredential = {
             user: {
                 getIdToken: jest.fn().mockResolvedValue('mocked-token'),
@@ -25,6 +27,7 @@ describe('Signup Integration Test', () => {
         // Mocking the createUserWithEmailAndPassword function
         doCreateUserWithEmailAndPassword.mockResolvedValue(mockUserCredential);
 
+        // Creating MOCK API calls instead of actual calling it
         useApi.mockImplementation((url, method) => {
             if (url === 'api/firebase/session' && method === 'POST') {
                 return {
@@ -40,7 +43,8 @@ describe('Signup Integration Test', () => {
             }
             return { fetchData: jest.fn() };
         });
-
+        
+        // Rendering signup page
         const { getByLabelText, getByText, getByRole } = render(<Signup />);
 
         // Fill out the signup form
@@ -53,7 +57,7 @@ describe('Signup Integration Test', () => {
         const signUpButton = getByRole('button', { name: /sign up/i });
         fireEvent.click(signUpButton);
 
-        // Wait for the asynchronous actions to complete
+        // Expect that the signup form worked and the correct API calls were made
         await waitFor(() => {
             expect(doCreateUserWithEmailAndPassword).toHaveBeenCalledWith('john.doe@example.com', 'password123');
             expect(useApi).toHaveBeenCalledWith('api/firebase/session', 'POST');
@@ -74,7 +78,8 @@ describe('Signup Integration Test', () => {
          // Submit the form
          const signUpButton = getByRole('button', { name: /sign up/i });
          fireEvent.click(signUpButton);
-    
+        
+        // Expect that an error pops up for the invalid first name
         await waitFor(() => {
             expect(getByText(/first name should contain only letters/i)).toBeInTheDocument();
         });
@@ -93,7 +98,8 @@ describe('Signup Integration Test', () => {
          // Submit the form
         const signUpButton = getByRole('button', { name: /sign up/i });
         fireEvent.click(signUpButton);
-    
+        
+        // Expect that an error pops up for the invalid email
         await waitFor(() => {
             expect(getByText(/please enter a valid email address/i)).toBeInTheDocument();
         });
@@ -111,8 +117,9 @@ describe('Signup Integration Test', () => {
 
          // Submit the form
         const signUpButton = getByRole('button', { name: /sign up/i });
-        fireEvent.click(signUpButton);
-    
+        fireEvent.click(signUpButton); 
+        
+        // Expect that an error pops up for the invalid password (not being long enough)
         await waitFor(() => {
             expect(getByText(/password should be at least 6 characters long/i)).toBeInTheDocument();
         });
@@ -126,7 +133,7 @@ describe('Signup Integration Test', () => {
         const signUpButton = getByRole('button', { name: /sign up/i });
         fireEvent.click(signUpButton);
 
-        // Expected error popups
+        // Expected that all the error pop ups occur
         await waitFor(() => {
             expect(getByText(/First name should contain only letters/i)).toBeInTheDocument();
             expect(getByText(/Last name should contain only letters/i)).toBeInTheDocument();
