@@ -14,6 +14,7 @@ const port = process.env.PORT || 4000; // Default port is 4000 if not specified
 const tripRoutes = require("./routes/tripRoutes");
 const userRoutes = require("./routes/userRoutes");
 const firebaseRoutes = require("./routes/firebaseRoutes"); // Authentication
+const overviewRoutes = require("./routes/overviewRoutes"); 
 
 // Frontend configuration (production and development)
 const FRONTENDURL = process.env.FRONT_END_URL || "http://localhost";
@@ -74,6 +75,7 @@ app.get("/", (req, res) => {
 app.use("/api/trips", tripRoutes); // Routes for trip-related endpoints
 app.use("/api/users", userRoutes); // Routes for user-related endpoints
 app.use("/api/firebase", firebaseRoutes); // Routes for Firebase authentication-related endpoints
+app.use("/api/overview", overviewRoutes); // Routes for overview-related endpoints
 
 // Function to connect to MongoDB and start the server
 async function connect() {
