@@ -8,7 +8,8 @@ import useAuth from "../../hooks/useAuth";
 import MessageAlert from "../../components/MessageAlert";
 import Link from "next/link";
 import GenericNav from "../../components/GenericNav";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useApi } from "../../hooks/useApi";
 
 const Signup = () => {
   // Checks if user is already logged in
@@ -31,26 +32,47 @@ const Signup = () => {
     }
   }, []);
 
+  // useApi hook for creating a user
+  const { fetchData: createUser, error: createUserError } = useApi(
+    "api/users",
+    "POST"
+  );
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!isClient) return; // Ensure this code only runs in the browser
+    if (!isClient) return;
 
     try {
-      const userCredential = await doCreateUserWithEmailAndPassword(email, password);
+      // Step 1: Sign up the user with Firebase
+      const userCredential = await doCreateUserWithEmailAndPassword(
+        email,
+        password
+      );
       const token = await userCredential.user.getIdToken();
       const userId = userCredential.user.uid;
 
-      // Safely store data in localStorage on the client side
-      if (isClient) {
-        localStorage.setItem("token", token);
-        localStorage.setItem("uuid", userId);
-      }
+      // Step 2: Store the token and uid in localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("uuid", userId);
 
+      // Step 3: Send user data to backend using useApi hook
+      await createUser({
+        body: { first_name, last_name },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      // Step 4: Redirect to the dashboard
       router.push(`/dashboard/${userId}`);
     } catch (error) {
-      setAlert({ show: true, message: error.message, variant: "danger" });
+      // Display an alert if there’s an error
+      setAlert({
+        show: true,
+        message: error.message || createUserError,
+        variant: "danger",
+      });
+      console.error("Signup error:", error); // Log the error for debugging
     }
   };
 
