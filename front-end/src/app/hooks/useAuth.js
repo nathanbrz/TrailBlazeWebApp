@@ -1,6 +1,8 @@
 'use client';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { auth } from '../firebase/config.js'
+import { onIdTokenChanged } from 'firebase/auth';
 
 const useAuth = () => {
   const router = useRouter();
@@ -40,11 +42,42 @@ const useAuth = () => {
           localStorage.removeItem('token'); // Remove token if validation fails
         }
       } else {
+
+        console.log("Now here");
         console.log("No token found, staying on the current page.");
       }
     };
+    
+    // Inital token check
+    validateToken();
 
-    validateToken(); // Validate token on component mount
+
+    /*
+    * Firebase automatically refreshes tokens every hour
+    * This is an observer to be called when the token is refreshed
+    * If the user is logged in
+      * Gets the new token
+      * Stores it in the local storage
+      * Validates the token to ensure it is correct
+    * If the user is not logged in the token is removed and user sent back to login screen
+    */
+    /*
+    const unsubscribe = onIdTokenChanged(auth, async (user) => {
+      if (user) {
+        // User is signed in
+        const newToken = await user.getIdToken();
+        localStorage.setItem("token", String(newToken));
+        //validateToken(newToken);
+      } else {
+        // Remove token when user is signed out
+        localStorage.removeItem("token");
+      }
+    });
+
+    // Remove listener when effect is unmounted
+    return () => unsubscribe();
+    */
+    
   }, [router]); // Dependency array to re-run effect if router changes
 };
 
