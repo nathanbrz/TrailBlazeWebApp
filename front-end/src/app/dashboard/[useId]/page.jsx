@@ -21,13 +21,12 @@ export default function Hero() {
   const [query, setQuery] = useState(""); // State to manage search query
 
   // Fetch user data only if firebaseUID is set
-  const { data, error } = useApi(firebaseUID ? `api/users/${firebaseUID}` : null, "GET");
+  const { data, error } = useApi(
+    firebaseUID && `api/users/${firebaseUID}`,
+    "GET"
+  );
 
   const [loading, setLoading] = useState(true);
-
-  // Environment variables for backend URL and port
-  const URL = process.env.NEXT_PUBLIC_BACK_END_URL || 'http://localhost';
-  const PORT = process.env.NEXT_PUBLIC_BACK_END_PORT || '4000';
 
   // Effect to retrieve Firebase UID from localStorage
   useEffect(() => {
@@ -47,7 +46,6 @@ export default function Hero() {
     }
   }, [router]);
 
-
   // Check for error from useApi and set the alert accordingly
   useEffect(() => {
     if (error) {
@@ -60,7 +58,7 @@ export default function Hero() {
 
   // While loading, display a loading spinner or placeholder
   if (loading) {
-    return <div>Loading...</div>;  // You can replace this with a more elegant spinner or loading component
+    return <div>Loading...</div>; // You can replace this with a more elegant spinner or loading component
   }
 
   return (
