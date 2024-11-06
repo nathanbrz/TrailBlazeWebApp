@@ -28,18 +28,35 @@ export default function Hero() {
 
   const [loading, setLoading] = useState(true);
 
-  // Effect to retrieve Firebase UID from localStorage
   useEffect(() => {
     // Only access localStorage on the client side
     if (typeof window !== "undefined") {
       const uid = localStorage.getItem("uuid");
+      const token = localStorage.getItem("token");
+  
       if (uid) {
         setFirebaseUID(uid);
+        
+        // If token is missing but user is authenticated, try to refresh the token
+        if (!token && firebase.auth().currentUser) {
+          firebase.auth().currentUser.getIdToken().then((newToken) => {
+            localStorage.setItem("token", newToken);
+          }).catch((error) => {
+            console.error("Token refresh error:", error);
+            setAlert({
+              show: true,
+              message: "Session expired. Please log in again.",
+              variant: "danger",
+            });
+            router.push("/login"); // Redirect to login if re-authentication fails
+          });
+        }
       } else {
-        router.push("/login"); // Redirect to login if UID not found
+        // Redirect to login if UID not found
+        router.push("/login");
         setAlert({
           show: true,
-          message: "No firebaseUID found", // Set alert message
+          message: "No firebaseUID found",
           variant: "danger",
         });
       }
