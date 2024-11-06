@@ -8,13 +8,14 @@ const SearchForm = ({ onSearch }) => {
   // Function to handle the search action
   const handleSearch = () => {
     if (onSearch) {
-      onSearch(query); // Trigger the search action with the query
+      onSearch(query); // Pass the internal query to the parent
     }
   };
 
   // Function to handle 'Enter' key press
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
+      event.preventDefault(); // Prevent default form submission
       handleSearch();
     }
   };
@@ -29,8 +30,8 @@ const SearchForm = ({ onSearch }) => {
         className="form-control"
         placeholder="Type to search"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onKeyPress={handleKeyPress} // Allows pressing 'Enter' to search
+        onChange={(e) => setQuery(e.target.value)} // Update internal state
+        onKeyDown={handleKeyPress} // Allows pressing 'Enter' to search
       />
     </div>
   );

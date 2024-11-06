@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { doSignOut } from "../../firebase/auth"; // Import sign out function
 import { Dropdown } from "react-bootstrap";
 
-export default function SearchBar() {
+export default function SearchBar({ setQuery }) {
   const [dropdownOpen, setDropdownOpen] = useState(false); // State for dropdown visibility
   const router = useRouter();
   const uid = localStorage.getItem("uuid");
@@ -42,7 +42,7 @@ export default function SearchBar() {
             </Link>
           </div>
           <div className="flex-shrink-0 flex items-center col-lg-8 col-6">
-            <SearchForm />
+            <SearchForm onSearch={setQuery} />
           </div>
           <div className="relative">
             {/* Bootstrap Dropdown */}
