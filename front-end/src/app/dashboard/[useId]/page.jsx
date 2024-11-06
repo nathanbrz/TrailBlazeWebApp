@@ -8,7 +8,8 @@ import PlanListSection from "../../components/Dashboard/PlanListSection";
 import Footer from "../../components/Footer";
 import { useRouter } from "next/navigation";
 import { useApi } from "../../hooks/useApi";
-import firebase from "firebase/app";
+import { auth } from "@/app/firebase/config";
+import { getIdToken } from "firebase/auth";
 
 export default function Hero() {
   const router = useRouter();
@@ -30,27 +31,27 @@ export default function Hero() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Only access localStorage on the client side
     if (typeof window !== "undefined") {
       const uid = localStorage.getItem("uuid");
       const token = localStorage.getItem("token");
-  
+
       if (uid) {
         setFirebaseUID(uid);
-        
-        // If token is missing but user is authenticated, try to refresh the token
-        if (!token && firebase.auth().currentUser) {
-          firebase.auth().currentUser.getIdToken().then((newToken) => {
-            localStorage.setItem("token", newToken);
-          }).catch((error) => {
-            console.error("Token refresh error:", error);
-            setAlert({
-              show: true,
-              message: "Session expired. Please log in again.",
-              variant: "danger",
+
+        if (!token && auth.currentUser) {
+          getIdToken(auth.currentUser)
+            .then((newToken) => {
+              localStorage.setItem("token", newToken);
+            })
+            .catch((error) => {
+              console.error("Token refresh error:", error);
+              setAlert({
+                show: true,
+                message: "Session expired. Please log in again.",
+                variant: "danger",
+              });
+              router.push("/login"); // Redirect to login if re-authentication fails
             });
-            router.push("/login"); // Redirect to login if re-authentication fails
-          });
         }
       } else {
         // Redirect to login if UID not found
