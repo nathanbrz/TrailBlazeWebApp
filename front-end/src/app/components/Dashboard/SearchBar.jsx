@@ -12,6 +12,16 @@ export default function SearchBar({ setQuery }) {
   const router = useRouter();
   const uid = localStorage.getItem("uuid");
 
+  const handleLogoClick = () => {
+    if (uid) {
+      // If user is logged in, navigate to the dashboard
+      router.push(`/dashboard/${uid}`);
+    } else {
+      // If user is not logged in, navigate to the home page
+      router.push("/");
+    }
+  };
+
   const handleSettings = () => {
     router.push(`/settings/${uid}`); // Redirect to settings page with user ID
   };
@@ -33,13 +43,13 @@ export default function SearchBar({ setQuery }) {
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex justify-content-between h-16">
           <div className="flex-shrink-0 flex items-center">
-            <Link
-              href="/"
-              style={{ cursor: "pointer" }}
+            <span
+              onClick={handleLogoClick}
               className="text-2xl font-bold text-blaze"
+              style={{ cursor: "pointer" }}
             >
               TrailBlaze
-            </Link>
+            </span>
           </div>
           <div className="flex-shrink-0 flex items-center col-lg-8 col-6">
             <SearchForm onSearch={setQuery} />

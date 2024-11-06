@@ -10,6 +10,16 @@ export default function SearchBar({ profileMenu = true }) {
   const router = useRouter();
   const uid = localStorage.getItem("uuid");
 
+  const handleLogoClick = () => {
+    if (uid) {
+      // If user is logged in, navigate to the dashboard
+      router.push(`/dashboard/${uid}`);
+    } else {
+      // If user is not logged in, navigate to the home page
+      router.push("/");
+    }
+  };
+
   const handleSettings = () => {
     router.push(`/settings/${uid}`); // Redirect to settings page with user ID
   };
@@ -31,13 +41,13 @@ export default function SearchBar({ profileMenu = true }) {
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex-shrink-0">
-            <Link
-              href="/"
+            <span
+              onClick={handleLogoClick}
               className="text-2xl font-bold text-blaze"
               style={{ cursor: "pointer" }}
             >
               TrailBlaze
-            </Link>
+            </span>
           </div>
 
           {/* Bootstrap Dropdown */}
