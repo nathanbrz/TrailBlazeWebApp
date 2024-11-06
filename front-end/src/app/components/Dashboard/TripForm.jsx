@@ -168,7 +168,6 @@ function TripForm() {
           onChange={(e) => setFormData({ ...formData, tripPreference: e.target.value })}
           aria-label="Default select example"
         >
-          <option value="">N/A</option>
           <option value="Adventure">Adventure</option>
           <option value="Relaxation">Relaxation</option>
           <option value="Cultural Experience">Cultural Experience</option>
