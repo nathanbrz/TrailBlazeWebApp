@@ -8,6 +8,7 @@ import PlanListSection from "../../components/Dashboard/PlanListSection";
 import Footer from "../../components/Footer";
 import { useRouter } from "next/navigation";
 import { useApi } from "../../hooks/useApi";
+import firebase from "firebase/app";
 
 export default function Hero() {
   const router = useRouter();
