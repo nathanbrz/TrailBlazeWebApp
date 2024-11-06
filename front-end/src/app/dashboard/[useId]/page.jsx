@@ -1,12 +1,11 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import "../../../styles/global_styles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import SearchBar from "../../components/Dashboard/SearchBar";
 import IntroSection from "../../components/Dashboard/IntroSection";
 import PlanListSection from "../../components/Dashboard/PlanListSection";
 import Footer from "../../components/Footer";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useApi } from "../../hooks/useApi";
 
@@ -19,6 +18,7 @@ export default function Hero() {
     message: "",
     variant: "",
   }); // State to manage alerts
+  const [query, setQuery] = useState(""); // State to manage search query
 
   // Fetch user data only if firebaseUID is set
   const { data, error } = useApi(firebaseUID ? `api/users/${firebaseUID}` : null, "GET");
@@ -67,12 +67,12 @@ export default function Hero() {
     <div>
       <div className="page-container">
         <div className="content">
-          <SearchBar />
+          <SearchBar query={query} setQuery={setQuery} />
           <div>
             <IntroSection user={user} />
           </div>
           <div>
-            <PlanListSection router={router} />
+            <PlanListSection router={router} query={query} />
           </div>
         </div>
         <div>

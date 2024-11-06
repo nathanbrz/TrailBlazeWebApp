@@ -4,8 +4,7 @@ import PlanItem from "./PlanItem";
 import { useApi } from "../../hooks/useApi";
 import MessageAlert from "../MessageAlert";
 
-export default function PlanListSection({ router }) {
-  // State to control showing/hiding alerts
+export default function PlanListSection({ router, query }) {
   const [showAlert, setShowAlert] = useState(true);
 
   // Using the custom hook to make the API call
@@ -14,6 +13,18 @@ export default function PlanListSection({ router }) {
   const handleTripsUpdate = (deletedTripId) => {
     fetchData(); // Refresh the trip list from the server after deletion 
   };
+
+  // Filter trips based on query
+  const filteredTrips = trips
+    ? trips.filter((trip) =>
+        query
+          ? trip.name?.toLowerCase().includes(query.toLowerCase()) ||
+            trip.start_location?.toLowerCase().includes(query.toLowerCase()) ||
+            trip.end_location?.toLowerCase().includes(query.toLowerCase()) ||
+            trip.trip_interest?.toLowerCase().includes(query.toLowerCase())
+          : true
+      )
+    : [];
 
   return (
     <section className="py-6 px-6">
@@ -40,13 +51,16 @@ export default function PlanListSection({ router }) {
       {/* Display Trip Items */}
       {!loading &&
         !error &&
-        trips &&
-        trips.length > 0 &&
-        trips.map((trip) => (
+        filteredTrips.length > 0 &&
+        filteredTrips.map((trip) => (
           <PlanItem
             key={trip._id}
             id={trip._id}
-            name={trip.name ? trip.name : `${trip.start_location} to ${trip.end_location}`}
+            name={
+              trip.name
+                ? trip.name
+                : `${trip.start_location} to ${trip.end_location}`
+            }
             title={`${trip.start_location} to ${trip.end_location}`}
             type={trip.trip_interest}
             duration={trip.total_duration}
@@ -58,7 +72,7 @@ export default function PlanListSection({ router }) {
         ))}
 
       {/* No Trips Message */}
-      {!loading && !error && trips && trips.length === 0 && (
+      {!loading && !error && filteredTrips.length === 0 && (
         <MessageAlert
           variant="info"
           message="No trips found."
