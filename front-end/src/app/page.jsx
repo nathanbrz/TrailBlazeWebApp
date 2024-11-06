@@ -1,16 +1,15 @@
-
-'use client'
-import React from 'react'
-import Navbar from './components/LandingPage/Navbar'
-import HeroSections from './components/LandingPage/HeroSection'
-import FeaturesSection from './components/LandingPage/FeaturesSection';
-import AboutUsSection from './components/LandingPage/AboutUsSection';
-import Footer from './components/Footer';
-import '../styles/global_styles.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import useAuth from './hooks/useAuth'; 
+"use client";
+import React from "react";
+import Navbar from "./components/LandingPage/Navbar";
+import HeroSections from "./components/LandingPage/HeroSection";
+import FeaturesSection from "./components/LandingPage/FeaturesSection";
+import AboutUsSection from "./components/LandingPage/AboutUsSection";
+import Footer from "./components/Footer";
+import "../styles/global_styles.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import useAuth from "./hooks/useAuth";
+import OverviewStats from "./components/LandingPage/OverviewStats";
 export default function Hero() {
-  
   // Checks if user is already logged in
   useAuth();
 
@@ -20,6 +19,9 @@ export default function Hero() {
       <div id="hero">
         <HeroSections />
       </div>
+      <div id="overview-stats">
+        <OverviewStats /> {/* Add the OverviewStats component here */}
+      </div>
       <div id="features">
         <FeaturesSection />
       </div>
@@ -28,5 +30,5 @@ export default function Hero() {
       </div>
       <Footer />
     </div>
-  )
+  );
 }

@@ -66,3 +66,25 @@ html, body {
   background-color: #800000 !important; /* Dark maroon color on hover */
   color: white !important; /* Optional: Change text color on hover */
 }
+
+/* src/styles/overviewStats.css */
+
+.stat-card {
+  text-align: center;
+  padding: 1rem;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+.stat-card h3 {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.stat-card p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #800000;
+}
