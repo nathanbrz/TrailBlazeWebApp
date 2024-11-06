@@ -6,6 +6,8 @@ import Login from '../../components/login/login';
 import { doSignInUserWithEmailAndPassword } from '../../firebase/auth';
 import { useApi } from '../../hooks/useApi';
 import { useRouter } from 'next/router';
+import { onIdTokenChanged } from 'firebase/auth';
+
 
 
 // Test suite for signup
