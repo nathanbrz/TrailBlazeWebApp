@@ -3,14 +3,15 @@ import fetchMock from 'jest-fetch-mock';
 // Enable the mock globally
 fetchMock.enableMocks(); 
 
-// At the top of your test file
+// Disabling console logs for the test (for readability sake)
 beforeAll(() => {
     jest.spyOn(console, 'log').mockImplementation(() => {});
-  });
+});
   
-  afterAll(() => {
-    console.log.mockRestore(); // Restore original console.log after tests
-  });
+// Reset the console log after every test
+afterAll(() => {
+    console.log.mockRestore(); 
+});
 
 // Reset mocks before each test
 beforeEach(() => {

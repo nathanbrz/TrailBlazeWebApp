@@ -2,10 +2,12 @@ import React from 'react';
 import '@testing-library/jest-dom';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import '../../../__mocks__/apiMocks'; 
-import Login from '../../login/page';
-import { doCreateUserWithEmailAndPassword, doSignInUserWithEmailAndPassword } from '../../firebase/auth';
+import Login from '../../components/login/login';
+import { doSignInUserWithEmailAndPassword } from '../../firebase/auth';
 import { useApi } from '../../hooks/useApi';
 import { useRouter } from 'next/router';
+import { onIdTokenChanged } from 'firebase/auth';
+
 
 
 // Test suite for signup
@@ -101,8 +103,8 @@ describe('Login Integration Test', () => {
     })
 
 
-    // Test if it displays error alert for invalid credientials
-    it('should display an alert for invalid credentials', async () => {
+    // Test if it displays error alert for invalid password
+    it('should display an alert for invalid password', async () => {
 
         // Return an error if wrong password or email
         doSignInUserWithEmailAndPassword.mockRejectedValueOnce(new Error("Incorrect password. Please try again."));
@@ -127,6 +129,35 @@ describe('Login Integration Test', () => {
         await waitFor(async () => {
             expect(getByRole('alert')).toBeInTheDocument();
             expect(getByText(/Incorrect password. Please try again./i)).toBeInTheDocument();
+        });
+    })
+
+    // Test if it displays error alert for invalid email
+    it('should display an alert for invalid password', async () => {
+
+        // Return an error if wrong password or email
+        doSignInUserWithEmailAndPassword.mockRejectedValueOnce(new Error("No user found with this email."));
+
+        // Getting form components
+        const { getByLabelText, getByText, getByRole } = render(<Login />);
+
+        // Mock user data for input
+        const email = 'wrong@gmail.com';
+        const password = 'badPassword';
+     
+        // Fill in the form
+        fireEvent.change(getByLabelText(/email/i), { target: { value: email } });
+        fireEvent.change(getByLabelText(/password/i), { target: { value: password } });
+        
+        // Submit the form
+        const signInButton = getByRole('button', { name: /login/i });
+        fireEvent.click(signInButton);
+
+          
+         // Wait for async actions to complete
+        await waitFor(async () => {
+            expect(getByRole('alert')).toBeInTheDocument();
+            expect(getByText(/No user found with this email./i)).toBeInTheDocument();
         });
     })
 });

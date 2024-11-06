@@ -41,7 +41,11 @@ export const doCreateUserWithEmailAndPassword = async (email, password) => {
 };
 
 
-// Signing in an existiting user
+/*
+* Signing in an existing user
+* Returns a userCrediential object
+    * Contains user instance which can access uid, email, displayName, photoURL, getIdToken
+*/
 export const doSignInUserWithEmailAndPassword = async (email, password) => {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
