@@ -1,7 +1,6 @@
 const request = require('supertest');
 const app = require('../../server');
 const Trip = require('../../dbmodels/trip');
-const { generateItinerary } = require('../../services/openaiService');
 
 // Mock Firebase middleware
 jest.mock('../../middleware/firebaseMiddleware', () => (req, res, next) => {
