@@ -13,6 +13,8 @@ import {
 import MessageAlert from "@/app/components/MessageAlert";
 import { useRouter } from "next/navigation";
 import { useApi } from "@/app/hooks/useApi";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../../../styles/global_styles.css";
 
 function UserSettings() {
   const [firstName, setFirstName] = useState("");
@@ -49,6 +51,7 @@ function UserSettings() {
   } = useApi("api/users/email", "PUT");
 
   // Effect to retrieve Firebase UID from localStorage
+  /*
   useEffect(() => {
     // Only access localStorage on the client side
     if (typeof window !== "undefined") {
@@ -65,6 +68,7 @@ function UserSettings() {
       }
     }
   }, [router]);
+  */
 
   // Set the default input values
   // Check for error from useApi and set the alert accordingly
@@ -397,4 +401,5 @@ function UserSettings() {
   );
 }
 
+export { UserSettings as PureUserSettings };
 export default withAuth(UserSettings);
