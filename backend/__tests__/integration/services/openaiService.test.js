@@ -1,6 +1,6 @@
 require('dotenv').config();
 const nock = require("nock");
-const { generateItinerary } = require("../../services/openaiService");
+const { generateItinerary } = require("../../../services/openaiService");
 
 describe("generateItinerary Integration Test", () => {
   it("should return a parsed itinerary from the OpenAI API response", async () => {
