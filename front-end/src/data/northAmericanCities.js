@@ -11,7 +11,6 @@ const northAmericanCities = [
     "Wilmington", "Dover", // Delaware
     "Jacksonville", "Miami", "Tampa", "Orlando", "St. Petersburg", // Florida
     "Atlanta", "Augusta", "Savannah", "Columbus", // Georgia
-    "Honolulu", "Hilo", // Hawaii
     "Boise", "Idaho Falls", // Idaho
     "Chicago", "Aurora", "Rockford", "Joliet", // Illinois
     "Indianapolis", "Fort Wayne", "Evansville", // Indiana
@@ -53,13 +52,13 @@ const northAmericanCities = [
     "Cheyenne", "Casper", // Wyoming
     
     // Canada
-    "Calgary", "Edmonton", // Alberta
-    "Vancouver", "Victoria", "Surrey", // British Columbia
+    "Calgary", "Edmonton", "Medicine Hat", "Red Deer", // Alberta
+    "Vancouver", "Victoria", "Surrey", "Kamloops", "Kelowna", "Fernie", "Penticton",// British Columbia
     "Winnipeg", // Manitoba
     "Fredericton", "Saint John", // New Brunswick
     "St. John's", // Newfoundland and Labrador
     "Halifax", // Nova Scotia
-    "Toronto", "Ottawa", "Mississauga", // Ontario
+    "Toronto", "Ottawa", "Mississauga", "Thunder Bay", // Ontario
     "Quebec City", "Montreal", // Quebec
     "Regina", "Saskatoon", // Saskatchewan
     
