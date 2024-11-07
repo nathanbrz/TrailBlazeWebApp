@@ -30,7 +30,7 @@ Trailblaze allows users to create and manage their trip itineraries with feature
 ## Getting Started
 
 ### Prerequisites
-- **Node.js** (version X.X.X or higher)
+- **Node.js** (version 14.2.11 or higher)
 - **MongoDB** (Local or hosted database, e.g., MongoDB Atlas)
 - **Git**
 
