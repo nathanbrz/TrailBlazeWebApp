@@ -5,11 +5,11 @@
  */
 
 const request = require('supertest');
-const app = require('../../server');
-const User = require('../../dbmodels/user');
+const app = require('../../../server');
+const User = require('../../../dbmodels/user');
 
 // Mock Firebase middleware
-jest.mock('../../middleware/firebaseMiddleware', () => (req, res, next) => {
+jest.mock('../../../middleware/firebaseMiddleware', () => (req, res, next) => {
     req.user = { uid: "mockFirebaseUserID", email: "test@example.com" }; // Mock a Firebase UID
     next();
   });

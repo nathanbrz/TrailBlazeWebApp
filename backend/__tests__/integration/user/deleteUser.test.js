@@ -5,19 +5,19 @@
  */
 
 const request = require('supertest');
-const app = require('../../server');
-const User = require('../../dbmodels/user');
-const Trip = require('../../dbmodels/trip');
-const admin = require("../../firebaseAdmin/config");
+const app = require('../../../server');
+const User = require('../../../dbmodels/user');
+const Trip = require('../../../dbmodels/trip');
+const admin = require("../../../firebaseAdmin/config");
 
 // Mock Firebase middleware
-jest.mock('../../middleware/firebaseMiddleware', () => (req, res, next) => {
+jest.mock('../../../middleware/firebaseMiddleware', () => (req, res, next) => {
     req.user = { uid: "mockFirebaseUserID", email: "test@example.com" }; // Mock a Firebase UID
     next();
   });
 
 // Mock Firebase Admin SDK  
-jest.mock("../../firebaseAdmin/config", () => ({
+jest.mock("../../../firebaseAdmin/config", () => ({
   auth: () => ({
     // Mock successful deletion
     deleteUser: jest.fn().mockResolvedValue(true), 

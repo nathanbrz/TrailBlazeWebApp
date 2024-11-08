@@ -1,9 +1,9 @@
 const request = require("supertest");
-const app = require("../../server"); // Import your Express app
-const admin = require("../../firebaseAdmin/config");
+const app = require("../../../server"); // Import your Express app
+const admin = require("../../../firebaseAdmin/config");
 
 // Mock the Firebase Admin SDK
-jest.mock("../../firebaseAdmin/config", () => {
+jest.mock("../../../firebaseAdmin/config", () => {
   const verifyIdTokenMock = jest.fn();
   return {
     auth: () => ({
