@@ -50,4 +50,15 @@ describe("GET /api/users - getUser (Integration Test: userController, Database, 
         expect(res.body.message).toBe("User not found");
 
     });
+
+    // Test case to handle database error
+    it("should handle database error and return error code 500", async () => {
+        jest.spyOn(User, "findOne").mockRejectedValueOnce(new Error("Database error"));
+        
+        const res = await request(app).get("/api/users/mockFirebaseUserID");
+        
+        // Verify response status and message
+        expect(res.status).toBe(500);
+        expect(res.body.message).toBe("Error getting user");
+      });
 });

@@ -43,4 +43,17 @@ describe("PUT /api/users/names - updateUserNames (Integration Test: userControll
         expect(user.first_name).toBe("Jane");
         expect(user.last_name).toBe("Smith"); 
     });
+
+    // Test case to handle database error
+    it("should handle database error and return error code 500", async () => {
+        jest.spyOn(User, "findOneAndUpdate").mockRejectedValueOnce(new Error("Database error"));
+      
+        const res = await request(app).put("/api/users/names").send({
+          first_name: "Jane",
+          last_name: "Smith",
+        });
+      
+        expect(res.status).toBe(500);
+        expect(res.body.message).toBe("Error updating user");
+      });
 });

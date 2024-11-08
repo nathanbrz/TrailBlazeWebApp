@@ -57,5 +57,19 @@ describe("POST /api/users - createUser (Integration Test: userController, Databa
         expect(res.status).toBe(400);
         expect(res.body.message).toBe("User already exists");
     });     
+
+    // Test case to handle database error
+    it("should handle database error and return error code 500", async () => {
+        jest.spyOn(User.prototype, "save").mockRejectedValueOnce(new Error("Database error"));
+        
+        // Create user
+        const res = await request(app)
+            .post("/api/users")
+            .send({first_name: "John",last_name: "Doe", email: "test@example.com",});
+        
+        // Verify response status and message
+        expect(res.status).toBe(500);
+        expect(res.body.message).toBe("Error creating user");
+      });
 });
     
