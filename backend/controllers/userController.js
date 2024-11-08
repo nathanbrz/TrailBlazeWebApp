@@ -1,4 +1,5 @@
 const User = require("../dbmodels/user");
+const Trip = require("../dbmodels/trip");
 const admin = require("../firebaseAdmin/config");
 
 // POST: Create a new user
