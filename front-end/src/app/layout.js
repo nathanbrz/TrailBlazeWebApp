@@ -9,6 +9,14 @@ export default function RootLayout({ children }) {
   
   return (
     <html lang="en">
+      <head>
+        {/* Set the page title and description */}
+        <title>{metadata.title}</title>
+        <meta name="description" content={metadata.description} />
+        
+        {/* Link to the favicon */}
+        <link rel="icon" href="/images/trailblaze-high-resolution-logo-modified.png" type="image/x-icon" />
+      </head>
       <body>{children}</body>
     </html>
   )
