@@ -58,13 +58,17 @@ export default function SearchBar({ profileMenu = true }) {
                 bsPrefix="p-0"
                 id="dropdown-basic"
               >
-                <Image
-                  src="/images/user-icon.png"
-                  width="50"
-                  height="50"
-                  alt="profile image"
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="40"
+                  height="40"
+                  fill="#333333"
+                  viewBox="0 0 24 24"
                   style={{ cursor: "pointer" }}
-                />
+                  alt="menu icon"
+                >
+                  <path d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z" />
+                </svg>
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
