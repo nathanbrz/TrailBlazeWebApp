@@ -1,9 +1,9 @@
 import React from 'react';
 
 // Import photos 
-import landingPage_Feature1 from "../../../../public/images/feature1.png";
-import landingPage_Feature2 from "../../../../public/images/feature2.png";
-import landingPage_Feature3 from "../../../../public/images/feature3.png";
+import landingPage_Feature1 from "../../../../public/images/landingPage/features/feature1.png";
+import landingPage_Feature2 from "../../../../public/images/landingPage/features/feature2.png";
+import landingPage_Feature3 from "../../../../public/images/landingPage/features/feature3.png";
 
 const FeaturesSection = () => {
   // Data for the feature cards
