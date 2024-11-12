@@ -1,17 +1,17 @@
 import React from "react";
 
 // Import profile photos
-import profilePic_Destin from "../../../../public/images/aboutUs_photos/ProfilePic_Destin.jpg";
-import profilePic_Riley from "../../../../public/images/aboutUs_photos/ProfilePic_Riley.jpg";
-import profilePic_Yousef from "../../../../public/images/aboutUs_photos/ProfilePic_Yousef.jpg";
-import profilePic_David from "../../../../public/images/aboutUs_photos/ProfilePic_David.jpg";
-import profilePic_Rana from "../../../../public/images/aboutUs_photos/ProfilePic_Rana.jpg";
-import profilePic_Nathan from "../../../../public/images/aboutUs_photos/ProfilePic_Nathan.jpg";
-import profilePic_Cole from "../../../../public/images/aboutUs_photos/ProfilePic_Cole.jpg";
+import profilePic_Destin from "../../../../public/images/landingPage/aboutUs/ProfilePic_Destin.jpg";
+import profilePic_Riley from "../../../../public/images/landingPage/aboutUs/ProfilePic_Riley.jpg";
+import profilePic_Yousef from "../../../../public/images/landingPage/aboutUs/ProfilePic_Yousef.jpg";
+import profilePic_David from "../../../../public/images/landingPage/aboutUs/ProfilePic_David.jpg";
+import profilePic_Rana from "../../../../public/images/landingPage/aboutUs/ProfilePic_Rana.jpg";
+import profilePic_Nathan from "../../../../public/images/landingPage/aboutUs/ProfilePic_Nathan.jpg";
+import profilePic_Cole from "../../../../public/images/landingPage/aboutUs/ProfilePic_Cole.jpg";
 
 // Import LinkedIn and GitHub icons
-import icon_linkedin from "../../../../public/images/aboutUs_photos/icon_linkedin.png";
-import icon_github from "../../../../public/images/aboutUs_photos/icon_github.png";
+import icon_linkedin from "../../../../public/images/landingPage/aboutUs/icon_linkedin.png";
+import icon_github from "../../../../public/images/landingPage/aboutUs/icon_github.png";
 
 // Team data
 const teamMembers = [
@@ -89,7 +89,7 @@ const TeamSection = () => {
   return (
     <section className="py-5 bg-light">
       <div className="container text-center">
-        <h2 className="mb-4 text-4xl">Meet our team</h2>
+        <h2 className="mb-4 text-4xl">Meet our Team</h2>
         <p className="text-muted mb-5">
           Our philosophy is simple — hire a team of diverse, passionate people
           and foster a culture that empowers you to do your best work.

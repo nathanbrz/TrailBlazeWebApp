@@ -2,7 +2,8 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 
-import landingPage_Hero from "../../../../public/images/landingPage_Hero.png";
+// Import photo
+import landingPage_Hero from "../../../../public/images/landingPage/hero/hero.png";
 
 export default function HeroSection() {
   const router = useRouter();
