@@ -2,6 +2,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 
+// Import photo
 import landingPage_Hero from "../../../../public/images/landingPage_Hero.png";
 
 export default function HeroSection() {

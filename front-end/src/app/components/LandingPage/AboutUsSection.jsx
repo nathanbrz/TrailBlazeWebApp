@@ -89,7 +89,7 @@ const TeamSection = () => {
   return (
     <section className="py-5 bg-light">
       <div className="container text-center">
-        <h2 className="mb-4 text-4xl">Meet our team</h2>
+        <h2 className="mb-4 text-4xl">Meet our Team</h2>
         <p className="text-muted mb-5">
           Our philosophy is simple — hire a team of diverse, passionate people
           and foster a culture that empowers you to do your best work.
