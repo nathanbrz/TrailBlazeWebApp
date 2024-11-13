@@ -28,7 +28,13 @@ function TripForm() {
   }); // State for displaying alerts
 
   // Custom hook to handle API calls
-  const { data, loading, error, responseStatus, fetchData: submitTrip } = useApi("api/trips", "POST");
+  const {
+    data,
+    loading,
+    error,
+    responseStatus,
+    fetchData: submitTrip,
+  } = useApi("api/trips", "POST");
 
   // Function to handle form input changes
   const handleChange = (selectedOption, itemname) => {
@@ -40,7 +46,7 @@ function TripForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Validate trip duration
     if (formData.tripDuration < 1 || formData.tripDuration > 20) {
       setAlert({
@@ -60,7 +66,7 @@ function TripForm() {
       });
       return;
     }
-    
+
     // Submit form data to the API
     await submitTrip({
       headers: {
@@ -132,8 +138,9 @@ function TripForm() {
         <Select
           options={cities}
           value={formData.startingPosition}
-          onChange={(option) => handleChange(option, 'startingPosition')}
+          onChange={(option) => handleChange(option, "startingPosition")}
           placeholder="Select a city in North America..."
+          aria-labelledby="startCityLabel"
         />
       </Form.Group>
       {/* Ending Position */}
@@ -142,8 +149,9 @@ function TripForm() {
         <Select
           options={cities}
           value={formData.endingPosition}
-          onChange={(option) => handleChange(option, 'endingPosition')}
+          onChange={(option) => handleChange(option, "endingPosition")}
           placeholder="Select a city in North America..."
+          aria-labelledby="endCityLabel"
         />
       </Form.Group>
       {/* Ideal Trip Duration (1 - 20 Days) */}
@@ -154,7 +162,9 @@ function TripForm() {
           name="tripDuration"
           placeholder="10"
           value={formData.tripDuration}
-          onChange={(e) => setFormData({ ...formData, tripDuration: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, tripDuration: e.target.value })
+          }
           min={1}
           max={20}
         />
@@ -165,7 +175,9 @@ function TripForm() {
         <Form.Select
           name="tripPreference"
           value={formData.tripPreference}
-          onChange={(e) => setFormData({ ...formData, tripPreference: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, tripPreference: e.target.value })
+          }
           aria-label="Default select example"
         >
           <option value="Adventure">Adventure</option>

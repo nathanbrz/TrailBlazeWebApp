@@ -51,10 +51,10 @@ function UserSettings() {
   } = useApi("api/users/email", "PUT");
 
   // Effect to retrieve Firebase UID from localStorage
-  /*
+
   useEffect(() => {
     // Only access localStorage on the client side
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && !process.env.JEST_WORKER_ID) {
       const uid = localStorage.getItem("uuid");
       if (uid) {
         setFirebaseUID(uid);
@@ -68,7 +68,6 @@ function UserSettings() {
       }
     }
   }, [router]);
-  */
 
   // Set the default input values
   // Check for error from useApi and set the alert accordingly

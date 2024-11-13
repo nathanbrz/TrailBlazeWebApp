@@ -8,8 +8,8 @@ import { useApi } from "../../hooks/useApi";
 
 /**
  *
- * This file contains integration tests for User Settings, including
- * - TC-001: User can sign into existing account
+ * This file contains UI integration tests for the user signing up
+ * - TC-002: User can create an account if they don't have one
  */
 
 // Test suite for signup
