@@ -33,7 +33,7 @@ function UserSettings() {
 
   // fetch user data
   const { data, error } = useApi(
-    firebaseUID ? `api/users/${firebaseUID}` : null,
+    firebaseUID && `api/users/${firebaseUID}`,
     "GET"
   );
   // useApi hook for updating the user's name
