@@ -61,6 +61,7 @@ export default function SearchBar({ setQuery }) {
                 variant="link"
                 bsPrefix="p-0"
                 id="dropdown-basic"
+                data-testid="dropdown"
               >
                 <div className="p-2 rounded-full">
                   {" "}
@@ -95,6 +96,7 @@ export default function SearchBar({ setQuery }) {
                 <Dropdown.Item
                   className="custom-dropdown-item"
                   onClick={handleLogout}
+                  data-testid="logout"
                 >
                   Log Out
                 </Dropdown.Item>

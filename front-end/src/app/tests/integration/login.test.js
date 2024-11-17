@@ -3,6 +3,8 @@ import "@testing-library/jest-dom";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import "../../../__mocks__/apiMocks";
 import Login from "../../components/login/login";
+import IntroSection from "../../components/Dashboard/IntroSection";
+import SearchBar from "../../components/Dashboard/SearchBar";
 import { doSignInUserWithEmailAndPassword } from "../../firebase/auth";
 import { useApi } from "../../hooks/useApi";
 import { useRouter } from "next/router";
@@ -172,6 +174,72 @@ describe("Login Integration Test", () => {
     await waitFor(async () => {
       expect(getByRole("alert")).toBeInTheDocument();
       expect(getByText(/No user found with this email./i)).toBeInTheDocument();
+    });
+  });
+
+  // Test if the system keeps users logged in while active and allows manual logout
+  it("should keep the user logged in while active and allow manual logout", async () => {
+    // Render the components
+    const { getByLabelText, queryByText, getByRole, getByTestId } = render(
+      <>
+        <Login />
+        <IntroSection />
+        <SearchBar />
+      </>
+    );
+
+    // Mock user data for input
+    const email = "user@email.com";
+    const password = "password123";
+
+    // Fill in the form
+    fireEvent.change(getByLabelText(/email/i), { target: { value: email } });
+    fireEvent.change(getByLabelText(/password/i), {
+      target: { value: password },
+    });
+
+    // Submit the form
+    const signInButton = getByRole("button", { name: /login/i });
+    fireEvent.click(signInButton);
+
+    // Wait for the login process to complete
+    await waitFor(async () => {
+      // Ensure the login function is called with correct arguments
+      expect(doSignInUserWithEmailAndPassword).toHaveBeenCalledWith(
+        email,
+        password
+      );
+
+      // Verify the token retrieval was called
+      const userCredential = await doSignInUserWithEmailAndPassword(
+        email,
+        password
+      );
+      expect(userCredential.user.getIdToken).toHaveBeenCalled();
+    });
+
+    // Check if "Hi" is visible in the IntroSection
+    await waitFor(async () => {
+      expect(queryByText(/Hi/i)).toBeVisible(); // Check visibility of "Hi" in IntroSection
+    });
+
+    // Simulate clicking the "Log Out" button in the dropdown menu
+
+    // Open the dropdown by clicking on the menu button
+    const dropdownToggle = getByTestId("dropdown");
+    fireEvent.click(dropdownToggle);
+
+    // Find the "Log Out" button within the dropdown
+    const logoutButton = getByTestId("logout");
+
+    // Click the "Log Out" button
+    fireEvent.click(logoutButton);
+
+    // Wait for the logout process to complete
+    await waitFor(() => {
+      expect(localStorage.getItem("token")).toBeNull();
+      expect(localStorage.getItem("uuid")).toBeNull();
+      expect(getByRole("button", { name: /login/i })).toBeVisible();
     });
   });
 });
