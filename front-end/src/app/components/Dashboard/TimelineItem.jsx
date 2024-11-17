@@ -17,15 +17,15 @@ const TimelineItem = ({
       <Card className="mb-3 rounded-5 mx-12">
         <Row className="g-0">
           {/* Image on the left side */}
-          {/* <Col md={2} className="d-flex justify-content-center">
+          <Col md={2} className="d-flex justify-content-center">
             <Image
-              width="200"
+              width="300"
               height="200"
-              src={imageUrl}
-              className="img-fluid h-100 rounded"
-              alt={title}
+              src={imageUrl.src}
+              className="img-fluid w-full h-48 object-cover rounded"
+              alt={name}
             />
-          </Col> */}
+          </Col>
 
           {/* Title and description */}
           <Col md={10}>

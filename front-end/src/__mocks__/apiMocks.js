@@ -13,6 +13,7 @@ import {
   doSignOut,
   doPasswordChange,
 } from "firebase/auth";
+
 import withAuth from "@/app/components/withAuth";
 
 // Creating a mock function for the useAPI
@@ -74,6 +75,9 @@ jest.mock("../app/firebase/auth", () => ({
   // Mock function for settings page changing users email
   doUpdateEmail: jest.fn(),
 
+  // Mock function for settings page changing the users name
+  doUpdateName: jest.fn(),
+
   initializeApp: jest.fn(),
   getAuth: jest.fn(() => ({
     signInWithEmailAndPassword: jest.fn(),
@@ -104,3 +108,18 @@ jest.mock("next/router", () => ({
 }));
 
 jest.mock("@/app/components/withAuth", () => jest.fn((Component) => Component));
+
+jest.mock("@/app/components/Dashboard/PlanItemDeleteForm.jsx", () => {
+  return jest.fn(() => <div role="dialog">Delete Modal</div>);
+});
+
+jest.mock("@/app/components/Dashboard/PlanItemUpdateForm.jsx", () => {
+  return jest.fn(() => <div role="dialog">Update Modal</div>);
+});
+
+// Mock window.location.reload() to avoid errors in tests
+Object.defineProperty(window, "location", {
+  value: {
+    reload: jest.fn(), // Mock the reload function
+  },
+});

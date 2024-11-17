@@ -42,4 +42,16 @@ describe("PUT /api/users/email - updateUserEmail (Integration Test: userControll
         const user = await User.findOne({firebaseUID: "mockFirebaseUserID"});
         expect(user.email).toBe("newemail@example.com");
     });
+
+    // Test case to handle database error
+    it("should handle database error and return error code 500", async () => {
+        jest.spyOn(User, "findOneAndUpdate").mockRejectedValueOnce(new Error("Database error"));
+      
+        const res = await request(app)
+        .put("/api/users/email")
+        .send({email: "newemail@example.com"});
+      
+        expect(res.status).toBe(500);
+        expect(res.body.message).toBe("Error updating user");
+      });
 });

@@ -24,7 +24,7 @@ export default function Hero() {
 
   // Fetch user data only if firebaseUID is set
   const { data, error } = useApi(
-    firebaseUID && `api/users/${firebaseUID}`,
+    firebaseUID ? `api/users/${firebaseUID}` : "",
     "GET"
   );
 

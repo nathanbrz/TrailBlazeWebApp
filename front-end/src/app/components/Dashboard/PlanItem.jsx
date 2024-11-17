@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import PlanDeleteModal from "./PlanDeleteModal";
-import PlanUpdateModal from "./PlanUpdateModal"
+import PlanUpdateModal from "./PlanUpdateModal";
 
 const PlanItem = ({
   id,
@@ -28,10 +28,10 @@ const PlanItem = ({
   // Function to close the delete confirmation modal
   const handleCloseDeleteModal = () => setIsDeleteModalOpen(false);
 
-   // Function to open the update modal
+  // Function to open the update modal
   const handleOpenUpdateModal = () => setIsUpdateModalOpen(true);
 
-   // Function to close the update modal
+  // Function to close the update modal
   const handleCloseUpdateModal = () => setIsUpdateModalOpen(false);
 
   // Function to handle redirection to the itinerary page with query parameters
@@ -98,11 +98,12 @@ const PlanItem = ({
           >
             {isClickable && (
               <div className="pr-3">
-                <Button 
-                  variant="outline-none" 
-                  size="sm" 
+                <Button
+                  variant="outline-none"
+                  size="sm"
                   className="me-2"
                   onClick={handleOpenUpdateModal}
+                  aria-label="Update"
                 >
                   <i className="bi bi-pencil"></i>
                 </Button>
@@ -110,6 +111,7 @@ const PlanItem = ({
                   variant="outline-none"
                   size="sm"
                   onClick={handleOpenDeleteModal}
+                  aria-label="Delete"
                 >
                   <i className="bi bi-trash"></i>
                 </Button>

@@ -4,7 +4,38 @@ import PlanItem from "../Dashboard/PlanItem";
 import TimelineItem from "../Dashboard/TimelineItem";
 import { Container, Row, Col } from "react-bootstrap";
 
+// Import placeholder photos for each stop
+import stopPlaceholder1 from "../../../../public/images/stopPlaceholders/stopPlaceholder1.jpg";
+import stopPlaceholder2 from "../../../../public/images/stopPlaceholders/stopPlaceholder2.jpg";
+import stopPlaceholder3 from "../../../../public/images/stopPlaceholders/stopPlaceholder3.jpg";
+import stopPlaceholder4 from "../../../../public/images/stopPlaceholders/stopPlaceholder4.jpg";
+import stopPlaceholder5 from "../../../../public/images/stopPlaceholders/stopPlaceholder5.jpg";
+import stopPlaceholder6 from "../../../../public/images/stopPlaceholders/stopPlaceholder6.jpg";
+import stopPlaceholder7 from "../../../../public/images/stopPlaceholders/stopPlaceholder7.jpg";
+import stopPlaceholder8 from "../../../../public/images/stopPlaceholders/stopPlaceholder8.jpg";
+import stopPlaceholder9 from "../../../../public/images/stopPlaceholders/stopPlaceholder9.jpg";
+import stopPlaceholder10 from "../../../../public/images/stopPlaceholders/stopPlaceholder10.jpg";
+
+const placeholderImages = [
+  stopPlaceholder1,
+  stopPlaceholder2,
+  stopPlaceholder3,
+  stopPlaceholder4,
+  stopPlaceholder5,
+  stopPlaceholder6,
+  stopPlaceholder7,
+  stopPlaceholder8,
+  stopPlaceholder9,
+  stopPlaceholder10,
+];
+
+// Helper function to shuffle the images
+const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
+
 export default function TimelineView({ itinerary = [] }) {
+
+  const shuffledImages = shuffleArray([...placeholderImages]);
+  
   return (
     <Container className="relative mt-10">
       {/* Persistent Vertical Line */}
@@ -19,7 +50,8 @@ export default function TimelineView({ itinerary = [] }) {
                 name={stop.location}
                 duration={stop.stay}
                 notes={stop.notes}
-                imageUrl={`/path-to-images/${stop.location.toLowerCase()}.jpg`}
+                //imageUrl={`/path-to-images/${stop.location.toLowerCase()}.jpg`}
+                imageUrl={shuffledImages[index % shuffledImages.length]}
                 activities={stop.activities}
                 className="z-0" // Ensure PlanItem itself has a lower z-index
               />

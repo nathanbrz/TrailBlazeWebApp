@@ -28,6 +28,7 @@ describe("deleteUser (Integration Test: userController, Database, and Mocked Aut
      // Clean up the database before each test 
      beforeEach(async () => {
         await User.deleteMany({});
+        await Trip.deleteMany({});
     });
 
     // Test case for deleting a user
@@ -39,6 +40,12 @@ describe("deleteUser (Integration Test: userController, Database, and Mocked Aut
             first_name: "John",
             last_name: "Doe"
         });
+        
+        // Create a trip associated with the user
+        await Trip.create({
+          userID: "mockFirebaseUserID",
+          tripName: "Test Trip",
+        });
 
         const res = await request(app).delete("/api/users/mockFirebaseUserID");
         
@@ -49,6 +56,8 @@ describe("deleteUser (Integration Test: userController, Database, and Mocked Aut
         // Check that the user was removed from the database
         const user = await User.findOne({firebaseUID: "mockFirebaseUserID"});
         expect(user).toBeNull();
+        const trips = await Trip.find({ userID: "mockFirebaseUID" });
+        expect(trips.length).toBe(0);
     });
 
     // Test case when the user is not found
@@ -60,4 +69,25 @@ describe("deleteUser (Integration Test: userController, Database, and Mocked Aut
         expect(response.body.message).toBe("User not found");
   });
 
+    // Test case to handle database error 
+    it("should handle database error and return error code 500", async () => {
+      jest.spyOn(Trip, "deleteMany").mockRejectedValueOnce(new Error("Database error"));
+  
+      await User.create({
+        firebaseUID: "mockFirebaseUserID",
+        email: "test@example.com",
+        first_name: "John",
+        last_name: "Doe",
+      });
+
+      await Trip.create({
+        userID: "mockFirebaseUserID",
+        tripName: "Test Trip",
+      });
+  
+      const res = await request(app).delete("/api/users/mockFirebaseUserID");
+  
+      expect(res.status).toBe(500);
+      expect(res.body.message).toBe("Error deleting user");
+    });
 });
