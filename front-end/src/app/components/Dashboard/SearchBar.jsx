@@ -61,17 +61,22 @@ export default function SearchBar({ setQuery }) {
                 variant="link"
                 bsPrefix="p-0"
                 id="dropdown-basic"
+                data-testid="dropdown"
               >
                 <div className="p-2 rounded-full">
                   {" "}
                   {/* Add padding and optional background */}
-                  <Image
-                    src="/images/user-icon.png"
-                    width="50"
-                    height="50"
-                    alt="profile image"
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="40"
+                    height="40"
+                    fill="#333333"
+                    viewBox="0 0 24 24"
                     style={{ cursor: "pointer" }}
-                  />
+                    alt="menu icon"
+                  >
+                    <path d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z" />
+                  </svg>
                 </div>
               </Dropdown.Toggle>
 
@@ -91,6 +96,7 @@ export default function SearchBar({ setQuery }) {
                 <Dropdown.Item
                   className="custom-dropdown-item"
                   onClick={handleLogout}
+                  data-testid="logout"
                 >
                   Log Out
                 </Dropdown.Item>
