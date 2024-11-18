@@ -42,22 +42,6 @@ const createTrip = async (req, res) => {
       })
       stops.push(s)
     })
-      
-    
-    // Map the generated itinerary data into Stop model instances
-    // const stops = generatedItinerary.itinerary.map((item) => {
-    //   return new Stop({
-    //     day: parseInt(item.day), // Convert 'day' to number
-    //     location: item.location,
-    //     stay: parseInt(item.stay), // Convert 'stay' to number
-    //     hotel: item.hotel,
-    //     activities: item.activities.map((activity) => ({
-          
-    //     })),
-    //     travel_time: parseFloat(item.travel_time), // Convert 'travel_time' to number
-    //     notes: item.notes,
-    //   });
-    // });
 
     // Create a new Trip instance with the parsed itinerary stops
     const newTrip = new Trip({

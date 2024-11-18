@@ -1,6 +1,7 @@
 const Trip = require('../dbmodels/trip');
 const User = require("../dbmodels/user");
 
+// Total trips created
 const totalTripsCreated = async (req, res) => {
   try {
     const totalTrips = await Trip.countDocuments();
@@ -11,6 +12,7 @@ const totalTripsCreated = async (req, res) => {
   }
 };
 
+// Average trip length
 const averageTripLength = async (req, res) => {
     try {
       const result = await Trip.aggregate([
