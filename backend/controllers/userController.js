@@ -4,7 +4,6 @@ const admin = require("../firebaseAdmin/config");
 
 // POST: Create a new user
 const createUser = async (req, res) => {
-  console.log(req.body);
   const first_name = req.body.first_name;
   const last_name = req.body.last_name;
   const { uid, email } = req.user; // Retrieve uid and email from the middleware authenticated user
@@ -52,7 +51,6 @@ const getUser = async (req, res) => {
 };
 
 // UPDATE: Update user names
-// NOTE: Send both names in the request even if only one is updated
 const updateUserNames = async (req, res) => {
     const { uid } = req.user;
     const new_first_name = req.body.first_name;
@@ -70,8 +68,8 @@ const updateUserNames = async (req, res) => {
         res.status(500).json({ message: 'Error updating user', error });
     }
 }
+
 // UPDATE: Update user email
-// NOTE TO FRONTEND: You must change the email in firebase as well!
 const updateUserEmail = async (req, res) => {
     const { uid } = req.user;
     const new_email = req.body.email
