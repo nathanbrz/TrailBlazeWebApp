@@ -1,6 +1,16 @@
 const request = require('supertest');
 const app = require('../../../server');
 const Trip = require('../../../dbmodels/trip');
+/**
+ *
+ * This file contains integration tests for creating trips, including:
+ * - TC-005: Verify system generates itinerary based on user input
+ * - TC-014: Verify system manages API errors during trip creation and saving
+ *
+ * The tests ensure successful creation of trips, integration with the ChatGPT API,
+ * and proper error handling for both API and database failures.
+ *
+ */
 
 // Mock Firebase middleware
 jest.mock('../../../middleware/firebaseMiddleware', () => (req, res, next) => {

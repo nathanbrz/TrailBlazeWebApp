@@ -1,3 +1,13 @@
+/**
+ *
+ * This file contains performance tests for trip creation, including:
+ * - TC-016: Verify the system receives a response from the LLM within 15 seconds
+ *
+ * The tests measure response time for generating itineraries with large inputs
+ * to ensure the system meets performance requirements.
+ *
+ */
+
 const request = require('supertest');
 const app = require('../../../server');
 const Trip = require('../../../dbmodels/trip');

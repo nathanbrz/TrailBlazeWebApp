@@ -1,3 +1,12 @@
+/**
+ *
+ * This file contains integration tests for deleting trips, including:
+ * - TC-006: Verify user itineraries are saved and can be deleted.
+ *
+ * The tests ensure trips can be deleted successfully.
+ *
+ */
+
 const request = require('supertest');
 const app = require('../../../server'); // Import the Express app
 const Trip = require('../../../dbmodels/trip');
