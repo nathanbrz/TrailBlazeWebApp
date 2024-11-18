@@ -28,7 +28,7 @@ Trailblaze allows users to create and manage their trip itineraries with feature
 - **Responsive Design**: Mobile-friendly interface.
 
 ## Getting Started
-
+Note: You can view a live demo of our app by visiting https://trailblaze-webapp.vercel.app/ 
 ### Prerequisites
 - **Node.js** (version 14.2.11 or higher)
 - **MongoDB** (Local or hosted database, e.g., MongoDB Atlas)
@@ -239,6 +239,8 @@ Trailblaze integrates with the following external services:
   OPENAI_API_KEY=your_openai_api_key
   ```
 ## Demo
+You can view a live demo of our app by visiting https://trailblaze-webapp.vercel.app/ 
+
 Check out a quick demo of Trailblaze in action!
 
 ![Trailblaze Demo](path/to/demo.gif)
