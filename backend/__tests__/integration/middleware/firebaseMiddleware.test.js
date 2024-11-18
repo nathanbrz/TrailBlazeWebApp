@@ -1,3 +1,12 @@
+/**
+ *
+ * This file contains integration tests for Firebase Middleware, including:
+ * - TC-015: Ensure Firebase middleware correctly authenticates users
+ *
+ * The tests validate handling of valid, invalid, and missing tokens during requests,
+ * ensuring secure access control for API endpoints.
+ *
+ */
 const request = require("supertest");
 const app = require("../../../server"); // Import your Express app
 const admin = require("../../../firebaseAdmin/config");

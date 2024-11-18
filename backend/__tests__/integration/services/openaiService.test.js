@@ -1,3 +1,15 @@
+/**
+ *
+ * This file contains integration tests for ChatGPT integration, including:
+ * - TC-008: Confirm proper LLM integration
+ * - TC-013: Verify user input is properly formatted before sending to ChatGPT API
+ * - TC-014: Verify system manages API errors during itinerary generation
+ *
+ * The tests validate correct API requests, response formats, and error handling
+ * for both valid and invalid API calls.
+ *
+ */
+
 require('dotenv').config();
 const nock = require("nock");
 const { generateItinerary } = require("../../../services/openaiService");

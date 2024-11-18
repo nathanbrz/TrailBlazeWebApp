@@ -1,3 +1,13 @@
+/**
+ *
+ * This file contains integration tests for updating trip details, including:
+ * - TC-006: Verify user itineraries can be updated
+ *
+ * The tests ensure the trip names can be updated successfully in the database
+ * and that error cases, such as non-existent trips, are handled properly.
+ *
+ */
+
 const request = require('supertest');
 const app = require('../../../server');
 const Trip = require('../../../dbmodels/trip');
