@@ -240,12 +240,3 @@ Trailblaze integrates with the following external services:
   ```
 ## Demo
 You can view a live demo of our app by visiting https://trailblaze-webapp.vercel.app/ 
-
-Check out a quick demo of Trailblaze in action!
-
-![Trailblaze Demo](path/to/demo.gif)
-
-To create the GIF:
-1. Use a screen recording tool (like [ScreenToGif](https://www.screentogif.com/) or similar) to capture the user flow you’d like to showcase (e.g., trip creation, dashboard navigation).
-2. Export the recording as a GIF.
-3. Add it to the repository (e.g., `assets/demo.gif`) and update the file path in the README.
